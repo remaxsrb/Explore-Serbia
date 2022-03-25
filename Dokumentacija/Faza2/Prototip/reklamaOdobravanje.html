@@ -1,0 +1,93 @@
+<!-- by Antonija Vasiljević -->
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explore Serbia</title>
+
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- Font Awesome Icon Library -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+        <a class="navbar-brand" href="./index.html">
+            <img src="./assets/images/logo/PSI-ES-Logo-Transparent.png" width="30" height="30" alt="">
+        </a>
+        <a class="navbar-brand" href="./index.html">Explore Serbia</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+
+            </ul>
+            
+            <form method="get" action="listaObjava.html">
+                <button class="btnAdm" ><i class="fa fa-file-text-o"></i></button>
+           </form>
+           <form method="get" action="listaReklama.html">
+            <button class="btnAdm"><i class="fa fa-handshake-o"></i></button>
+        </form>
+        <form method="get" action="podesavanje.html">
+        <button class="btnAdm" ><i class="fa fa-cogs"></i></button>
+        <a href="index.html" style="margin-left: 10px;">Izloguj se</a>
+    </form>
+    
+        </div>
+    </nav>
+    
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-sm-12 objava">
+                    
+                <img src="./assets/images/img_avatar.png" alt="Profile picture" class="imgclass">
+                        <a href="#" class="card-link author-link">Username</a>
+                        <p class="card-date">21.3.2022.</p>
+                <h1>Naziv radnje</h1>
+                
+                <img src="./assets/images/vodenica.jpg" alt="Vodenica" class="slia-reklame">
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia impedit assumenda, exercitationem, neque, possimus consectetur cum molestiae nesciunt provident sint consequatur. Saepe enim aspernatur sint voluptatem quam blanditiis non! Soluta fuga corrupti distinctio fugit temporibus doloremque dolorum, maxime ducimus sed nemo cum tempora, eius ex debitis, animi impedit? Esse voluptate reiciendis accusamus sunt deserunt, ullam iusto eveniet magnam quod quaerat quo fugiat neque quasi accusantium, modi harum! Enim recusandae, asperiores numquam iure ad accusantium aperiam.</p>
+            </div>
+           
+            <div class="col-md-4 col-sm-12 reklame">
+                <div class="row">
+                    <div class="col-sm-12 col-md-12">
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <i class="fa fa-home" aria-hidden="true"></i>
+                                <p>Adresa, Ulica 12</p>
+                                <i class="fa fa-solid fa-phone"></i>
+                                <p>+38164 22 55 777</p>
+                                <i class="fa fa-envelope" aria-hidden="true"></i>
+                                <p>mail@gmail.com</p>
+                                <i class="fa fa-link" aria-hidden="true"></i>
+                                <a href="google.com" style="display: block;">www.google.com</a>
+                            </div>
+                        </div>
+                    </div>
+                
+                </div>
+            </div>
+        </div>
+        <br>
+        <br>
+        <div id="odobri0" style="text-align: center;">
+            <button type="button" class="btn btn-primary btn-lg btn-block">Odobri</button>
+            <button type="button" class="btn btn-secondary btn-lg btn-block">Odbaci</button>
+        </div>
+    </div>
+    <br>
+    <br>
+</body>
+</html>

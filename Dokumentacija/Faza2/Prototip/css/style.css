@@ -1,0 +1,270 @@
+/* by all team members */
+
+.mb-4{
+    margin-top: 10px;
+    margin-bottom: 0px;
+}
+
+.jumbotron{
+    background-image: url("/assets/images/lake-g108b203bc_1920.jpg");
+    background-repeat: no-repeat;
+    height: 400px;
+}
+
+.main-page-content {
+    background-color: #f1ebeb;
+}
+
+.background-c{
+    background-color: #f1ebeb;
+}
+
+.btn {
+    margin-left: 10px;
+}
+
+.row{
+    margin: auto;
+}
+
+.display-1 {
+    text-align: center;
+    color: white;
+    font-size: 80px;
+}
+
+a.card-title{
+    color: black;
+    font-weight: bold;
+}
+
+a.card-title:hover{
+    text-decoration: none;
+}
+
+.card-date{
+    color: #c6c6c6;
+}
+
+.author-link{
+    text-align: center;
+    display: inline-block;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 14px;
+    margin-left: 10px;
+}
+
+.imgclass{
+    display:inline-block;
+    height: 40px;
+    width: 40px;
+    vertical-align:top;
+}
+
+.rating {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 14px;
+    margin-left: 10px;
+    float: right;
+    clear: none;
+}
+
+.checked {
+    color: orange;
+}
+
+.objava{
+    text-align:  justify;
+    margin-top: 30px;
+}
+
+.reklame {
+    margin-top: 30px;
+}
+
+img {
+    max-width: 100%;
+}
+
+.reklama {
+    text-align:  justify;
+    margin-top: 30px;
+}
+
+.slia-reklame{
+    max-width: 50%;
+}
+
+.btnAdm {
+  background-color: #17a2b8;
+  border-color: #17a2b8;
+  border: none;
+  margin-left: 10px; 
+  color: white; 
+  padding: 12px 16px;
+  font-size: 16px; 
+  cursor: pointer; 
+  text-align: right;
+  margin-right: initial;
+}
+.btnAdm:hover {
+    background-color: RoyalBlue;
+  }
+
+.wrap{
+    display: inline-block;
+    background-color:#000;
+}
+form {
+    text-align: center;
+}
+
+.settingsHeader {
+    width: 100%;
+  height: 100%;
+  display: flex;
+    justify-content: center;
+  align-items: center;
+  background-color:#f1ebeb;
+}
+
+.kreiranjeObjave-page-content {
+    background-color: #f1ebeb;
+    padding-bottom: 30px;
+}
+
+
+
+.title-space {
+    margin-bottom: 5px;
+    margin-left: 5px;
+    padding-top: 20px;
+    text-align: center;
+}
+
+.region-space {
+    margin-top: 20px;
+    margin-bottom: 5px;
+    margin-left:  5px;
+    text-align: center;
+}
+
+.content-space {
+    margin-top: 20px;
+    margin-bottom: 5px;
+    margin-left:  5px;
+    text-align: center;
+}
+
+.main-tag-space {
+    margin-top: 20px;
+    margin-bottom: 5px;
+    margin-left:  5px;
+    text-align: center;
+}
+
+.secondary-tag-space {
+    margin-top: 20px;
+    margin-bottom: 5px;
+    margin-left: 5px;
+}
+
+.secondary-tag-space-text {
+    text-align: center;
+}
+
+.secondary-tag-input-space {
+    margin-left: 41.5%;
+}
+
+.seconadry-tag {
+    margin-top: 10px;
+    margin-bottom: 5px;
+    padding-bottom: 30px;
+}
+
+.button-add-tag {
+    color: black;
+    background-color: white;
+    outline-style: solid;
+    outline-width: 1px;
+    outline-color: black;
+    padding-left: 5px;
+    padding-right: 5px;
+    margin-left: 10%;
+}
+
+.button-remove-tag {
+    color: black;
+    background-color: white;
+    outline-style: solid;
+    outline-width: 1px;
+    outline-color: black;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.submit-button-space {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.cancel-button-space {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.button-submit-objava {
+
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.button-cancel-objava {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Klase za kreiranjeReklame*/
+
+.kreiranjeReklame-page-content {
+    background-color: #f1ebeb;
+    padding-bottom: 30px;
+}
+
+.description-space {
+    margin-top: 20px;
+    margin-bottom: 5px;
+    margin-left:  5px;
+    text-align: center;
+}
+
+.address-space {
+    margin-bottom: 5px;
+    margin-left: 5px;
+    padding-top: 20px;
+    text-align: center;
+}
+
+.phone-space {
+    margin-bottom: 5px;
+    margin-left: 5px;
+    padding-top: 20px;
+    text-align: center;
+}
+
+.email-space {
+    margin-bottom: 5px;
+    margin-left: 5px;
+    padding-top: 20px;
+    text-align: center;
+}
+
+.personal-site-space {
+    margin-bottom: 5px;
+    margin-left: 5px;
+    padding-top: 20px;
+    text-align: center;
+}

@@ -1,5 +1,11 @@
 <!--by Miloš Brković 0599/2019-->
 
+<style>
+    body {
+        background-color: #f1ebeb;;
+    }
+</style>
+
 <div class="container">
     
     <form action="<?php echo site_url("Gost/ulogujSe"); ?>" method="POST" style="width: 60%; margin:auto;  padding-top: 30px">
@@ -31,6 +37,5 @@
           </form>
         </div>
         
-
 </body>
 </html>

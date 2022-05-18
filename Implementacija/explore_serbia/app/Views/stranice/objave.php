@@ -1,18 +1,16 @@
 <!--by Miloš Brković 0599/2019-->
+<script src="/js/filtriranjePretrage.js"></script>
 
 <div class="main-page-content">
     
 <?php 
     
     $i = 0;
-    $j = 0;
     
+    echo "<div class='row'>";
     foreach ($objave as $objava){
-        if ($j == 0){
-            echo "<div class='row'>";
-        }
         echo '<div class="col-sm-12 col-md-4">
-                <div class="card mb-4">
+                <div class="card mb-4 '.$tagoviCssKlase[$i].'">
                     <div class="card-body">';
         echo '<a href="'. site_url("/$kontroler/objava/$objava->id").'" class="card-title"><h3>'.$objava->naslov.'</h3></a>';
         echo '<p class="card-date">'.date("d.m.Y", strtotime($objava->vremeKreiranja)).'</p>';
@@ -48,19 +46,9 @@
                 </div>
             </div>';
         
-        
-        $j++;
-        if ($j == 3){
-            echo "</div>";
-            $j = 0;
-        }
-        
         $i++;
     }
-    
-    if ($j != 0){
-        echo "</div>";
-    }
+    echo "</div>";
     
     
 ?>

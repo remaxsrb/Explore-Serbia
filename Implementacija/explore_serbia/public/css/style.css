@@ -275,3 +275,14 @@ form {
     padding-top: 20px;
     text-align: center;
 }
+
+span.dropdown-item:hover{
+    background-color: blue;
+    color: white;
+    cursor: hand;
+}
+
+.filterSelected {
+    background-color: blue;
+    color: white;
+}

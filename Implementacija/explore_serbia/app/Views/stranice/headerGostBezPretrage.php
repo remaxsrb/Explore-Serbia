@@ -6,7 +6,7 @@
 <head>
     <?php include("include.php"); ?>
 </head>
-<body class="background-c">
+<body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
         <a class="navbar-brand" href="/">
             <img src="/assets/images/logo/PSI-ES-Logo-Transparent.png" width="30" height="30" alt="">

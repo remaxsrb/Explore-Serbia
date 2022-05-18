@@ -1,7 +1,7 @@
 <?php
 
 // by Miloš Brković 0599/2019
-
+// by Marko Jovanović 0607/2018
 namespace App\Controllers;
 
 use App\Models\ObjavaModel;
@@ -141,7 +141,7 @@ class Gost extends BaseController
         
         $this->session->set("korisnik", $korisnik);
         if ($korisnik->tip == $this->adminTip){
-            return redirect()->to(site_url('Admin'));
+            return redirect()->to(site_url('Admin/index'));
         } else if ($korisnik->tip == $this->pisacTip){
             return redirect()->to(site_url('Pisac'));
         } else if ($korisnik->tip == $this->zanatlijaTip){

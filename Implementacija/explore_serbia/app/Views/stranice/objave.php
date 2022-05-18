@@ -27,18 +27,25 @@
             echo '<p class="card-link author-link">[deleted]</p>';
         }
         
-        
-        // TO DO
-        // Sistem za precizniji prikaz ocena
         $ocena = $objava->sumaOcena / $objava->brojOcena;
-        $ocena = round($ocena);
-        
+        $ocenaCeoDeo = floor($ocena);
+        $ocenaDecimalniDeo = round($ocena - $ocenaCeoDeo, 2);
+       
         echo '<div class="rating">';
+        $polaZvezdePrikazano = false;
         for ($k = 1; $k <= 5; $k++){
-            if ($k <= $ocena){
+            if ($ocenaCeoDeo >= $k){
                 echo '<span class="fa fa-star checked"></span>';
-            } else {
-                echo '<span class="fa fa-star"></span>';
+            } else if (!$polaZvezdePrikazano){
+                if ($ocenaDecimalniDeo >= 0.5){
+                    echo '<span class="fa fa-star checked"></span>';
+                } else {
+                    echo '<span class="fa fa-star-half-alt checked"></span>';
+                }
+                $polaZvezdePrikazano = true;
+            }
+            else {
+                echo '<span class="fas fa-star"></span>';
             }
         }
         echo '</div>

@@ -286,3 +286,7 @@ span.dropdown-item:hover{
     background-color: blue;
     color: white;
 }
+
+.fa-star-o{
+    font-color: black;
+}

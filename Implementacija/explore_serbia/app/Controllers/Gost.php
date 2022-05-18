@@ -185,6 +185,8 @@ class Gost extends BaseController
             $tipKorisnika = 3;
         }
         
+        $lozinka = password_hash($lozinka, PASSWORD_DEFAULT);
+        
         $korisnikModel->insert([
             "korisnickoIme" => $korisnickoIme,
             "ime" => $ime,
@@ -215,7 +217,7 @@ class Gost extends BaseController
         if($korisnik == null){
             return $this->login("Korisnik ne postoji");
         }
-        if ($korisnik->lozinka != $this->request->getVar("lozinka")){
+        if (!password_verify($this->request->getVar("lozinka"), $korisnik->lozinka)){
             return $this->login("Pogresna lozinka");
         }
         

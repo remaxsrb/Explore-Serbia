@@ -6,6 +6,9 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
+/**
+ * ReklamaModel - klasa koja predstavlja model taga u bazi podataka
+ */
 class TagModel extends Model
 {
     protected $table      = 'tag';

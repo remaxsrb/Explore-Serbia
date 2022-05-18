@@ -12,7 +12,7 @@
                
               <div class="form-group">
                 <label for="ime">Korisničko ime</label>
-                <input type="text" class="form-control" id="ime" name="korisnickoIme" placeholder="Korisničko ime" required>
+                <input type="text" value="<?= set_value('korisnickoIme') ?>" class="form-control" id="ime" name="korisnickoIme" placeholder="Korisničko ime" required>
                 <span style="color:red;">
                     <?php 
                         if(!empty($errors['korisnickoIme'])) 
@@ -32,7 +32,7 @@
                     ?>
                 </span>
               </div>
-         <?php if(isset($poruka)) echo "<font color='red'>$poruka</font><br>"; ?>
+         <?php if(isset($poruka)) echo "<div style='color: red;''>$poruka</div><br>"; ?>
             <center><button type="submit" class="btn btn-primary">Uloguj se</button> </center>
           </form>
         </div>

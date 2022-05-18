@@ -1,10 +1,19 @@
 <?php
 
+
 // byMarko Jovanović 2018/0607
+
+
+
 
 namespace App\Models;
 
 use CodeIgniter\Model;
+
+
+/**
+ * ReklamaModel - klasa koja predstavlja model taga u bazi podataka
+ */
 
 class TagModel extends Model
 {
@@ -12,6 +21,7 @@ class TagModel extends Model
     protected $primaryKey = 'id';
     protected $returnType     = 'object';
     protected $allowedFields = ['id', 'naziv', 'odobren', 'kategorija'];
+
 
     public function ubaciTag($naziv)
     {
@@ -42,5 +52,6 @@ class TagModel extends Model
 
         $this->delete($id);
     }
+
 
 }

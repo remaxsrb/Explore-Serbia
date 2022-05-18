@@ -6,6 +6,9 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
+/**
+ * ObjavaModel - klasa koja predstavlja model objave u bazi podataka
+ */
 class ObjavaModel extends Model
 {
     protected $table      = 'objava';

@@ -1,18 +1,16 @@
 <!--by Miloš Brković 0599/2019-->
+<script src="/js/filtriranjePretrage.js"></script>
 
 <div class="main-page-content">
     
 <?php 
     
     $i = 0;
-    $j = 0;
     
+    echo "<div class='row'>";
     foreach ($objave as $objava){
-        if ($j == 0){
-            echo "<div class='row'>";
-        }
         echo '<div class="col-sm-12 col-md-4">
-                <div class="card mb-4">
+                <div class="card mb-4 '.$tagoviCssKlase[$i].'">
                     <div class="card-body">';
         echo '<a href="'. site_url("/$kontroler/objava/$objava->id").'" class="card-title"><h3>'.$objava->naslov.'</h3></a>';
         echo '<p class="card-date">'.date("d.m.Y", strtotime($objava->vremeKreiranja)).'</p>';
@@ -29,18 +27,25 @@
             echo '<p class="card-link author-link">[deleted]</p>';
         }
         
-        
-        // TO DO
-        // Sistem za precizniji prikaz ocena
         $ocena = $objava->sumaOcena / $objava->brojOcena;
-        $ocena = round($ocena);
-        
+        $ocenaCeoDeo = floor($ocena);
+        $ocenaDecimalniDeo = round($ocena - $ocenaCeoDeo, 2);
+       
         echo '<div class="rating">';
+        $polaZvezdePrikazano = false;
         for ($k = 1; $k <= 5; $k++){
-            if ($k <= $ocena){
+            if ($ocenaCeoDeo >= $k){
                 echo '<span class="fa fa-star checked"></span>';
-            } else {
-                echo '<span class="fa fa-star"></span>';
+            } else if (!$polaZvezdePrikazano){
+                if ($ocenaDecimalniDeo >= 0.5){
+                    echo '<span class="fa fa-star checked"></span>';
+                } else {
+                    echo '<span class="fa fa-star-half-alt checked"></span>';
+                }
+                $polaZvezdePrikazano = true;
+            }
+            else {
+                echo '<span class="fas fa-star"></span>';
             }
         }
         echo '</div>
@@ -48,19 +53,9 @@
                 </div>
             </div>';
         
-        
-        $j++;
-        if ($j == 3){
-            echo "</div>";
-            $j = 0;
-        }
-        
         $i++;
     }
-    
-    if ($j != 0){
-        echo "</div>";
-    }
+    echo "</div>";
     
     
 ?>

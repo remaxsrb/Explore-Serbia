@@ -6,6 +6,9 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
+/**
+ * ReklamaModel - klasa koja predstavlja model reklame u bazi podataka
+ */
 class ReklamaModel extends Model
 {
     protected $table      = 'reklama';

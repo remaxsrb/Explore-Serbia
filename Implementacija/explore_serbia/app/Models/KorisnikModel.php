@@ -6,6 +6,9 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
+/**
+ * KorisnikModel - klasa koja predstavlja model korisnika u bazi podataka
+ */
 class KorisnikModel extends Model
 {
     protected $table      = 'korisnik';

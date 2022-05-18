@@ -11,17 +11,47 @@ use App\Models\LokacijaModel;
 use App\Models\ObjavaTagModel;
 use App\Models\TagModel;
 
+
+/**
+ * Gost – klasa kontroler koja je odgovorna za funkcionalnosti gosta
+ *
+ * @version 1.0
+ */
+
 class Gost extends BaseController
 {
+    /**
+     * @var int $adminTip AdminTip
+     */
     private $adminTip = 1;
+    /**
+     * @var int $pisacTip PisacTip
+     */
     private $pisacTip = 2;
+    /**
+     * @var int $zanatlijaTip ZanatlijaTip
+     */
     private $zanatlijaTip = 3;
     
+    /**
+     * Prikazuje zadati header i stranicu
+     * @param string $header Header 
+     * @param string $stranica Stranica
+     * @param array $podaci Podaci
+     *
+     * @return void
+     */
     protected function prikaz($header, $stranica, $podaci){
         echo view("stranice/$header.php");
         echo view("stranice/$stranica.php", $podaci);
     }
     
+    
+    /**
+     * Prikazuje pocetnu stranicu sa svim objavama
+     *
+     * @return void
+     */
     public function index()
     {
         $objavaModel = new ObjavaModel();
@@ -68,6 +98,11 @@ class Gost extends BaseController
         $this->prikaz("headerGost", "objave", ["kontroler" => "Gost", "objave" => $objave, "autori" => $autori, "tagoviCssKlase" => $tagoviCssKlase]);
     }
     
+    /**
+     * Prikazuje sve objave koje odgovaraju trazenom pojmu
+     *
+     * @return void
+     */
     public function pretraga(){
         $pretraga = $this->request->getVar("pretraga");
         if ($pretraga == "") return redirect()->to("Gost/");
@@ -116,6 +151,13 @@ class Gost extends BaseController
         $this->prikaz("headerGost", "objave", ["kontroler" => "Gost", "objave" => $objave, "autori" => $autori, "tagoviCssKlase" => $tagoviCssKlase]);
     }
     
+    /**
+     * Prikazuje objavu ciji je id zadat kao @param $idObjave
+     *
+     * @param int $idObjave IdObjave
+     *  
+     * @return void
+     */
     public function objava($idObjave){
         $objavaModel = new ObjavaModel();
         $korisnikModel = new KorisnikModel();
@@ -140,6 +182,13 @@ class Gost extends BaseController
         $this->prikaz("headerGostBezPretrage", "objava", ["objava" => $objava, "autor" => $autor, "reklame" => $reklame, "autoriReklama" => $autoriReklama]);
     }
     
+    /**
+     * Prikazuje reklamu ciji je id zadat kao @param $idReklame
+     *
+     * @param int $idReklame IdReklame
+     *  
+     * @return void
+     */
     public function reklama($idReklame){
         $reklamaModel = new ReklamaModel();
         $korisnikModel = new KorisnikModel();
@@ -150,6 +199,11 @@ class Gost extends BaseController
         $this->prikaz("headerGostBezPretrage", "reklama", ["reklama" => $reklama, "autor" => $autor]);
     }
     
+    /**
+     * Prikazuje stranicu za registraciju korisnika
+     *
+     * @return void
+     */
     public function registracija($poruka=null){
         $lokacijaModel = new LokacijaModel();
         $lokacije = $lokacijaModel->findAll();
@@ -157,7 +211,18 @@ class Gost extends BaseController
         $this->prikaz("headerGostBezPretrage", "registracija", ["lokacije" => $lokacije, "poruka" => $poruka]);
     }
     
+    /**
+     * Funkcija koja obavlja registraciju korisnika
+     *
+     * @return void
+     */
     public function registrujSe(){
+        if (!$this->validate(["ime"=>"required|max_length[20]", "prezime"=>"required|max_length[20]",
+                              "pol"=>"required", "email"=>"required|max_length[320]", "lozinka"=>"required",
+                              "potvrdaLozinke"=>"required", "tipKorisnika"=>"required", "opstina"=>"required"])){
+            return $this->prikaz("headerGostBezPretrage", "registracija", ["errors"=>$this->validator->getErrors()]);
+        }
+        
         $ime = $this->request->getVar("ime");
         $prezime = $this->request->getVar("prezime");
         $pol = $this->request->getVar("pol");
@@ -202,10 +267,20 @@ class Gost extends BaseController
         return redirect()->to(site_url('Gost/'));
     }
     
+    /**
+     * Prikazuje stranicu za logovanje korisnika
+     *
+     * @return void
+     */
     public function login($poruka = null){
         $this->prikaz("headerGostBezPretrage", "login", ["poruka" => $poruka]);
     }
     
+    /**
+     * Funkcija koja obavlja logovanje korisnika
+     *
+     * @return void
+     */
     public function ulogujSe(){
         if (!$this->validate(["korisnickoIme"=>"required|max_length[20]", "lozinka"=>"required"])){
             return $this->prikaz("headerGostBezPretrage", "login", ["errors"=>$this->validator->getErrors()]);

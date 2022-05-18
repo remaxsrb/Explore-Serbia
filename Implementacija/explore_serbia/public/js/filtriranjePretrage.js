@@ -3,6 +3,11 @@ $("document").ready(function() {
     let objave = $(".card");
     let filteri = [];
     
+    /**
+     * 
+     * @param string tagKategorija - kategorija taga
+     * @returns void
+     */
     function filtriraj(tagKategorija){
         if (!filteri.includes(tagKategorija))
             filteri.push(tagKategorija);

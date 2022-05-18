@@ -6,6 +6,9 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
+/**
+ * ObjavaTagModel - klasa koja predstavlja model veze objava-tag u bazi podataka
+ */
 class ObjavaTagModel extends Model
 {
     protected $table      = 'objavatag';

@@ -29,7 +29,7 @@
             echo '<div class="col-md-4 col-sm-12">';
             echo '<div class="card"  style="width: 18rem">';
             if ($reklama->slikaURL ?? null != null) {
-                echo '<img src="' . $reklama->slikaURL . ' class="card-img-top">';
+                echo '<img src="' . $reklama->slikaURL . ' "class="card-img-top">';
             } else {
                 echo '<img src="/assets/images/img_avatar.png" alt="Profile picture" class="card-img-top">';
             }

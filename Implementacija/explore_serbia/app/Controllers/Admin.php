@@ -5,6 +5,7 @@ namespace App\Controllers;
 //by Marko Jovanovic 2018/0607
 use App\Models\KorisnikModel;
 use App\Models\ObjavaModel;
+use App\Models\ObjavaTagModel;
 use App\Models\ReklamaModel;
 use App\Models\TagModel;
 
@@ -14,6 +15,54 @@ class Admin extends BaseController
     {
         echo view("stranice/$header");
         echo view("stranice/$stranica", $podaci);
+    }
+
+    public function pretraga(){
+        $pretraga = $this->request->getVar("pretraga");
+        if ($pretraga == "") return redirect()->to("Admin/");
+
+        $objavaModel = new ObjavaModel();
+        $korisnikModel = new KorisnikModel();
+        $objavaTagModel = new ObjavaTagModel();
+        $tagModel = new TagModel();
+        $objave = $objavaModel->orderBy('vremeKreiranja', 'desc')->where('odobrena', 1)->like('naslov', $pretraga)->orLike('tekst', $pretraga)->findAll();
+
+        $autori = [];
+        $tagoviCssKlase = [];
+        foreach($objave as $objava){
+            $korisnickoIme = $objava->autor;
+            $autor = $korisnikModel->find($korisnickoIme);
+            array_push($autori, $autor);
+
+            $obajaveTagovi = $objavaTagModel->where('objavaID', $objava->id)->findAll();
+            $tagCssKlasa = "";
+            foreach($obajaveTagovi as $objavaTag){
+                $tag = $tagModel->find($objavaTag->tagID);
+                switch((int)$tag->kategorija){
+                    case 1:
+                        $tagCssKlasa.=" istorijskaLicnost";
+                        break;
+                    case 2:
+                        $tagCssKlasa.=" spomenik";
+                        break;
+                    case 3:
+                        $tagCssKlasa.=" crkvaManastir";
+                        break;
+                    case 4:
+                        $tagCssKlasa.=" tvrdjava";
+                        break;
+                    case 5:
+                        $tagCssKlasa.=" areoloskoNalaziste";
+                        break;
+                    case 6:
+                        $tagCssKlasa.=" parkPrirode";
+                        break;
+                }
+            }
+            array_push($tagoviCssKlase, $tagCssKlasa);
+        }
+
+        $this->prikazi("objave", "headerAdmin", ["kontroler" => "Admin", "objave" => $objave, "autori" => $autori, "tagoviCssKlase" => $tagoviCssKlase]);
     }
 
     public function napisiTekst()
@@ -52,21 +101,6 @@ class Admin extends BaseController
         }
 
         $this->prikazi("objava", "headerAdmin", ["objava" => $objava, "autor" => $autor, "reklame" => $reklame, "autoriReklama" => $autoriReklama]);
-    }
-
-    public function listaObjava()
-    {
-        $objavaModel = new ObjavaModel();
-        $korisnikModel = new KorisnikModel();
-        $objave = $objavaModel->orderBy('vremeKreiranja', 'desc')->where('odobrena', 1)->findAll();
-
-        $autori = [];
-        foreach($objave as $objava){
-            $korisnickoIme = $objava->autor;
-            $autor = $korisnikModel->find($korisnickoIme);
-            array_push($autori, $autor);
-        }
-        $this->prikazi("objave", "headerAdmin",["kontroler" => "Admin", "objave" => $objave, "autori" => $autori]);
     }
 
     public function reklama($idReklame){
@@ -168,9 +202,48 @@ class Admin extends BaseController
 
     public function index()
     {
-        $this->prikazi('ulogovaniAdmin', "headerAdmin",[]);
+        $objavaModel = new ObjavaModel();
+        $korisnikModel = new KorisnikModel();
+        $objavaTagModel = new ObjavaTagModel();
+        $tagModel = new TagModel();
+        $objave = $objavaModel->orderBy('vremeKreiranja', 'desc')->where('odobrena', 1)->findAll();
 
+        $autori = [];
+        $tagoviCssKlase = [];
+        foreach($objave as $objava){
+            $korisnickoIme = $objava->autor;
+            $autor = $korisnikModel->find($korisnickoIme);
+            array_push($autori, $autor);
+
+            $obajaveTagovi = $objavaTagModel->where('objavaID', $objava->id)->findAll();
+            $tagCssKlasa = "";
+            foreach($obajaveTagovi as $objavaTag){
+                $tag = $tagModel->find($objavaTag->tagID);
+                switch((int)$tag->kategorija){
+                    case 1:
+                        $tagCssKlasa.=" istorijskaLicnost";
+                        break;
+                    case 2:
+                        $tagCssKlasa.=" spomenik";
+                        break;
+                    case 3:
+                        $tagCssKlasa.=" crkvaManastir";
+                        break;
+                    case 4:
+                        $tagCssKlasa.=" tvrdjava";
+                        break;
+                    case 5:
+                        $tagCssKlasa.=" areoloskoNalaziste";
+                        break;
+                    case 6:
+                        $tagCssKlasa.=" parkPrirode";
+                        break;
+                }
+            }
+            array_push($tagoviCssKlase, $tagCssKlasa);
+        }
+
+        $this->prikazi("objave", "headerAdmin", ["kontroler" => "Admin", "objave" => $objave, "autori" => $autori, "tagoviCssKlase" => $tagoviCssKlase]);
     }
-
 
 }

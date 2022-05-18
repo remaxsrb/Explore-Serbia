@@ -276,11 +276,6 @@ form {
     text-align: center;
 }
 
-.dropdown-item
-{
-    color: white;
-}
-
 span.dropdown-item:hover{
     background-color: blue;
     color: white;

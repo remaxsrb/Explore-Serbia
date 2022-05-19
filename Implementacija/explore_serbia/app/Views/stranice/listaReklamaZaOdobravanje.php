@@ -5,7 +5,7 @@
 <head>
     <title>Explore Serbia - Reklame</title>
 </head>
-<body>
+<body class="background-c">
 
 
 

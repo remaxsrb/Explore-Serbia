@@ -6,7 +6,7 @@
     <?php include("include.php"); ?>
 
 </head>
-<body>
+<body class="background-c">
 <div class="main_nav">
     <nav class="navbar navbar-expand-sm navbar-dark bg-dark sticky-top">
         <a href="<?= site_url("Admin/index") ?>" class="navbar-brand" >
@@ -55,7 +55,7 @@
                     <a href="<?= site_url("Admin/listaKorisnika") ?>" class="btn btn-outline-secondary my-2 my-sm-0 d-flex flex-sm-fill" type="button"> Korisnici </a>
                 </li>
                 <li>
-                    <a href="<?= site_url("Admin/listaObjava") ?>" class="btn btn-outline-secondary my-2 my-sm-0 d-flex flex-sm-fill" type="button"> Objave </a>
+                    <a href="<?= site_url("Admin/index") ?>" class="btn btn-outline-secondary my-2 my-sm-0 d-flex flex-sm-fill" type="button"> Objave </a>
                 </li>
                 <li>
                     <a href="<?= site_url("Admin/listaReklama") ?>" class="btn btn-outline-secondary my-2 my-sm-0 d-flex flex-sm-fill" type="button"> Reklame </a>

@@ -8,7 +8,7 @@
     <title>Explore Serbia - Korisnici</title>
 
 </head>
-<body>
+<body class="background-c">
 
 <div class = "main-page-content">
     <h2>Tagovi Koji čekaju odobrenje</h2>

@@ -1,3 +1,5 @@
+<!-- by Marko Jovanovic 2018/0607 -->
+<!--by Miloš Brković 0599/2019-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,7 +8,7 @@
 <body style=" background-color: #f1ebeb">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
         <a class="navbar-brand" href="#">
-            <img src="./assets/images/logo/PSI-ES-Logo-Transparent.png" width="30" height="30" alt="">
+            <img src="/assets/images/logo/PSI-ES-Logo-Transparent.png" width="30" height="30" alt="">
         </a>
         <a class="navbar-brand" href="ulogovaniKorisnik.html">Explore Serbia</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">

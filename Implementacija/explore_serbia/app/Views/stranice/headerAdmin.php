@@ -1,66 +1,87 @@
 <!DOCTYPE html>
-<html lang="en">
+<!-- by Marko Jovanovic 2018/0607 -->
+<!--by Miloš Brković 0599/2019-->
+<html>
 <head>
     <?php include("include.php"); ?>
+
 </head>
-<body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
-        <a class="navbar-brand" href="./index.html">
-            <img src="./assets/images/logo/PSI-ES-Logo-Transparent.png" width="30" height="30" alt="">
+<body class="background-c">
+<div class="main_nav">
+    <nav class="navbar navbar-expand-sm navbar-dark bg-dark sticky-top">
+        <a href="<?= site_url("Admin/index") ?>" class="navbar-brand" >
+            <img src="/assets/images/logo/PSI-ES-Logo-Transparent.png" width="30" height="30" alt="">
         </a>
-        <a class="navbar-brand" href="./index.html">Explore Serbia</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+
+        <a href="<?= site_url("Admin/index") ?>" class="navbar-brand">Explore Serbia</a>
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#pcNavigation" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+        <div class="collapse navbar-collapse" id="pcNavigation">
             <ul class="navbar-nav mr-auto">
-                <!-- <li class="nav-item active">
-                    <a class="nav-link" href="#">Pocetna<span class="sr-only">(current)</span></a>
-                </li> -->
 
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      Filteri
+                        Kateogrije
                     </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                      <a class="dropdown-item" href="#">Istorijska licnost</a>
-                      <a class="dropdown-item" href="#">Spomenik</a>
-                      <a class="dropdown-item" href="#">Crkva/manastir</a>
-                      <a class="dropdown-item" href="#">Tvrdjava</a>
-                      <a class="dropdown-item" href="#">Arheolosko nalaziste</a>
-                      <a class="dropdown-item" href="#">Park prirode</a>
+                    <div class="dropdown-menu bg-dark" aria-labelledby="navbarDropdown">
+                        <span class="dropdown-item">Istorijska ličnost</span>
+                        <span class="dropdown-item">Spomenik</span>
+                        <span class="dropdown-item">Crkva/manastir</span>
+                        <span class="dropdown-item">Tvrđava</span>
+                        <span class="dropdown-item">Arheološko nalazište</span>
+                        <span class="dropdown-item">Park prirode</span>
                     </div>
+
                 </li>
+
                 <li>
-                    <form class="form-inline my-2 my-lg-0">
-                        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Pretrazi</button>
+                    <form method="GET" action="<?php echo site_url("Admin/pretraga"); ?>" class="form-inline my-2 my-lg-0">
+                        <input class="form-control mr-sm-2" type="search" name="pretraga" placeholder="Pretraži" aria-label="Search">
+                        <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">Pretraži</button>
                     </form>
                 </li>
-                
             </ul>
-            
-            <form method="get" action="listaKorisnikaUSistemu.html">
-                <button  class="btnAdm"><i class="fa fa-user" aria-hidden="true"> lista u sistemu</i></button>
-            </form>
-            <form method="get" action="listaObjavaUSistemu.html">
-                <button class="btnAdm" ><i class="fa fa-file-text-o"> lista u sistemu</i></button>
-           </form>
-           <form method="get" action="listaReklamaUSistemu.html">
-            <button  class="btnAdm"><i class="fa fa-handshake-o"> lista u sistemu</i></button>
-        </form>
-            
-            <form method="get" action="listaObjava.html">
-                <button class="btnAdm" ><i class="fa fa-file-text-o"> odobravanje</i></button>
-           </form>
-           <form method="get" action="listaReklama.html">
-            <button class="btnAdm"><i class="fa fa-handshake-o"> odobravanje</i></button>
-        </form>
-        <form method="get" action="podesavanje.html">
-        <button class="btnAdm" disabled><i class="fa fa-cogs"></i></button>
-       
-    </form>
-    <a href="index.html" style="margin-left: 10px;">Izloguj se</a>
+
+
+            <ul class="nav flex-column flex-sm-row justify-content-end">
+                <li>
+                    <a href="<?= site_url("Admin/napisiTekst") ?>" class="btn btn-outline-secondary my-2 my-sm-0 d-flex flex-sm-fill" type="button"> Napiši tekst </a>
+                </li>
+
+                <li>
+                    <a href="<?= site_url("Admin/listaKorisnika") ?>" class="btn btn-outline-secondary my-2 my-sm-0 d-flex flex-sm-fill" type="button"> Korisnici </a>
+                </li>
+                <li>
+                    <a href="<?= site_url("Admin/index") ?>" class="btn btn-outline-secondary my-2 my-sm-0 d-flex flex-sm-fill" type="button"> Objave </a>
+                </li>
+                <li>
+                    <a href="<?= site_url("Admin/listaReklama") ?>" class="btn btn-outline-secondary my-2 my-sm-0 d-flex flex-sm-fill" type="button"> Reklame </a>
+                </li>
+                <li>
+                    <a href="<?= site_url("Admin/tekstoviZaOdobravanje") ?>" class="btn btn-outline-secondary my-2 my-sm-0 d-flex flex-sm-fill" type="button"> Odobri objave </a>
+                </li>
+                <li>
+                    <a href="<?= site_url("Admin/reklameZaOdobravanje") ?>" class="btn btn-outline-secondary my-2 my-sm-0 d-flex flex-sm-fill" type="button"> Odobri reklame </a>
+                </li>
+                <li>
+                    <a href="<?= site_url("Admin/tagoviZaOdobravanje") ?>" class="btn btn-outline-secondary my-2 my-sm-0 d-flex flex-sm-fill" type="button"> Odobri tagove </a>
+                </li>
+                <li>
+                    <a href="<?= site_url("Admin/podesavanja") ?>" class="btn btn-outline-secondary my-2 my-sm-0 d-flex flex-sm-fill" type="button"> Podešavanja </a>
+                </li>
+
+                <li>
+                    <a href="<?= site_url("Admin/izlogujSe") ?>" class="btn btn-outline-secondary my-2 my-sm-0 d-flex flex-sm-fill" type="button"> Odjavi se </a>
+                </li>
+            </ul>
+
         </div>
     </nav>
+</div>
+</body>
+</html>
+
+

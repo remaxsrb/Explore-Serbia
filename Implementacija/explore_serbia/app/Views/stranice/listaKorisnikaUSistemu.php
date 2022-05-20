@@ -18,7 +18,7 @@
         echo "<div class='row'>";
         foreach ($korisnici as $korisnik){
             echo '<div class="col-sm-12 col-md-4 col-lg-3  d-flex justify-content-center align-items-center">
-                    <div class="card" id ="kartice"  style="width: 18rem">';
+                    <div class="card text-center" style="width: 18rem">';
             if ($korisnik->slikaURL ?? null != null) {
                 echo '<img src="' . $korisnik->slikaURL . ' "class="card-img-top">';
             } else {

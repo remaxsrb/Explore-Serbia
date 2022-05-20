@@ -26,7 +26,7 @@
             }
 
             echo '<div class="card-body">';
-            echo '<a href="'.site_url("Admin/reklama/$reklama->id").'" class="card-title"><h5>'.$reklama->nazivRadnje.'</h5></a>';
+            echo '<a href="'.site_url("Admin/reklama/$reklama->id").'" class="card-title "><h5>'.$reklama->nazivRadnje.'</h5></a>';
             echo '<p class="card-date">'.date("d.m.Y", strtotime($reklama->vremeKreiranja)).'</p>';
             echo '<p class="card-text">'.$reklama->opis.'</p>';
 

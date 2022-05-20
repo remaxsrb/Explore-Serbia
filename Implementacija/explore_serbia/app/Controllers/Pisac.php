@@ -136,6 +136,53 @@ class Pisac extends BaseController
         
         $this->prikaz("headerPisac", "objave", ["kontroler" => "Pisac", "objave" => $objave, "autori" => $autori, "tagoviCssKlase" => $tagoviCssKlase]);
     }
+     /**
+     * Prikazuje objavu ciji je id zadat kao @param $idObjave
+     *
+     * @param int $idObjave IdObjave
+     *  
+     * @return void
+     */
+    public function objava($idObjave){
+        $objavaModel = new ObjavaModel();
+        $korisnikModel = new KorisnikModel();
+        $reklamaModel = new ReklamaModel();
+        
+        $objava = $objavaModel->find($idObjave);
+        $autor = $korisnikModel->find($objava->autor);
+        $reklame = $reklamaModel->where('odobrena', 1)->where('lokacija', $objava->lokacija)->findAll();
+        if (!empty($reklame)){
+            shuffle($reklame);
+            $reklame = array_chunk($reklame, 3)[0];
+        }
+        
+        
+        $autoriReklama = [];
+        foreach($reklame as $reklama){
+            $korisnickoIme = $reklama->autor;
+            $autorReklame = $korisnikModel->find($korisnickoIme);
+            array_push($autoriReklama, $autorReklame);
+        }
+        
+        $this->prikaz("headerPisac", "objava", ["objava" => $objava, "autor" => $autor, "reklame" => $reklame, "autoriReklama" => $autoriReklama]);
+    }
+    
+    /**
+     * Prikazuje reklamu ciji je id zadat kao @param $idReklame
+     *
+     * @param int $idReklame IdReklame
+     *  
+     * @return void
+     */
+    public function reklama($idReklame){
+        $reklamaModel = new ReklamaModel();
+        $korisnikModel = new KorisnikModel();
+        
+        $reklama = $reklamaModel->find($idReklame);
+        $autor = $korisnikModel->find($reklama->autor);
+        
+        $this->prikaz("headerPisac", "reklama", ["reklama" => $reklama, "autor" => $autor]);
+    }
     
      /**
      * Funkcija koja obavlja lodjavljivanje korisnika
@@ -146,4 +193,217 @@ class Pisac extends BaseController
         $this->session->destroy();
         return redirect()->to(site_url('Gost'));
     }
+    
+    /**
+     * Funkcija koja vodi korisnika do strane za kreiranje objave
+     *
+     * @return void
+     */
+    
+    public function kreiranjeObjave() {
+        
+        $tagModel = new TagModel();
+        $lokacijaModel = new LokacijaModel();
+        $allTags;
+        $tagoviIL = $tagModel->where("kategorija", "1")->Where("odobren", "1")->findAll();
+        // pocinje od 1 umesto 0 da bi se poklapao da id tagType-a
+        $allTags[1] = $tagoviIL;
+        
+        $tagoviIL = $tagModel->where("kategorija", "2")->Where("odobren", "1")->findAll();
+        $allTags[2] = $tagoviIL;
+        
+        $tagoviIL = $tagModel->where("kategorija", "3")->Where("odobren", "1")->findAll();
+        $allTags[3] = $tagoviIL;
+        
+        $tagoviIL = $tagModel->where("kategorija", "4")->Where("odobren", "1")->findAll();
+        $allTags[4] = $tagoviIL;
+        
+        $tagoviIL = $tagModel->where("kategorija", "5")->Where("odobren", "1")->findAll();
+        $allTags[5] = $tagoviIL;
+        
+        $tagoviIL = $tagModel->where("kategorija", "6")->Where("odobren", "1")->findAll();
+        $allTags[6] = $tagoviIL;
+        
+        $allLoks = $lokacijaModel->findAll();
+        
+        $this->session->set("allTags", $allTags);
+        $this->session->set("allLoks", $allLoks);
+        $this->prikaz("headerPisac", "kreiranjeObjave", ["greske" => []]);
+        //"allTags" => $allTags]
+    }
+    
+    /**
+     * 
+     */
+    
+    function slanjeObjave() {
+        
+        $objavaModel = new ObjavaModel();
+        $tagModel = new TagModel();
+        $objavaTagModel = new ObjavaTagModel();
+        
+        if (!$this->validate([ "naslovObjave" => "required|max_length[120]", "regionObjave" => "required",
+            "objavaTextArea" => "required", "mainTagTip" => "required", "mainTag" => "required"
+        ])) {
+             if ($this->request->getVar("mainTag") == "Novi tag"){
+                 $this->validate (["noviMainTag" => "required|max_lenght[120]"]);
+             }
+            return $this->prikaz("headerPisac", "kreiranjeObjave", ["greske" => $this->validator->getErrors()]);
+        }
+        
+        if ($this->request->getVar("mainTag") == "Novi tag") {
+            if (!$this->validate(["noviMainTag" => "required|max_length[120]"])) {
+                return $this->prikaz("headerPisac", "kreiranjeObjave", ["greske" => $this->validator->getErrors()]);
+            }
+        }
+        
+        $korisnik = $this->session->get("korisnik");
+        
+        $naslov = $this->request->getVar("naslovObjave");
+        $region = $this->request->getVar("regionObjave");
+        $sadrzaj = $this->request->getVar("objavaTextArea");
+        $glavniTagTip = $this->request->getVar("mainTagTip");
+        $glavniTag = $this->request->getVar("mainTag");
+        $glavniTagSpace = $this->request->getVar("noviMainTag");
+        
+        $secTagNum = $this->request->getVar("numOftags");
+        
+        $secTagTip = [];
+        $secTag = [];
+        $secTagSpace = [];
+        
+        for ($i = 0; $i < $secTagNum; $i++) {
+            $secTagTip[$i] = $this->request->getVar("secTagType".$i);
+            $secTag[$i] = $this->request->getVar("secTag".$i);
+            $secTagSpace[$i] = $this->request->getVar("secNovTag".$i);
+        }
+        
+        
+        $lastObjava = $objavaModel->orderBy("id", "desc")->findAll(1);
+        $id = $lastObjava[0]->id + 1;
+        $lokacijaModel = new LokacijaModel();
+        $lokacija = $lokacijaModel->where("naziv", $region)->findAll();
+        
+        $objavaModel->insert([
+            "id" => $id,
+            "naslov" => $naslov,
+            "tekst" => $sadrzaj,
+            "brojOcena" => 0,
+            "sumaOcena" => 0,
+            "odobrena" => 0,
+            "vremeKreiranja" => date("Y-m-d"),
+            "autor" => $korisnik->korisnickoIme,
+            "lokacija" => $lokacija[0]->id
+        ]);
+        
+        //Ubacivanje relacije glavnog taga i objave
+        if ($glavniTag != "Novi tag") {
+            $tag = $tagModel->where("naziv", $glavniTag)->findAll(1);
+            $tagId = $tag[0]->id;
+            
+            $objavaTagModel->insert([
+                "objavaID" => $id,
+                "tagID" => $tagId
+             
+            
+            ]);
+        } else {
+            //pravljenje novog taga
+            $oldTag = $tagModel->orderBy("id", "desc")->findAll(1);
+            $tagId = $oldTag[0]->id + 1;
+            
+            $tagTipId;
+            
+            switch ($glavniTagTip) {
+                case "Istorijska ličnost": $tagTipId = 1;
+                    break;
+                case "Spomenik": $tagTipId = 2;
+                    break;
+                case "Crkva/manastir": $tagTipId = 3;
+                    break;
+                case "Tvrdjava": $tagTipId = 4;
+                    break;
+                case "Arheološko nalazište": $tagTipId = 5;
+                    break;
+                case "Park prirode": $tagTipId = 6;
+                    break;
+            }
+            
+            $tagModel->insert([
+                "id" => $tagId,
+                "naziv" => $glavniTagSpace,
+                "odobren" => 0,
+                "kategorija" => $tagTipId
+            ]);
+            
+            $objavaTagModel->insert([
+                "objavaID" => $id,
+                "tagID" => $tagId
+            ]);
+            
+        }
+        
+        //ubacivanje sekundarnih tagova
+        for ($i = 0; $i < $secTagNum; $i++) {
+            $secTagTip = $this->request->getVar("secTagType".$i);
+            $secTag = $this->request->getVar("secTag".$i);
+            $secTagSpace = $this->request->getVar("secNovTag".$i);
+            
+            if ($secTag != "Novi tag") {
+                $tag = $tagModel->where("naziv", $secTag)->findAll(1);
+                $tagId = $tag[0]->id;
+            
+                $objavaTagModel->insert([
+                    "objavaID" => $id,
+                    "tagID" => $tagId
+                ]);
+            } else {
+                //pravljenje novog taga
+                $oldTag = $tagModel->orderBy("id", "desc")->findAll(1);
+                $tagId = $oldTag[0]->id + 1;
+            
+                $tagTipId;
+            
+                switch ($secTagTip) {
+                    case "Istorijska ličnost": $tagTipId = 1;
+                        break;
+                    case "Spomenik": $tagTipId = 2;
+                        break;
+                    case "Crkva/manastir": $tagTipId = 3;
+                        break;
+                    case "Tvrdjava": $tagTipId = 4;
+                        break;
+                    case "Arheološko nalazište": $tagTipId = 5;
+                        break;
+                    case "Park prirode": $tagTipId = 6;
+                        break;
+                }
+            
+                $tagModel->insert([
+                    "id" => $tagId,
+                    "naziv" => $secTagSpace,
+                    "odobren" => 0,
+                    "kategorija" => $tagTipId
+                ]);
+            
+                $objavaTagModel->insert([
+                    "objavaID" => $id,
+                    "tagID" => $tagId
+                ]);
+            
+            }
+            
+        }
+        
+        return $this->index();
+       
+         
+    }
+        /*
+         *         if (!$this->validate(["ime"=>"required|max_length[20]", "prezime"=>"required|max_length[20]",
+                              "pol"=>"required", "email"=>"required|max_length[320]", "lozinka"=>"required",
+                              "potvrdaLozinke"=>"required", "tipKorisnika"=>"required", "opstina"=>"required"])){
+            return $this->prikaz("headerGostBezPretrage", "registracija", ["errors"=>$this->validator->getErrors()]);
+        }
+         */
 }

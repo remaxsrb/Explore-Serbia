@@ -6,7 +6,7 @@
 <head>
     <?php include("include.php"); ?>
 </head>
-<body style=" background-color: #f1ebeb">
+<body class="background-c" >
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
         <a class="navbar-brand" href="#">
             <img src="/assets/images/logo/PSI-ES-Logo-Transparent.png" width="30" height="30" alt="">
@@ -42,7 +42,7 @@
                 </li>
             </ul>
             
-            <form method="get" action="kreiranjeObjave.html">
+            <form method="get" action="<?php echo site_url("/Pisac/kreiranjeObjave"); ?>">
                 <button class="btnAdm" ><i class="fa fa-plus" aria-hidden="true"></i></button>
            </form>
            <form method="get" action="profilPisac.html">

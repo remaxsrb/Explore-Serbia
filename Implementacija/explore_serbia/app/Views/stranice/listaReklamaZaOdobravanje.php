@@ -12,22 +12,15 @@
 
 <div class = main-page-content>
     <h2>Reklame u sistemu koje čekaju odobrenje</h2>
+
     <?php
 
-    $col=0;
-    $reklama =null;
+    echo "<div class='row'>";
+    foreach ($reklame as $reklama){
 
-    if($col==0)
-    {
-        echo '<div class="row">';
-    }
-
-    foreach ($reklame as $reklama)
-    {
-        if($reklama->odobrena==0)
-        {
-            echo '<div class="col-md-4 col-sm-12">';
-            echo '<div class="card"  style="width: 18rem">';
+        if($reklama->odobrena==0) {
+            echo '<div class="col-sm-12 col-md-4 col-lg-3  d-flex justify-content-center align-items-center">
+                    <div class="card"  style="width: 18rem">';
             if ($reklama->slikaURL ?? null != null) {
                 echo '<img src="' . $reklama->slikaURL . ' "class="card-img-top">';
             } else {
@@ -38,6 +31,7 @@
             echo '<a href="'.site_url("Admin/reklama/$reklama->id").'" class="card-title"><h5>'.$reklama->nazivRadnje.'</h5></a>';
             echo '<p class="card-date">'.date("d.m.Y", strtotime($reklama->vremeKreiranja)).'</p>';
             echo '<p class="card-text">'.$reklama->opis.'</p>';
+
             echo '<ul class="nav flex-column flex-sm-row justify-content-center">';
             echo '<li>';
             echo form_open(site_url("Admin/odbijReklamu"), "method=post");
@@ -62,25 +56,14 @@
             echo form_close();
             echo '</li>';
             echo '</ul>';
-            echo '</div>';
-            echo '</div>';
 
-
-            $col++;
+            echo '</div>
+                </div>
+            </div>';
         }
 
 
-        if($col==3)
-        {
-            echo "</div>";
-            $col=0;
-        }
-        if($col!=0)
-        {
-            echo '</div>';
-        }
     }
-
     ?>
 
 </div>

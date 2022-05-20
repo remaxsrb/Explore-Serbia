@@ -12,20 +12,13 @@
 
     <div class = main-page-content>
         <h2>Reklame u sistemu</h2>
+
         <?php
 
-        $col=0;
-        $reklama =null;
-
-        if($col==0)
-        {
-            echo '<div class="row">';
-        }
-
-        foreach ($reklame as $reklama)
-        {
-            echo '<div class="col-md-4 col-sm-12">';
-            echo '<div class="card"  style="width: 18rem">';
+        echo "<div class='row'>";
+        foreach ($reklame as $reklama){
+            echo '<div class="col-sm-12 col-md-4 col-lg-3  d-flex justify-content-center align-items-center">
+                    <div class="card"  style="width: 18rem">';
             if ($reklama->slikaURL ?? null != null) {
                 echo '<img src="' . $reklama->slikaURL . ' "class="card-img-top">';
             } else {
@@ -37,25 +30,12 @@
             echo '<p class="card-date">'.date("d.m.Y", strtotime($reklama->vremeKreiranja)).'</p>';
             echo '<p class="card-text">'.$reklama->opis.'</p>';
 
-            echo '</div>';
-            echo '</div>';
+            echo '</div>
+                </div>
+            </div>';
 
-
-            $col++;
-
-            if($col==3)
-            {
-                echo "</div>";
-                $col=0;
-            }
-            if($col!=0)
-            {
-                echo '</div>';
-            }
         }
-
         ?>
-
     </div>
 
 

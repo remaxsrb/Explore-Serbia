@@ -40,7 +40,7 @@
                 <li>
                     <form method="GET" action="<?php echo site_url("Admin/pretraga"); ?>" class="form-inline my-2 my-lg-0">
                         <input class="form-control mr-sm-2" type="search" name="pretraga" placeholder="Pretraži" aria-label="Search">
-                        <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">Pretraži</button>
+                        <button class="btn btn-outline-secondary my-2 my-sm-0 form-control mr-sm-2" type="submit">Pretraži</button>
                     </form>
                 </li>
             </ul>
@@ -48,33 +48,33 @@
 
             <ul class="nav flex-column flex-sm-row justify-content-end">
                 <li>
-                    <a href="<?= site_url("Admin/napisiTekst") ?>" class="btn btn-outline-secondary my-2 my-sm-0 d-flex flex-sm-fill" type="button"> Napiši tekst </a>
+                    <a href="<?= site_url("Admin/napisiTekst") ?>" class="btn btn-outline-secondary my-2 my-sm-0 d-flex flex-sm-fill" style="justify-content: center" type="button" > Napiši tekst </a>
                 </li>
 
                 <li>
-                    <a href="<?= site_url("Admin/listaKorisnika") ?>" class="btn btn-outline-secondary my-2 my-sm-0 d-flex flex-sm-fill" type="button"> Korisnici </a>
+                    <a href="<?= site_url("Admin/listaKorisnika") ?>" class="btn btn-outline-secondary my-2 my-sm-0 d-flex flex-sm-fill" style="justify-content: center"> Korisnici </a>
                 </li>
                 <li>
-                    <a href="<?= site_url("Admin/index") ?>" class="btn btn-outline-secondary my-2 my-sm-0 d-flex flex-sm-fill" type="button"> Objave </a>
+                    <a href="<?= site_url("Admin/index") ?>" class="btn btn-outline-secondary my-2 my-sm-0 d-flex flex-sm-fill" style="justify-content: center"> Objave </a>
                 </li>
                 <li>
-                    <a href="<?= site_url("Admin/listaReklama") ?>" class="btn btn-outline-secondary my-2 my-sm-0 d-flex flex-sm-fill" type="button"> Reklame </a>
+                    <a href="<?= site_url("Admin/listaReklama") ?>" class="btn btn-outline-secondary my-2 my-sm-0 d-flex flex-sm-fill" style="justify-content: center" type="button"> Reklame </a>
                 </li>
                 <li>
-                    <a href="<?= site_url("Admin/tekstoviZaOdobravanje") ?>" class="btn btn-outline-secondary my-2 my-sm-0 d-flex flex-sm-fill" type="button"> Odobri objave </a>
+                    <a href="<?= site_url("Admin/tekstoviZaOdobravanje") ?>" class="btn btn-outline-secondary my-2 my-sm-0 d-flex flex-sm-fill" style="justify-content: center" type="button"> Odobri objave </a>
                 </li>
                 <li>
-                    <a href="<?= site_url("Admin/reklameZaOdobravanje") ?>" class="btn btn-outline-secondary my-2 my-sm-0 d-flex flex-sm-fill" type="button"> Odobri reklame </a>
+                    <a href="<?= site_url("Admin/reklameZaOdobravanje") ?>" class="btn btn-outline-secondary my-2 my-sm-0 d-flex flex-sm-fill"  style="justify-content: center" type="button"> Odobri reklame </a>
                 </li>
                 <li>
-                    <a href="<?= site_url("Admin/tagoviZaOdobravanje") ?>" class="btn btn-outline-secondary my-2 my-sm-0 d-flex flex-sm-fill" type="button"> Odobri tagove </a>
+                    <a href="<?= site_url("Admin/tagoviZaOdobravanje") ?>" class="btn btn-outline-secondary my-2 my-sm-0 d-flex flex-sm-fill" style="justify-content: center" type="button"> Odobri tagove </a>
                 </li>
                 <li>
-                    <a href="<?= site_url("Admin/podesavanja") ?>" class="btn btn-outline-secondary my-2 my-sm-0 d-flex flex-sm-fill" type="button"> Podešavanja </a>
+                    <a href="<?= site_url("Admin/podesavanja") ?>" class="btn btn-outline-secondary my-2 my-sm-0 d-flex flex-sm-fill" style="justify-content: center" type="button"> Podešavanja </a>
                 </li>
 
                 <li>
-                    <a href="<?= site_url("Admin/izlogujSe") ?>" class="btn btn-outline-secondary my-2 my-sm-0 d-flex flex-sm-fill" type="button"> Odjavi se </a>
+                    <a href="<?= site_url("Admin/izlogujSe") ?>" class="btn btn-outline-secondary my-2 my-sm-0 d-flex flex-sm-fill" style="justify-content: center" type="button"> Odjavi se </a>
                 </li>
             </ul>
 

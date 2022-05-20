@@ -76,7 +76,6 @@ class Admin extends BaseController
         $korisnikModel = new KorisnikModel();
         $korisnici = $korisnikModel->orderBy('korisnickoIme', 'asc')->findAll();
 
-
         $this->prikazi("listaKorisnikaUSistemu", "headerAdmin",["korisnici"=>$korisnici]);
     }
 

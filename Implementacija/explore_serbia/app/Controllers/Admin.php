@@ -76,7 +76,9 @@ class Admin extends BaseController
         $korisnikModel = new KorisnikModel();
         $korisnici = $korisnikModel->orderBy('korisnickoIme', 'asc')->findAll();
 
-        $this->prikazi("listaKorisnikaUSistemu", "headerAdmin",["korisnici"=>$korisnici]);
+
+
+        $this->prikazi("listaKorisnikaUSistemu", "headerAdmin",['korisnici'=>$korisnici, 'pager'=>$korisnikModel->pager]);
     }
 
     public function objava($idObjave){

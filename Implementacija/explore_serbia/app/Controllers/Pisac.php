@@ -233,10 +233,13 @@ class Pisac extends BaseController
     }
     
     /**
+     * Ova funkcija vadilira se poslate podatke kod kreiranja objave i,
+     * ako su svi podatci validni, salje kreira ih u bazi
      * 
+     * @return void
      */
     
-    function slanjeObjave() {
+    public function slanjeObjave() {
         
         $objavaModel = new ObjavaModel();
         $tagModel = new TagModel();
@@ -399,11 +402,49 @@ class Pisac extends BaseController
        
          
     }
-        /*
-         *         if (!$this->validate(["ime"=>"required|max_length[20]", "prezime"=>"required|max_length[20]",
-                              "pol"=>"required", "email"=>"required|max_length[320]", "lozinka"=>"required",
-                              "potvrdaLozinke"=>"required", "tipKorisnika"=>"required", "opstina"=>"required"])){
-            return $this->prikaz("headerGostBezPretrage", "registracija", ["errors"=>$this->validator->getErrors()]);
+    
+    /**
+     * Ova funkcija vodi do stranice profila korisnika
+     * 
+     * @return void
+     */
+    public function profil() {
+        
+        $lokacijaModel = new LokacijaModel();
+        $objavaModel = new ObjavaModel();
+        
+        
+        $korisnik = $this->session->get("korisnik");
+        $lokacija = $lokacijaModel->find($korisnik->lokacija);
+        $objave = $objavaModel->where("autor", $korisnik->korisnickoIme)->findAll();
+        
+        $this->prikaz("headerPisac", "profilPisac", ["kontroler" => "Pisac", "korisnik" => $korisnik, "lokacija" => $lokacija, "objave" => $objave]);
+    }
+    
+    /**
+     * Ova funkcija brise objavu iz baze i azurira stranicu korisnickog profila
+     * 
+     * @param int $objavaId
+     * @return void
+     */
+    
+    public function brisiObjavu($objavaId) {
+        $objavaModel = new ObjavaModel();
+        $objavaTagModel = new ObjavaTagModel();
+        
+        if ($objavaId == null)
+            return;
+        
+        
+        $tagoviObjave = $objavaTagModel->where("objavaID", $objavaId)->findAll();
+        
+        foreach($tagoviObjave as $tagObjave) {
+            $objavaTagModel->delete($objavaId);
         }
-         */
+        
+        $objavaModel->izbrisi ($objavaId);
+        
+        $this->profil();
+    }
+    
 }

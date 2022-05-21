@@ -11,6 +11,7 @@ use App\Models\ObjavaTagModel;
 use App\Models\ReklamaModel;
 use App\Models\TagModel;
 use App\Models\LokacijaModel;
+use App\Models\OcenaKorisnikObjavaModel;
 class Admin extends BaseController
 {
     protected function prikazi($stranica, $header,$podaci)
@@ -27,6 +28,10 @@ class Admin extends BaseController
         $korisnikModel = new KorisnikModel();
         $objavaTagModel = new ObjavaTagModel();
         $tagModel = new TagModel();
+        $ocenaKorisniObjavaModel = new OcenaKorisnikObjavaModel();
+        
+        $korisnikOcene = $ocenaKorisniObjavaModel->where("korisnickoIme", $this->session->get("korisnik")->korisnickoIme)->findAll();
+        
         $objave = $objavaModel->orderBy('vremeKreiranja', 'desc')->where('odobrena', 1)->like('naslov', $pretraga)->orLike('tekst', $pretraga)->findAll();
 
         $autori = [];
@@ -64,7 +69,7 @@ class Admin extends BaseController
             array_push($tagoviCssKlase, $tagCssKlasa);
         }
 
-        $this->prikazi("objave", "headerAdmin", ["kontroler" => "Admin", "objave" => $objave, "autori" => $autori, "tagoviCssKlase" => $tagoviCssKlase]);
+        $this->prikazi("objave", "headerAdmin", ["kontroler" => "Admin", "objave" => $objave, "autori" => $autori, "tagoviCssKlase" => $tagoviCssKlase, "korisnikOcene" => $korisnikOcene]);
     }
 
     public function napisiTekst()
@@ -237,6 +242,10 @@ class Admin extends BaseController
         $korisnikModel = new KorisnikModel();
         $objavaTagModel = new ObjavaTagModel();
         $tagModel = new TagModel();
+        $ocenaKorisniObjavaModel = new OcenaKorisnikObjavaModel();
+        
+        $korisnikOcene = $ocenaKorisniObjavaModel->where("korisnickoIme", $this->session->get("korisnik")->korisnickoIme)->findAll();
+        
         $objave = $objavaModel->orderBy('vremeKreiranja', 'desc')->where('odobrena', 1)->findAll();
 
         $autori = [];
@@ -274,7 +283,7 @@ class Admin extends BaseController
             array_push($tagoviCssKlase, $tagCssKlasa);
         }
 
-        $this->prikazi("objave", "headerAdmin", ["kontroler" => "Admin", "objave" => $objave, "autori" => $autori, "tagoviCssKlase" => $tagoviCssKlase]);
+        $this->prikazi("objave", "headerAdmin", ["kontroler" => "Admin", "objave" => $objave, "autori" => $autori, "tagoviCssKlase" => $tagoviCssKlase, "korisnikOcene" => $korisnikOcene]);
     }
     public function brisiBiloKojuReklamu($id) {
         $reklamaModel=new ReklamaModel();
@@ -397,6 +406,39 @@ class Admin extends BaseController
         
         
         
+    }
+    
+    public function ocenjivanje($idObjave, $imeKorisnika, $ocena) {
+        
+        $objavaModel = new ObjavaModel();
+        $korisnikModel = new KorisnikModel();
+        $ocenaKorisnikObjavaModel = new OcenaKorisnikObjavaModel();
+        
+        $lastOcena = $ocenaKorisnikObjavaModel->orderBy("id", "desc")->findAll(1);
+        if ($lastOcena == null) {
+            $ocenaId = 1;
+        } else {
+            $ocenaId = $lastOcena[0]->id + 1;
+        }
+        
+        $ocenaKorisnikObjavaModel->insert([
+            "id" => $ocenaId,
+            "korisnickoIme" => $imeKorisnika,
+            "objava" => $idObjave,
+            "ocena" => $ocena
+        ]);
+        
+        $objava = $objavaModel->find($idObjave);
+        $objava->brojOcena++;
+        $objava->sumaOcena += $ocena;
+        
+        $avgOcena = $objava->sumaOcena / $objava->brojOcena;
+        
+        $objavaModel->update($idObjave, $objava);
+        
+        
+        
+        echo $avgOcena;
     }
 
 }

@@ -28,7 +28,7 @@
         }
         
         if ($objava->brojOcena != 0) {
-        $ocena = $objava->sumaOcena / $objava->brojOcena;
+            $ocena = $objava->sumaOcena / $objava->brojOcena;
         } else {
             $ocena = 0;
         }
@@ -43,8 +43,10 @@
             } else if (!$polaZvezdePrikazano){
                 if ($ocenaDecimalniDeo >= 0.5){
                     echo '<span class="fa fa-star checked"></span>';
-                } else {
+                } else if ($ocenaDecimalniDeo != 0) {
                     echo '<span class="fa fa-star-half-alt checked"></span>';
+                } else {
+                    echo '<span class="fas fa-star"></span>';
                 }
                 $polaZvezdePrikazano = true;
             }

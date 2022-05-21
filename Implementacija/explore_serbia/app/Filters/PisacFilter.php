@@ -8,14 +8,14 @@ use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\Filters\FilterInterface;
 
-class AdminFilter implements FilterInterface
+class PisacFilter implements FilterInterface
 {
     public function before(RequestInterface $request, $arguments = null)
     {
         $session=session();
         if ($session->has("korisnik")){
-            if ($session->get("korisnik")->tip == 2){
-                return redirect()->to(site_url("Pisac"));
+            if ($session->get("korisnik")->tip == 1){
+                return redirect()->to(site_url("Admin"));
             } else if ($session->get("korisnik")->tip == 3){
                 return redirect()->to(site_url("Zanatlija"));
             } 

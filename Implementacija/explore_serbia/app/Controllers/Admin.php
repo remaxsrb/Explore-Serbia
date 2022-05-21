@@ -3,12 +3,13 @@
 namespace App\Controllers;
 
 //by Marko Jovanovic 2018/0607
+//by Antonija Vasiljević 2019/0501
 use App\Models\KorisnikModel;
 use App\Models\ObjavaModel;
 use App\Models\ObjavaTagModel;
 use App\Models\ReklamaModel;
 use App\Models\TagModel;
-
+use App\Models\LokacijaModel;
 class Admin extends BaseController
 {
     protected function prikazi($stranica, $header,$podaci)
@@ -99,17 +100,23 @@ class Admin extends BaseController
             array_push($autoriReklama, $autorReklame);
         }
 
-        $this->prikazi("objava", "headerAdmin", ["objava" => $objava, "autor" => $autor, "reklame" => $reklame, "autoriReklama" => $autoriReklama]);
+        $this->prikazi("objava", "headerAdmin", ["objava" => $objava, "autor" => $autor, "reklame" => $reklame, "autoriReklama" => $autoriReklama,"kontroler"=>"Admin"]);
     }
 
     public function reklama($idReklame){
-        $reklamaModel = new ReklamaModel();
+         $reklamaModel = new ReklamaModel();
         $korisnikModel = new KorisnikModel();
-
+    
         $reklama = $reklamaModel->find($idReklame);
+       
+        if ($reklama==null) { 
+            return redirect()->to(site_url("/Admin")); }
+        else {
+         
         $autor = $korisnikModel->find($reklama->autor);
-
-        $this->prikazi("reklama", "headerAdmin", ["reklama" => $reklama, "autor" => $autor]);
+        
+        $this->prikazi("reklama","headerAdmin" , ["reklama" => $reklama, "autor" => $autor,"kontroler"=>"Admin"]);
+        }
     }
 
     public function listaReklama()
@@ -188,10 +195,7 @@ class Admin extends BaseController
         return redirect()->to(site_url("Admin/listaKorisnika"));
     }
 
-    public function podseavanja()
-    {
-        $this->prikazi("podesavanje", "headerAdmin",[]);
-    }
+ 
     public function izlogujSe()
     {
         $this->session->destroy();
@@ -243,6 +247,85 @@ class Admin extends BaseController
         }
 
         $this->prikazi("objave", "headerAdmin", ["kontroler" => "Admin", "objave" => $objave, "autori" => $autori, "tagoviCssKlase" => $tagoviCssKlase]);
+    }
+    public function brisiBiloKojuReklamu($id) {
+        $reklamaModel=new ReklamaModel();
+    $reklamaModel->delete($id);
+       return redirect()->to(site_url("/Admin/listaReklama"));
+  }      
+    public function podesavanjeProfila($poruka=null){
+        $lokacijaModel = new LokacijaModel();
+        $lokacije = $lokacijaModel->findAll();
+        
+        $this->prikazi("podesavanjeProfila", "headerAdmin", ["korisnik"=>$this->session->get('korisnik'),"lokacije"=>$lokacije,"poruka"=>$poruka,"kontroler"=>"Admin"]);
+        
+    }
+    public function profilAdmina(){
+         
+
+        
+        $this->prikazi("profilAdmina", "headerAdmin", ["korisnik" => $this->session->get('korisnik')]);
+       
+    
+    }
+    
+      public function brisiReklamu($id) {
+        $reklamaModel=new ReklamaModel();
+    $reklamaModel->delete($id);
+       return redirect()->to(site_url("/Admin"));
+        
+    }
+  public function podesiProfil(){
+      
+    if (isset($_POST['podesi'])) {
+      $korisnikModel=new KorisnikModel();
+        $slika = $this->request->getVar("slika");
+        $ime = $this->request->getVar("ime");
+        $prezime = $this->request->getVar("prezime");
+        $email = $this->request->getVar("email");
+        $lozinka = $this->request->getVar("lozinka");
+        $lokacija = $this->request->getVar("opstina");
+        if ($this->request->getVar("potvrdaLozinke")!=$lozinka) {
+            return $this->podesavanjeProfila("Lozinke se ne poklapaju!");
+        }
+          $id=$this->session->get('korisnik')->korisnickoIme;
+         $data=[
+             'korisnickoIme'=>$id,
+            'ime' => $ime,
+            "prezime" => $prezime,
+            "slikaURL" => $slika,
+           "lokacija" => $lokacija,
+            "lozinka" => $lozinka,
+            "email" => $email,
+           
+                 
+        ];
+        
+        
+        $korisnikModel->save($data);
+        $this->session->set('korisnik',$korisnikModel->find($id));
+       return redirect()->to(site_url("/Admin/profilAdmina"));
+    }
+    elseif (isset($_POST['brisi'])) {
+         if ($this->request->getVar("potvrdaLozinke")!=$this->request->getVar("lozinka")) {
+            return $this->podesavanjeProfila("Lozinke se ne poklapaju!");
+        }
+            $korisnikModel=new KorisnikModel();
+            $korisnikModel->izbrisiKorisnika($this->session->get('korisnik')->korisnickoIme);
+            $this->session->destroy();
+            return redirect()->to(site_url('/'));
+        }
+    }
+ public function profilZanatlije($korIme){
+   
+   $reklamaModel = new ReklamaModel();
+                    $korisnikModel=new KorisnikModel();
+                    $autor=$korisnikModel->find($korIme);
+       $reklame= $reklamaModel->orderBy('vremeKreiranja', 'desc')->where('autor', $korIme)->findAll();
+
+        
+        $this->prikazi("profilZanatlije", "headerAdmin", ["kontroler"=>"Admin","korisnik" => $this->session->get('korisnik'), "reklame" => $reklame,"autor"=>$autor]);
+       
     }
 
 }

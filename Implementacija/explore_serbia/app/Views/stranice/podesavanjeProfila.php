@@ -38,23 +38,29 @@
                 <input type="email" class="form-control" id="email" name="email" placeholder="Adresa e-pošte"  value="<?php echo $korisnik->email;?>" required>
               </div>
               <div class="form-group">
-                <label for="ime">Lozinka</label>
-                <input type="password" class="form-control" id="password" name="lozinka" placeholder="Lozinka" value="<?php echo $korisnik->lozinka;?>"required>
+                <label for="ime">Nova lozinka</label>
+                <input type="password" class="form-control" id="passwrod" name="novaLozinka" placeholder="Nova lozinka">
               </div>
               <div class="form-group">
-                <label for="ime">Potvrda lozinke</label>
-                <input type="password" class="form-control" id="passwrod" name="potvrdaLozinke" placeholder="Potvrda lozinke" required>
+                <label for="ime">Potvrda nove lozinke</label>
+                <input type="password" class="form-control" id="passwrod" name="potvrdaNoveLozinke" placeholder="Potvrda nove lozinke">
+              </div>
+              <div class="form-group">
+                <label for="ime">Lozinka</label>
+                <input type="password" class="form-control" id="password" name="trenutnaLozinka" placeholder="Stara lozinka" value=""required>
               </div>
             <?php if(isset($poruka)) echo "<font color='red'>$poruka</font><br>"; ?>
 
             <div id="odobri0" style="text-align: center;">
                   
-       <button type="submit" class="btn btn-primary btn-lg " name="podesi" style="margin-bottom: 10px" >Potvrdi izmene</button>
+                <button type="submit" class="btn btn-primary btn-lg " name="podesi" style="margin-bottom: 10px">Potvrdi izmene</button>
                  
     </div>
-    
+              
+   
     <div id="obrisi0" style="text-align: center;">
        <button stype="submit" class="btn btn-danger btn-lg" name="brisi" type="submit" style="margin-bottom: 10px">Obriši nalog</button>'
     </div>
-          </form> </div>
+           </div>
+</form>
  

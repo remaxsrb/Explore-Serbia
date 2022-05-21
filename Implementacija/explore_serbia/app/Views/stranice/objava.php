@@ -1,12 +1,11 @@
 <!--by Miloš Brković 0599/2019-->
-
+<!--by Antonija Vasiljević 0501/2019-->
 <div class="container">
-    
-<?php 
-    
-    
-    
-?>
+<style>
+    body {
+        background-color: #f1ebeb;;
+    }
+</style>
     
     <div class="row">
         <div class="col-md-8 col-sm-12 objava">
@@ -78,7 +77,7 @@
                     echo '<div class="col-sm-12 col-md-12">
                             <div class="card mb-4">
                                 <div class="card-body">';
-                    echo '<a href="'.site_url("Gost/reklama/$reklama->id").'" class="card-title"><h3>'.$reklama->nazivRadnje.'</h3></a>';
+                    echo '<a href="'.site_url("/$kontroler/reklama/$reklama->id").'" class="card-title"><h3>'.$reklama->nazivRadnje.'</h3></a>';
                     echo '<p class="card-date">'.date("d.m.Y", strtotime($objava->vremeKreiranja)).'</p>';
                     echo '<p class="card-text">'.$reklama->opis.'</p>';
                     if ($autoriReklama[$i]->slikaURL??null != null){
@@ -88,7 +87,7 @@
                     }
                     
                     if ($reklama->autor??null != null){
-                        echo '<a href="#" class="card-link author-link">'.$reklama->autor.'</a>';
+                        echo '<a href="/'.$kontroler.'/profilZanatlije/'.$reklama->autor.'" class="card-link author-link">'.$reklama->autor.'</a>';
                     } else {
                         echo '<p class="card-link author-link">[deleted]</p>';
                     }

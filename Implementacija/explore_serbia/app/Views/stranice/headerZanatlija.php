@@ -19,30 +19,30 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
               <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      Filteri
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                      <a class="dropdown-item" href="#">Istorijska licnost</a>
-                      <a class="dropdown-item" href="#">Spomenik</a>
-                      <a class="dropdown-item" href="#">Crkva/manastir</a>
-                      <a class="dropdown-item" href="#">Tvrdjava</a>
-                      <a class="dropdown-item" href="#">Arheolosko nalaziste</a>
-                      <a class="dropdown-item" href="#">Park prirode</a>
-                    </div>
-     
-                <li>
-                    <form class="form-inline my-2 my-lg-0">
-                        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Pretrazi</button>
-                    </form>
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Filteri
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <span class="dropdown-item">Istorijska ličnost</span>
+                    <span class="dropdown-item">Spomenik</span>
+                    <span class="dropdown-item">Crkva/manastir</span>
+                    <span class="dropdown-item">Tvrdjava</span>
+                    <span class="dropdown-item">Arheološko nalazište</span>
+                    <span class="dropdown-item">Park prirode</span>
+                </div>
+            </li>
+                <form method="GET" action="<?php echo site_url("Zanatlija/pretraga"); ?>" class="form-inline my-2 my-lg-0">
+                    <input class="form-control mr-sm-2" type="search" name="pretraga" placeholder="Pretraži" aria-label="Search">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Pretraži</button>
+                </form>
                 </li>
             </ul>
             
             <form method="get" action="<?php echo site_url("/Zanatlija/kreiranjeReklame"); ?>">
                 <button class="btnAdm" ><i class="fa fa-plus" aria-hidden="true"></i></button>
            </form>
-           <form method="get" action="<?php echo site_url("/Zanatlija/profilZanatlije"); ?>">
+            <?php $id=$_SESSION['korisnik']->korisnickoIme; ?>
+          <form method="get" action="<?php echo site_url("/Zanatlija/profilZanatlije/".$id); ?>">
             <button  class="btnAdm"><i class="fa fa-user" aria-hidden="true"></i></button>
             </form>
             

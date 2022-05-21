@@ -23,7 +23,9 @@
             <form method="get" action="<?php echo site_url("/Zanatlija/kreiranjeReklame"); ?>">
                 <button class="btnAdm" ><i class="fa fa-plus" aria-hidden="true"></i></button>
            </form>
-           <form method="get" action="<?php echo site_url("/Zanatlija/profilZanatlije"); ?>">
+       
+         <?php $id=$_SESSION['korisnik']->korisnickoIme; ?>
+          <form method="get" action="<?php echo site_url("/Zanatlija/profilZanatlije/".$id); ?>">
             <button  class="btnAdm"><i class="fa fa-user" aria-hidden="true"></i></button>
             </form>
            

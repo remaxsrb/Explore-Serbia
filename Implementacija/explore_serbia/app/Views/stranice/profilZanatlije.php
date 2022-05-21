@@ -6,7 +6,10 @@
      <?php
      use App\Models\LokacijaModel;
 ?>
-   
+   <style>
+    body {
+        background-color: #f1ebeb;;
+    }
      </style>
         <div class="row" style="margin-top: 30px;">
             <div class="col-md-2">
@@ -29,10 +32,13 @@
             
             </div>
             <div class="col-md-10">
-                <form method="post" action="/Zanatlija/podesavanjeProfila">
-                 <button type="submit" class="btn btn-secondary btn-lg" style='float:right'>Izmeni profil</button>
-                 </form>
-                <h5>Korisničko ime: <?php echo ($autor->korisnickoIme) ?></h5>
+                <?php 
+                if ($kontroler!="Gost") {
+                if ($korisnik->korisnickoIme==$autor->korisnickoIme) {
+               echo' <form method="post" action="/Zanatlija/podesavanjeProfila">
+                 <button type="submit" class="btn btn-secondary btn-lg" style="float:right">Izmeni profil</button>
+                </form>'; }}  ?>
+                <h5>Korisničko ime: <?php echo ($autor->korisnickoIme); ?></h5>
                 <h5>Ime: <?php echo($autor->ime); ?> </h5>
                 <h5>Prezime:   <?php echo($autor->prezime); ?></h5>
                 <h5>Opština:  <?php 
@@ -49,14 +55,23 @@
         <div class="row">
             <div class="col-md-12">
                 <br>
-                <h2>Moje reklame</h2>
+                <?php 
+                if ($kontroler!="Gost") {
+                if ($korisnik->korisnickoIme==$autor->korisnickoIme) {
+                   
+                echo '<h2>Moje reklame</h2>'; }
+                else { echo '<h2>Reklame zanatlije</h2>'; }}
+                else {echo '<h2>Reklame zanatlije</h2>';}
+                ?>
                 <br>
 
                 <div class="list-group">
                     <?php
     foreach ($reklame as $reklama) {
-       
-                  echo  '<a href="/Zanatlija/reklama/'.$reklama->id.'" class="list-group-item list-group-item-action flex-column align-items">
+         if ($kontroler!="Gost") {
+         if ($reklama->odobrena==0 && $korisnik->korisnickoIme!=$autor->korisnickoIme) continue;}
+         else { if ($reklama->odobrena==0) continue;}
+                  echo  '<a href="/'.$kontroler.'/reklama/'.$reklama->id.'" class="list-group-item list-group-item-action flex-column align-items">
             
                         <div id="wrapperDiv4" >
                             <div id="div3" style="float:left ;margin-left: 10px;
@@ -78,28 +93,43 @@
                             <p float="right">'.$autor->korisnickoIme.'
                  </p>
                             </div>
-                          
-                              <form method="get" action="';
+                          ';
+                            if ($kontroler!="Gost") {
+                           if ($autor->korisnickoIme==$korisnik->korisnickoIme) {
+                             echo '<form method="get" action="';
                            echo site_url("/Zanatlija/brisiReklamu/".$reklama->id);
                            echo'" style="float:right">
                                    
                              
                                 <button class="btnAdm"><i class="fa fa-trash" ></i></button>
 
-                            </form>
-                         
-                            </div>
+                            </form>';
+                            }} 
+                           echo '</div>';
+                               
     
   
                   
-                  <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">'.$reklama->nazivRadnje.'</h5>
+                 echo ' <div class="d-flex w-100 justify-content-between">
+                 
+                  <h5 class="mb-1">'.$reklama->nazivRadnje.'</h5>
                     <small>'.$reklama->vremeKreiranja.'</small>
+                        
                   </div>
                   <div>
-                  <p class="mb-1">'.$reklama->opis.'</p>
-                 
-                  </div>
+                  '; if ($kontroler!="Gost") {
+                    if ($autor->korisnickoIme==$korisnik->korisnickoIme)     {       
+                        
+                    if ($reklama->odobrena==1) {
+                    echo '<h6 style="font-style:italic; float:right; color:green;">Odobrena</h6>'; }
+                    else {echo '<h6 style="font-style:italic; float:right; color:#A0A0A0;">Još uvek nije odobrena</h6>';}
+                    echo '
+                  <p class="mb-1">'.$reklama->opis.'</p>';
+                  }
+                  else { echo '<p class="mb-1">'.$reklama->opis.'</p>';}
+                    } else { echo '
+                  <p class="mb-1">'.$reklama->opis.'</p>'; }
+                  echo '</div>
                      </div>     
                         
                 </a>
@@ -110,4 +140,4 @@
                 
             </div>
         </div>
-    </div>
+         </div>

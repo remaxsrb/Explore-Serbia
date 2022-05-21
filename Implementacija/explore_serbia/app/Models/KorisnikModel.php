@@ -25,6 +25,12 @@ class KorisnikModel extends Model
         return $this->delete($korisnickoIme);
 
     }
+    public function izbrisiKorisnika($korisnickoIme)
+    {
+        //by Marko Jovanovic 2018/0607
+        return $this->delete($korisnickoIme);
+
+    }
     public function dodajAdministratorskaPrava($korisnickoIme)
     {
         //by Marko Jovanovic 2018/0607

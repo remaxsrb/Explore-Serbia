@@ -1,5 +1,7 @@
 <?php
 
+// by Miloš Brković 0599/2019
+
 namespace Config;
 
 use App\Filters\AdminFilter;
@@ -25,7 +27,10 @@ class Filters extends BaseConfig
         'honeypot'      => Honeypot::class,
         'invalidchars'  => InvalidChars::class,
         'secureheaders' => SecureHeaders::class,
-
+        'gost' => \App\Filters\GostFilter::class,
+        'admin' => \App\Filters\AdminFilter::class,
+        'pisac' => \App\Filters\PisacFilter::class,
+        'zanatlija' => \App\Filters\ZanatlijaFilter::class
     ];
 
     /**
@@ -68,6 +73,9 @@ class Filters extends BaseConfig
      * @var array
      */
     public $filters = [
-
+        'gost' => ['before' => ["Gost/*", "Gost", "/"]],
+        'admin' => ['before' => ["Admin/*", "Admin", "/"]],
+        'pisac' => ['before' => ["Pisac/*", "Pisac", "/"]],
+        'zanatlija' => ['before' => ["Zanatlija/*", "Zanatlija", "/"]]
     ];
 }

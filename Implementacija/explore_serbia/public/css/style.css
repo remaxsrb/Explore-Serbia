@@ -21,6 +21,7 @@
 
 .btn {
     margin-left: 10px;
+    justify-content: center;
 }
 
 .row{
@@ -286,5 +287,6 @@ span.dropdown-item:hover{
     background-color: blue;
     color: white;
 }
+
 
 

@@ -179,7 +179,7 @@ class Gost extends BaseController
             array_push($autoriReklama, $autorReklame);
         }
         
-        $this->prikaz("headerGostBezPretrage", "objava", ["objava" => $objava, "autor" => $autor, "reklame" => $reklame, "autoriReklama" => $autoriReklama]);
+        $this->prikaz("headerGostBezPretrage", "objava", ["objava" => $objava, "autor" => $autor, "reklame" => $reklame, "autoriReklama" => $autoriReklama,"kontroler"=>"Gost"]);
     }
     
     /**
@@ -190,13 +190,20 @@ class Gost extends BaseController
      * @return void
      */
     public function reklama($idReklame){
-        $reklamaModel = new ReklamaModel();
+         $reklamaModel = new ReklamaModel();
         $korisnikModel = new KorisnikModel();
-        
+    
         $reklama = $reklamaModel->find($idReklame);
+       
+        if ($reklama==null) { 
+            return redirect()->to(site_url("/Gost")); }
+        else {
+         
         $autor = $korisnikModel->find($reklama->autor);
         
-        $this->prikaz("headerGostBezPretrage", "reklama", ["reklama" => $reklama, "autor" => $autor]);
+        $this->prikaz("headerGostBezPretrage", "reklama", ["reklama" => $reklama, "autor" => $autor,"kontroler"=>"Gost"]);
+     
+        }
     }
     
     /**
@@ -304,5 +311,16 @@ class Gost extends BaseController
         } else if ($korisnik->tip == $this->zanatlijaTip){
             return redirect()->to(site_url('Zanatlija'));
         }
+    }
+    public function profilZanatlije($korIme){
+   
+   $reklamaModel = new ReklamaModel();
+                    $korisnikModel=new KorisnikModel();
+                    $autor=$korisnikModel->find($korIme);
+       $reklame= $reklamaModel->orderBy('vremeKreiranja', 'desc')->where('autor', $korIme)->findAll();
+
+        
+        $this->prikaz("headerGostBezPretrage", "profilZanatlije", ["kontroler"=>"Gost", "reklame" => $reklame,"autor"=>$autor]);
+       
     }
 }

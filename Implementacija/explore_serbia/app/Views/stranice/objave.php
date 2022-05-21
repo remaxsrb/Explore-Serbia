@@ -27,7 +27,11 @@
             echo '<p class="card-link author-link">[deleted]</p>';
         }
         
-        $ocena = $objava->sumaOcena / $objava->brojOcena;
+        if ($objava->brojOcena != 0) {
+            $ocena = $objava->sumaOcena / $objava->brojOcena;
+        } else {
+            $ocena = 0;
+        }
         $ocenaCeoDeo = floor($ocena);
         $ocenaDecimalniDeo = round($ocena - $ocenaCeoDeo, 2);
        
@@ -39,8 +43,10 @@
             } else if (!$polaZvezdePrikazano){
                 if ($ocenaDecimalniDeo >= 0.5){
                     echo '<span class="fa fa-star checked"></span>';
-                } else {
+                } else if ($ocenaDecimalniDeo != 0) {
                     echo '<span class="fa fa-star-half-alt checked"></span>';
+                } else {
+                    echo '<span class="fas fa-star"></span>';
                 }
                 $polaZvezdePrikazano = true;
             }
@@ -48,10 +54,23 @@
                 echo '<span class="fas fa-star"></span>';
             }
         }
+        
+        if ($kontroler == "Admin") {
         echo '</div>
+            <div>
+                <a href="'.site_url("/Admin/brisanjeBiloKojeObjave/$objava->id").'" style="float:right">
+                    <button class="btnAdm"><i class="fa fa-trash" ></i></button>
+                </form>
+              </div>
                     </div>
                 </div>
             </div>';
+        } else {
+            echo '</div>
+                    </div>
+                </div>
+            </div>';
+        }
         
         $i++;
     }

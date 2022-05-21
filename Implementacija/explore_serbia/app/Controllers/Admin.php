@@ -278,44 +278,62 @@ class Admin extends BaseController
         
     }
   public function podesiProfil(){
-      
-    if (isset($_POST['podesi'])) {
-      $korisnikModel=new KorisnikModel();
-        $slika = $this->request->getVar("slika");
-        $ime = $this->request->getVar("ime");
-        $prezime = $this->request->getVar("prezime");
-        $email = $this->request->getVar("email");
-        $lozinka = $this->request->getVar("lozinka");
-        $lokacija = $this->request->getVar("opstina");
-        if ($this->request->getVar("potvrdaLozinke")!=$lozinka) {
-            return $this->podesavanjeProfila("Lozinke se ne poklapaju!");
-        }
-          $id=$this->session->get('korisnik')->korisnickoIme;
-         $data=[
-             'korisnickoIme'=>$id,
-            'ime' => $ime,
-            "prezime" => $prezime,
-            "slikaURL" => $slika,
-           "lokacija" => $lokacija,
-            "lozinka" => $lozinka,
-            "email" => $email,
-           
-                 
-        ];
-        
-        
-        $korisnikModel->save($data);
-        $this->session->set('korisnik',$korisnikModel->find($id));
-       return redirect()->to(site_url("/Admin/profilAdmina"));
-    }
-    elseif (isset($_POST['brisi'])) {
-         if ($this->request->getVar("potvrdaLozinke")!=$this->request->getVar("lozinka")) {
-            return $this->podesavanjeProfila("Lozinke se ne poklapaju!");
-        }
+        if (isset($_POST['podesi'])){
             $korisnikModel=new KorisnikModel();
-            $korisnikModel->izbrisiKorisnika($this->session->get('korisnik')->korisnickoIme);
-            $this->session->destroy();
-            return redirect()->to(site_url('/'));
+            $slika = $this->request->getVar("slika");
+            $ime = $this->request->getVar("ime");
+            $prezime = $this->request->getVar("prezime");
+            $email = $this->request->getVar("email");
+            $lokacija = $this->request->getVar("opstina");
+            $trenutnaLozinka = $this->request->getVar("trenutnaLozinka");
+            $novaLozinka = $this->request->getVar("novaLozinka");
+            $potvrdaNoveLozinke = $this->request->getVar("potvrdaNoveLozinke");
+
+            if (!password_verify($this->request->getVar("trenutnaLozinka"), $this->session->get('korisnik')->lozinka)) {
+                return $this->podesavanjeProfila("Pogresna lozinka");
+            }
+
+            $lozinka;
+            if (!$novaLozinka == ""){
+                if ($potvrdaNoveLozinke == $novaLozinka){
+                    $lozinka = password_hash($novaLozinka, PASSWORD_DEFAULT);
+                } else {
+                    return $this->podesavanjeProfila("Lozinke se ne poklapaju!");
+                }
+            } else {
+                $lozinka = $this->session->get('korisnik')->lozinka;
+            }
+
+
+            echo $lozinka;
+
+            $id=$this->session->get('korisnik')->korisnickoIme;
+
+             $data=[
+                 'korisnickoIme'=>$id,
+                'ime' => $ime,
+                "prezime" => $prezime,
+                "slikaURL" => $slika,
+               "lokacija" => $lokacija,
+                "lozinka" => $lozinka,
+                "email" => $email,
+            ];
+
+
+            $korisnikModel->save($data);
+            $this->session->set('korisnik',$korisnikModel->find($id));
+           return redirect()->to(site_url("/Zanatlija/profilZanatlije/$id"));
+        } else if (isset($_POST['brisi'])){
+            $trenutnaLozinka = $this->request->getVar("trenutnaLozinka");
+        
+            if (!password_verify($trenutnaLozinka, $this->session->get("korisnik")->lozinka)){
+                return $this->podesavanjeProfila("Pogresna lozinka");
+            } else {
+                $korisnikModel=new KorisnikModel();
+                $korisnikModel->izbrisiKorisnika($this->session->get('korisnik')->korisnickoIme);
+                $this->session->destroy();
+                return redirect()->to(site_url('/Zanatlija'));
+            }
         }
     }
  public function profilZanatlije($korIme){

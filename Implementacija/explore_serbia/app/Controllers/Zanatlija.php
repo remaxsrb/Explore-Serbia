@@ -1,5 +1,5 @@
-<!--by Antonija Vasiljević 0501/2019 -->
 <?php
+// by Antonija Vasiljević 0501/2019
 
 namespace App\Controllers;
 
@@ -7,6 +7,8 @@ use App\Models\ObjavaModel;
 use App\Models\KorisnikModel;
 use App\Models\ReklamaModel;
 use App\Models\LokacijaModel;
+use App\Models\ObjavaTagModel;
+use App\Models\TagModel;
 
 class Zanatlija extends BaseController
 {
@@ -23,18 +25,48 @@ class Zanatlija extends BaseController
     
     public function index()
     {
-       $objavaModel = new ObjavaModel();
+        $objavaModel = new ObjavaModel();
         $korisnikModel = new KorisnikModel();
+        $objavaTagModel = new ObjavaTagModel();
+        $tagModel = new TagModel();
         $objave = $objavaModel->orderBy('vremeKreiranja', 'desc')->where('odobrena', 1)->findAll();
         
         $autori = [];
+        $tagoviCssKlase = [];
         foreach($objave as $objava){
             $korisnickoIme = $objava->autor;
             $autor = $korisnikModel->find($korisnickoIme);
             array_push($autori, $autor);
+            
+            $obajaveTagovi = $objavaTagModel->where('objavaID', $objava->id)->findAll();
+            $tagCssKlasa = "";
+            foreach($obajaveTagovi as $objavaTag){
+                $tag = $tagModel->find($objavaTag->tagID);
+                switch((int)$tag->kategorija){
+                    case 1:
+                        $tagCssKlasa.=" istorijskaLicnost";
+                        break;
+                    case 2:
+                        $tagCssKlasa.=" spomenik";
+                        break;
+                    case 3:
+                        $tagCssKlasa.=" crkvaManastir";
+                        break;
+                    case 4:
+                        $tagCssKlasa.=" tvrdjava";
+                        break;
+                    case 5:
+                        $tagCssKlasa.=" areoloskoNalaziste";
+                        break;
+                    case 6:
+                        $tagCssKlasa.=" parkPrirode";
+                        break;
+                }
+            }
+            array_push($tagoviCssKlase, $tagCssKlasa);
         }
         
-        $this->prikaz("headerZanatlija", "objave", ["kontroler" => "Zanatlija", "objave" => $objave, "autori" => $autori]);
+        $this->prikaz("headerZanatlija", "objave", ["kontroler" => "Zanatlija", "objave" => $objave, "autori" => $autori, "tagoviCssKlase" => $tagoviCssKlase]);
     }
     
     public function objava($idObjave){
@@ -61,6 +93,54 @@ class Zanatlija extends BaseController
         $this->prikaz("headerZanatlijaBezPretrage", "objava", ["objava" => $objava, "autor" => $autor, "reklame" => $reklame, "autoriReklama" => $autoriReklama]);
     }
     
+    public function pretraga(){
+        $pretraga = $this->request->getVar("pretraga");
+        if ($pretraga == "") return redirect()->to("Zanatlija/");
+        
+        $objavaModel = new ObjavaModel();
+        $korisnikModel = new KorisnikModel();
+        $objavaTagModel = new ObjavaTagModel();
+        $tagModel = new TagModel();
+        $objave = $objavaModel->orderBy('vremeKreiranja', 'desc')->where('odobrena', 1)->like('naslov', $pretraga)->orLike('tekst', $pretraga)->findAll();
+        
+        $autori = [];
+        $tagoviCssKlase = [];
+        foreach($objave as $objava){
+            $korisnickoIme = $objava->autor;
+            $autor = $korisnikModel->find($korisnickoIme);
+            array_push($autori, $autor);
+            
+            $obajaveTagovi = $objavaTagModel->where('objavaID', $objava->id)->findAll();
+            $tagCssKlasa = "";
+            foreach($obajaveTagovi as $objavaTag){
+                $tag = $tagModel->find($objavaTag->tagID);
+                switch((int)$tag->kategorija){
+                    case 1:
+                        $tagCssKlasa.=" istorijskaLicnost";
+                        break;
+                    case 2:
+                        $tagCssKlasa.=" spomenik";
+                        break;
+                    case 3:
+                        $tagCssKlasa.=" crkvaManastir";
+                        break;
+                    case 4:
+                        $tagCssKlasa.=" tvrdjava";
+                        break;
+                    case 5:
+                        $tagCssKlasa.=" areoloskoNalaziste";
+                        break;
+                    case 6:
+                        $tagCssKlasa.=" parkPrirode";
+                        break;
+                }
+            }
+            array_push($tagoviCssKlase, $tagCssKlasa);
+        }
+        
+        $this->prikaz("headerZanatlija", "objave", ["kontroler" => "Zanatlija", "objave" => $objave, "autori" => $autori, "tagoviCssKlase" => $tagoviCssKlase]);
+    }
+    
  
     
     public function reklama($idReklame){
@@ -69,19 +149,20 @@ class Zanatlija extends BaseController
         $korisnikModel = new KorisnikModel();
     
         $reklama = $reklamaModel->find($idReklame);
-        if ($reklama!=null){
+       
+        if ($reklama==null) { 
+            return redirect()->to(site_url("/Zanatlija")); }
+        else {
+         
         $autor = $korisnikModel->find($reklama->autor);
         
-        $this->prikaz("headerZanatlijaBezPretrage", "reklama", ["reklama" => $reklama, "autor" => $autor]);
-        
+        $this->prikaz("headerZanatlijaBezPretrage", "reklama", ["reklama" => $reklama, "autor" => $autor,"kontroler"=>"Zanatlija"]);
         }
-        else {
-            return redirect()->to(site_url("/Zanatlija"));
-        }
+      
     }
 
     
-    public function kreiranjeReklame() {
+    public function kreiranjeReklame($poruka=null) {
         $lokacijaModel = new LokacijaModel();
         $lokacije = $lokacijaModel->findAll();
         
@@ -125,14 +206,15 @@ class Zanatlija extends BaseController
     }
     
     
-    public function profilZanatlije(){
+    public function profilZanatlije($korIme){
    
    $reklamaModel = new ReklamaModel();
- 
-       $reklame= $reklamaModel->orderBy('vremeKreiranja', 'desc')->where('autor', $this->session->get('korisnik')->korisnickoIme)->findAll();
+                    $korisnikModel=new KorisnikModel();
+                    $autor=$korisnikModel->find($korIme);
+       $reklame= $reklamaModel->orderBy('vremeKreiranja', 'desc')->where('autor', $korIme)->findAll();
 
         
-        $this->prikaz("headerZanatlijaBezPretrage", "profilZanatlije", ["autor" => $this->session->get('korisnik'), "reklame" => $reklame]);
+        $this->prikaz("headerZanatlijaBezPretrage", "profilZanatlije", ["kontroler"=>"Zanatlija","korisnik" => $this->session->get('korisnik'), "reklame" => $reklame,"autor"=>$autor]);
        
     }
     public function brisiReklamu($id) {
@@ -153,48 +235,63 @@ class Zanatlija extends BaseController
         
     }
     public function podesiProfil(){
-      
-    if (isset($_POST['podesi'])) {
-      $korisnikModel=new KorisnikModel();
-        $slika = $this->request->getVar("slika");
-        $ime = $this->request->getVar("ime");
-        $prezime = $this->request->getVar("prezime");
-        $email = $this->request->getVar("email");
-        $lozinka = $this->request->getVar("lozinka");
-        $lokacija = $this->request->getVar("opstina");
-        if ($this->request->getVar("potvrdaLozinke")!=$lozinka) {
-            return $this->podesavanjeProfila("Lozinke se ne poklapaju!");
-        }
-          $id=$this->session->get('korisnik')->korisnickoIme;
-         $data=[
-             'korisnickoIme'=>$id,
-            'ime' => $ime,
-            "prezime" => $prezime,
-            "slikaURL" => $slika,
-           "lokacija" => $lokacija,
-            "lozinka" => $lozinka,
-            "email" => $email,
-           
-                 
-        ];
-        
-        
-        $korisnikModel->save($data);
-        $this->session->set('korisnik',$korisnikModel->find($id));
-       return redirect()->to(site_url("/Zanatlija/profilZanatlije"));
-    }
-    elseif (isset($_POST['brisi'])) {
-         if ($this->request->getVar("potvrdaLozinke")!=$this->request->getVar("lozinka")) {
-            return $this->podesavanjeProfila("Lozinke se ne poklapaju!");
-        }
+        if (isset($_POST['podesi'])){
             $korisnikModel=new KorisnikModel();
-            $korisnikModel->izbrisiKorisnika($this->session->get('korisnik')->korisnickoIme);
-            $this->session->destroy();
-            return redirect()->to(site_url('/'));
+            $slika = $this->request->getVar("slika");
+            $ime = $this->request->getVar("ime");
+            $prezime = $this->request->getVar("prezime");
+            $email = $this->request->getVar("email");
+            $lokacija = $this->request->getVar("opstina");
+            $trenutnaLozinka = $this->request->getVar("trenutnaLozinka");
+            $novaLozinka = $this->request->getVar("novaLozinka");
+            $potvrdaNoveLozinke = $this->request->getVar("potvrdaNoveLozinke");
+
+            if (!password_verify($this->request->getVar("trenutnaLozinka"), $this->session->get('korisnik')->lozinka)) {
+                return $this->podesavanjeProfila("Pogresna lozinka");
+            }
+
+            $lozinka;
+            if (!$novaLozinka == ""){
+                if ($potvrdaNoveLozinke == $novaLozinka){
+                    $lozinka = password_hash($novaLozinka, PASSWORD_DEFAULT);
+                } else {
+                    return $this->podesavanjeProfila("Lozinke se ne poklapaju!");
+                }
+            } else {
+                $lozinka = $this->session->get('korisnik')->lozinka;
+            }
+
+
+            echo $lozinka;
+
+            $id=$this->session->get('korisnik')->korisnickoIme;
+
+             $data=[
+                 'korisnickoIme'=>$id,
+                'ime' => $ime,
+                "prezime" => $prezime,
+                "slikaURL" => $slika,
+               "lokacija" => $lokacija,
+                "lozinka" => $lozinka,
+                "email" => $email,
+            ];
+
+
+            $korisnikModel->save($data);
+            $this->session->set('korisnik',$korisnikModel->find($id));
+           return redirect()->to(site_url("/Zanatlija/profilZanatlije/$id"));
+        } else if (isset($_POST['brisi'])){
+            $trenutnaLozinka = $this->request->getVar("trenutnaLozinka");
+        
+            if (!password_verify($trenutnaLozinka, $this->session->get("korisnik")->lozinka)){
+                return $this->podesavanjeProfila("Pogresna lozinka");
+            } else {
+                $korisnikModel=new KorisnikModel();
+                $korisnikModel->izbrisiKorisnika($this->session->get('korisnik')->korisnickoIme);
+                $this->session->destroy();
+                return redirect()->to(site_url('/Zanatlija'));
+            }
         }
     }
-
-       
     
-        
-        }
+}

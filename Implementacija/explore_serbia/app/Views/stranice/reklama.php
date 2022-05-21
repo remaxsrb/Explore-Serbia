@@ -1,6 +1,12 @@
 <!--by Miloš Brković 0599/2019-->
 <!--by Antonija Vasiljević 0501/2019 -->
+<?php use App\Models\KorisnikModel; ?>
 <div class="container">
+    <style>
+    body {
+        background-color: #f1ebeb;;
+    }
+</style>
     <div class="row">
         
         <div class="col-md-8 col-sm-12 objava">
@@ -15,7 +21,8 @@
         <button type="submit" class="btn btn-danger btn-lg" style="margin-bottom: 10px">Obriši reklamu</button>
         </form>
           </div>';}
-          else if ($_SESSION["korisnik"]->tip==3 && $_SESSION["korisnik"]->korisnickoIme==$autor->korisnickoIme) {
+          else if ($_SESSION["korisnik"]->tip==3 && $_SESSION["korisnik"]->korisnickoIme!=null) {
+              if ($_SESSION["korisnik"]->korisnickoIme==$autor) {
                        echo '
          <div id="obrisiReklamu" style="float:right;">
          <form method="get" action="';
@@ -24,7 +31,7 @@
         <button type="submit" class="btn btn-danger btn-lg" style="margin-bottom: 10px">Obriši reklamu</button>
         </form>
           </div>';
-          }
+          } }
             }
             
                 if ($autor->slikaURL??null != null){
@@ -34,7 +41,9 @@
                 }
             
                 if ($reklama->autor != null){
-                    echo '<a href="#" class="card-link author-link">'.$reklama->autor.'</a>';
+                    $korisnikModel=new KorisnikModel();
+                    $korisnik=$korisnikModel->find($reklama->autor);
+                    echo '<a href="/'.$kontroler.'/profilZanatlije/'.$reklama->autor.'" class="card-link author-link">'.$reklama->autor.'</a>';
                 } else {
                     echo '<p>[deleted]</p>';
                 }

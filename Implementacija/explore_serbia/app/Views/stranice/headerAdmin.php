@@ -70,7 +70,10 @@
                     <a href="<?= site_url("Admin/tagoviZaOdobravanje") ?>" class="btn btn-outline-secondary my-2 my-sm-0 d-flex flex-sm-fill"  type="button"> Odobri tagove </a>
                 </li>
                 <li>
-                    <a href="<?= site_url("Admin/podesavanja") ?>" class="btn btn-outline-secondary my-2 my-sm-0 d-flex flex-sm-fill" type="button"> Podešavanja </a>
+
+                    <a href="<?= site_url("Admin/podesavanjeProfila") ?>" class="btn btn-outline-secondary my-2 my-sm-0 d-flex flex-sm-fill" style="justify-content: center" type="button"> Podešavanja </a>
+
+                  
                 </li>
 
                 <li>

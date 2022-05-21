@@ -68,7 +68,36 @@ class Admin extends BaseController
 
     public function napisiTekst()
     {
-        $this->prikazi("kreiranjeObjave", "headerAdmin",[]);
+
+
+        $tagModel = new TagModel();
+        $lokacijaModel = new LokacijaModel();
+        $allTags;
+        $tagoviIL = $tagModel->where("kategorija", "1")->Where("odobren", "1")->findAll();
+        // pocinje od 1 umesto 0 da bi se poklapao da id tagType-a
+        $allTags[1] = $tagoviIL;
+
+        $tagoviIL = $tagModel->where("kategorija", "2")->Where("odobren", "1")->findAll();
+        $allTags[2] = $tagoviIL;
+
+        $tagoviIL = $tagModel->where("kategorija", "3")->Where("odobren", "1")->findAll();
+        $allTags[3] = $tagoviIL;
+
+        $tagoviIL = $tagModel->where("kategorija", "4")->Where("odobren", "1")->findAll();
+        $allTags[4] = $tagoviIL;
+
+        $tagoviIL = $tagModel->where("kategorija", "5")->Where("odobren", "1")->findAll();
+        $allTags[5] = $tagoviIL;
+
+        $tagoviIL = $tagModel->where("kategorija", "6")->Where("odobren", "1")->findAll();
+        $allTags[6] = $tagoviIL;
+
+        $allLoks = $lokacijaModel->findAll();
+
+        $this->session->set("allTags", $allTags);
+        $this->session->set("allLoks", $allLoks);
+
+        $this->prikazi("kreiranjeObjave", "headerAdmin", ["greske" => []]);
 
     }
 
@@ -76,8 +105,6 @@ class Admin extends BaseController
     {
         $korisnikModel = new KorisnikModel();
         $korisnici = $korisnikModel->orderBy('korisnickoIme', 'asc')->findAll();
-
-
 
         $this->prikazi("listaKorisnikaUSistemu", "headerAdmin",['korisnici'=>$korisnici, 'pager'=>$korisnikModel->pager]);
     }
@@ -263,9 +290,7 @@ class Admin extends BaseController
         
     }
     public function profilAdmina(){
-         
 
-        
         $this->prikazi("profilAdmina", "headerAdmin", ["korisnik" => $this->session->get('korisnik')]);
        
     

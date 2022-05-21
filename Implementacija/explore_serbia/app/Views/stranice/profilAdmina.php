@@ -30,14 +30,14 @@
                 <h5>Korisničko ime: <?php echo ($korisnik->korisnickoIme) ?></h5>
                 <h5>Ime: <?php echo($korisnik->ime); ?> </h5>
                 <h5>Prezime:   <?php echo($korisnik->prezime); ?></h5>
-                <h5>Opština:  <?php 
+                <h5>Grad/Opština:  <?php
                 $lokacijaModel=new LokacijaModel();
                 $lokacija=$lokacijaModel->find($korisnik->lokacija)->naziv;
                 echo ($lokacija);
                 ?></h5>
-               
+                <?php echo '<h5><a href="'. site_url("Admin/podesavanjeProfila").'">Podešavanje profila </a></h5>' ?>
             </div>
             
-                
-            
         </div>
+            
+</div>

@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 //by Marko Jovanovic 2018/0607
 //by Antonija Vasiljević 2019/0501
+//by Nikola Bjelobaba 2019/0442
 use App\Models\KorisnikModel;
 use App\Models\ObjavaModel;
 use App\Models\ObjavaTagModel;
@@ -68,8 +69,6 @@ class Admin extends BaseController
 
     public function napisiTekst()
     {
-
-
         $tagModel = new TagModel();
         $lokacijaModel = new LokacijaModel();
         $allTags;
@@ -371,6 +370,33 @@ class Admin extends BaseController
         
         $this->prikazi("profilZanatlije", "headerAdmin", ["kontroler"=>"Admin","korisnik" => $this->session->get('korisnik'), "reklame" => $reklame,"autor"=>$autor]);
        
+    }
+    
+    /**
+     * Ova funkcija brise objavu ciji je id dodeljen,
+     * i birse sve veze ObjavaTag kojima je ta objava pripadala
+     * 
+     * 
+     * @param int $idObjava
+     */
+    public function brisanjeBiloKojeObjave($idObjava) {
+        $objavaModel = new ObjavaModel();
+        $objavaTagModel = new ObjavaTagModel();
+        
+        if ($idObjava == null)
+            return;
+        
+        $tagoviObjave = $objavaTagModel->where("objavaID", $idObjava)->findAll();
+        
+        foreach($tagoviObjave as $tagObjave) {
+            $objavaTagModel->delete($idObjava);
+        }
+        
+        $objavaModel->izbrisi ($idObjava);
+        $this->index();
+        
+        
+        
     }
 
 }

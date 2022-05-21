@@ -43,7 +43,11 @@
          
 
         <?php
+        if ($objava->brojOcena != 0) {
         $ocena = $objava->sumaOcena / $objava->brojOcena;
+        } else {
+            $ocena = 0;
+        }
         $ocenaCeoDeo = floor($ocena);
         $ocenaDecimalniDeo = round($ocena - $ocenaCeoDeo, 2);
        

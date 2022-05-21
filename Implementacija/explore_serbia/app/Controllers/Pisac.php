@@ -164,7 +164,7 @@ class Pisac extends BaseController
             array_push($autoriReklama, $autorReklame);
         }
         
-        $this->prikaz("headerPisac", "objava", ["objava" => $objava, "autor" => $autor, "reklame" => $reklame, "autoriReklama" => $autoriReklama]);
+        $this->prikaz("headerPisac", "objava", ["objava" => $objava, "autor" => $autor, "reklame" => $reklame, "autoriReklama" => $autoriReklama, "kontroler" => "Pisac"]);
     }
     
     /**
@@ -181,7 +181,7 @@ class Pisac extends BaseController
         $reklama = $reklamaModel->find($idReklame);
         $autor = $korisnikModel->find($reklama->autor);
         
-        $this->prikaz("headerPisac", "reklama", ["reklama" => $reklama, "autor" => $autor]);
+        $this->prikaz("headerPisac", "reklama", ["reklama" => $reklama, "autor" => $autor, "kontroler" => "Pisac"]);
     }
     
      /**
@@ -428,23 +428,102 @@ class Pisac extends BaseController
      * @return void
      */
     
-    public function brisiObjavu($objavaId) {
+    public function brisiObjavu($idObjava) {
         $objavaModel = new ObjavaModel();
         $objavaTagModel = new ObjavaTagModel();
         
-        if ($objavaId == null)
+        if ($idObjava == null)
             return;
         
         
-        $tagoviObjave = $objavaTagModel->where("objavaID", $objavaId)->findAll();
+        $tagoviObjave = $objavaTagModel->where("objavaID", $idObjava)->findAll();
         
         foreach($tagoviObjave as $tagObjave) {
-            $objavaTagModel->delete($objavaId);
+            $objavaTagModel->delete($idObjava);
         }
         
-        $objavaModel->izbrisi ($objavaId);
+        $objavaModel->izbrisi ($idObjava);
         
         $this->profil();
+    }
+    
+    /**
+     * Ova funkcija prikazuje meni za podesavanje profila piscu
+     * 
+     * @param type $poruka
+     */
+    public function podesavanjeProfila($poruka=null){
+        $lokacijaModel = new LokacijaModel();
+        $lokacije = $lokacijaModel->findAll();
+        
+        $this->prikaz("headerPisac", "podesavanjeProfila", ["korisnik"=>$this->session->get('korisnik'),"lokacije"=>$lokacije,"poruka"=>$poruka,"kontroler"=>"Pisac"]);
+        
+    }
+    
+    /**
+     * Ova funkcija, nakon provere lozinke, azurira sve zeljene podatke ili birse nalog korisnika
+     * 
+     * @return void
+     */
+    
+    public function podesiProfil(){
+        if (isset($_POST['podesi'])){
+            $korisnikModel=new KorisnikModel();
+            $slika = $this->request->getVar("slika");
+            $ime = $this->request->getVar("ime");
+            $prezime = $this->request->getVar("prezime");
+            $email = $this->request->getVar("email");
+            $lokacija = $this->request->getVar("opstina");
+            $trenutnaLozinka = $this->request->getVar("trenutnaLozinka");
+            $novaLozinka = $this->request->getVar("novaLozinka");
+            $potvrdaNoveLozinke = $this->request->getVar("potvrdaNoveLozinke");
+
+            if (!password_verify($this->request->getVar("trenutnaLozinka"), $this->session->get('korisnik')->lozinka)) {
+                return $this->podesavanjeProfila("Pogresna lozinka");
+            }
+
+            $lozinka;
+            if (!$novaLozinka == ""){
+                if ($potvrdaNoveLozinke == $novaLozinka){
+                    $lozinka = password_hash($novaLozinka, PASSWORD_DEFAULT);
+                } else {
+                    return $this->podesavanjeProfila("Lozinke se ne poklapaju!");
+                }
+            } else {
+                $lozinka = $this->session->get('korisnik')->lozinka;
+            }
+
+
+            echo $lozinka;
+
+            $id=$this->session->get('korisnik')->korisnickoIme;
+
+             $data=[
+                 'korisnickoIme'=>$id,
+                'ime' => $ime,
+                "prezime" => $prezime,
+                "slikaURL" => $slika,
+               "lokacija" => $lokacija,
+                "lozinka" => $lozinka,
+                "email" => $email,
+            ];
+
+
+            $korisnikModel->save($data);
+            $this->session->set('korisnik',$korisnikModel->find($id));
+           return redirect()->to(site_url("/Zanatlija/profilZanatlije/$id"));
+        } else if (isset($_POST['brisi'])){
+            $trenutnaLozinka = $this->request->getVar("trenutnaLozinka");
+        
+            if (!password_verify($trenutnaLozinka, $this->session->get("korisnik")->lozinka)){
+                return $this->podesavanjeProfila("Pogresna lozinka");
+            } else {
+                $korisnikModel=new KorisnikModel();
+                $korisnikModel->izbrisiKorisnika($this->session->get('korisnik')->korisnickoIme);
+                $this->session->destroy();
+                return redirect()->to(site_url('/Zanatlija'));
+            }
+        }
     }
     
 }

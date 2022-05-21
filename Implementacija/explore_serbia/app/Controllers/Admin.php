@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 //by Marko Jovanovic 2018/0607
 //by Antonija Vasiljević 2019/0501
+//by Nikola Bjelobaba 2019/0442
 use App\Models\KorisnikModel;
 use App\Models\ObjavaModel;
 use App\Models\ObjavaTagModel;
@@ -68,7 +69,33 @@ class Admin extends BaseController
 
     public function napisiTekst()
     {
-        $this->prikazi("kreiranjeObjave", "headerAdmin",[]);
+        $tagModel = new TagModel();
+        $lokacijaModel = new LokacijaModel();
+        $allTags;
+        $tagoviIL = $tagModel->where("kategorija", "1")->Where("odobren", "1")->findAll();
+        // pocinje od 1 umesto 0 da bi se poklapao da id tagType-a
+        $allTags[1] = $tagoviIL;
+        
+        $tagoviIL = $tagModel->where("kategorija", "2")->Where("odobren", "1")->findAll();
+        $allTags[2] = $tagoviIL;
+        
+        $tagoviIL = $tagModel->where("kategorija", "3")->Where("odobren", "1")->findAll();
+        $allTags[3] = $tagoviIL;
+        
+        $tagoviIL = $tagModel->where("kategorija", "4")->Where("odobren", "1")->findAll();
+        $allTags[4] = $tagoviIL;
+        
+        $tagoviIL = $tagModel->where("kategorija", "5")->Where("odobren", "1")->findAll();
+        $allTags[5] = $tagoviIL;
+        
+        $tagoviIL = $tagModel->where("kategorija", "6")->Where("odobren", "1")->findAll();
+        $allTags[6] = $tagoviIL;
+        
+        $allLoks = $lokacijaModel->findAll();
+        
+        $this->session->set("allTags", $allTags);
+        $this->session->set("allLoks", $allLoks);
+        $this->prikazi("kreiranjeObjave", "headerAdmin",["greske" => []]);
 
     }
 
@@ -346,6 +373,33 @@ class Admin extends BaseController
         
         $this->prikazi("profilZanatlije", "headerAdmin", ["kontroler"=>"Admin","korisnik" => $this->session->get('korisnik'), "reklame" => $reklame,"autor"=>$autor]);
        
+    }
+    
+    /**
+     * Ova funkcija brise objavu ciji je id dodeljen,
+     * i birse sve veze ObjavaTag kojima je ta objava pripadala
+     * 
+     * 
+     * @param int $idObjava
+     */
+    public function brisanjeBiloKojeObjave($idObjava) {
+        $objavaModel = new ObjavaModel();
+        $objavaTagModel = new ObjavaTagModel();
+        
+        if ($idObjava == null)
+            return;
+        
+        $tagoviObjave = $objavaTagModel->where("objavaID", $idObjava)->findAll();
+        
+        foreach($tagoviObjave as $tagObjave) {
+            $objavaTagModel->delete($idObjava);
+        }
+        
+        $objavaModel->izbrisi ($idObjava);
+        $this->index();
+        
+        
+        
     }
 
 }

@@ -54,7 +54,8 @@
                                             echo '<h5 class="mb-1">'.$objava->naslov.'</h5>';
                                             echo '<small style="text-align:right">'.$objava->vremeKreiranja.'</small>';
                                             echo '<form method=post action="'.site_url("/Pisac/brisiObjavu/$objava->id").'">';
-                                            echo '<button class="btn button-add-tag">Izbrisi</button>';
+                                            echo '<button class="btnAdm"><i class="fa fa-trash" ></i></button>';
+                                            //echo '<button class="btn button-add-tag">Izbrisi</button>';
                                             echo '</form>';
                                         echo '</div>';
                                         

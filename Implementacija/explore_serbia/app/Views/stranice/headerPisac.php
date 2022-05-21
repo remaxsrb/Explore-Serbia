@@ -48,7 +48,7 @@
            <form method="get" action="<?php echo site_url("/Pisac/profil"); ?>">
             <button  class="btnAdm"><i class="fa fa-user" aria-hidden="true"></i></button>
             </form>
-            <form method="get" action="./podesavanje.html"><button class="btnAdm"><i class="fa fa-cogs"></i></button> </form>
+            <form method="get" action="<?php echo site_url("/Pisac/podesavanjeProfila"); ?>"><button class="btnAdm"><i class="fa fa-cogs"></i></button> </form>
             <a href="<?php echo site_url("/Pisac/izlogujSe"); ?>" style="margin-left: 10px;">Izloguj se</a>
         </div>
     </nav>

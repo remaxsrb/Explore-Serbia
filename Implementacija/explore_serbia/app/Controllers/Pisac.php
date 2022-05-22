@@ -9,6 +9,7 @@ use App\Models\ReklamaModel;
 use App\Models\LokacijaModel;
 use App\Models\ObjavaTagModel;
 use App\Models\TagModel;
+use App\Models\OcenaKorisnikObjavaModel;
 /**
  * Pisac – klasa kontroler koja je odgovorna za funkcionalnosti pisca
  *
@@ -44,6 +45,10 @@ class Pisac extends BaseController
         $korisnikModel = new KorisnikModel();
         $objavaTagModel = new ObjavaTagModel();
         $tagModel = new TagModel();
+        $ocenaKorisniObjavaModel = new OcenaKorisnikObjavaModel();
+        
+        $korisnikOcene = $ocenaKorisniObjavaModel->where("korisnickoIme", $this->session->get("korisnik")->korisnickoIme)->findAll();
+        
         $objave = $objavaModel->orderBy('vremeKreiranja', 'desc')->where('odobrena', 1)->findAll();
         
         $autori = [];
@@ -81,7 +86,7 @@ class Pisac extends BaseController
             array_push($tagoviCssKlase, $tagCssKlasa);
         }
         
-        $this->prikaz("headerPisac", "objave", ["kontroler" => "Pisac", "objave" => $objave, "autori" => $autori, "tagoviCssKlase" => $tagoviCssKlase]);
+        $this->prikaz("headerPisac", "objave", ["kontroler" => "Pisac", "objave" => $objave, "autori" => $autori, "tagoviCssKlase" => $tagoviCssKlase, "korisnikOcene" => $korisnikOcene]);
     }
     
     /**
@@ -97,6 +102,10 @@ class Pisac extends BaseController
         $korisnikModel = new KorisnikModel();
         $objavaTagModel = new ObjavaTagModel();
         $tagModel = new TagModel();
+        $ocenaKorisniObjavaModel = new OcenaKorisnikObjavaModel();
+        
+        $korisnikOcene = $ocenaKorisniObjavaModel->where("korisnickoIme", $this->session->get("korisnik")->korisnickoIme)->findAll();
+        
         $objave = $objavaModel->orderBy('vremeKreiranja', 'desc')->where('odobrena', 1)->like('naslov', $pretraga)->orLike('tekst', $pretraga)->findAll();
         
         $autori = [];
@@ -134,7 +143,7 @@ class Pisac extends BaseController
             array_push($tagoviCssKlase, $tagCssKlasa);
         }
         
-        $this->prikaz("headerPisac", "objave", ["kontroler" => "Pisac", "objave" => $objave, "autori" => $autori, "tagoviCssKlase" => $tagoviCssKlase]);
+        $this->prikaz("headerPisac", "objave", ["kontroler" => "Pisac", "objave" => $objave, "autori" => $autori, "tagoviCssKlase" => $tagoviCssKlase, "korisnikOcene" => $korisnikOcene]);
     }
      /**
      * Prikazuje objavu ciji je id zadat kao @param $idObjave
@@ -524,6 +533,39 @@ class Pisac extends BaseController
                 return redirect()->to(site_url('/Zanatlija'));
             }
         }
+    }
+    
+    public function ocenjivanje($idObjave, $imeKorisnika, $ocena) {
+        
+        $objavaModel = new ObjavaModel();
+        $korisnikModel = new KorisnikModel();
+        $ocenaKorisnikObjavaModel = new OcenaKorisnikObjavaModel();
+        
+        $lastOcena = $ocenaKorisnikObjavaModel->orderBy("id", "desc")->findAll(1);
+        if ($lastOcena == null) {
+            $ocenaId = 1;
+        } else {
+            $ocenaId = $lastOcena[0]->id + 1;
+        }
+        
+        $ocenaKorisnikObjavaModel->insert([
+            "id" => $ocenaId,
+            "korisnickoIme" => $imeKorisnika,
+            "objava" => $idObjave,
+            "ocena" => $ocena
+        ]);
+        
+        $objava = $objavaModel->find($idObjave);
+        $objava->brojOcena++;
+        $objava->sumaOcena += $ocena;
+        
+        $avgOcena = $objava->sumaOcena / $objava->brojOcena;
+        
+        $objavaModel->update($idObjave, $objava);
+        
+        
+        
+        echo $avgOcena;
     }
     
 }

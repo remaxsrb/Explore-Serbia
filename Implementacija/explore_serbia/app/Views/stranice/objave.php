@@ -15,6 +15,12 @@
                     <div class="card-body">';
         echo '<a href="'. site_url("/$kontroler/objava/$objava->id").'" class="card-title"><h3>'.$objava->naslov.'</h3></a>';
         echo '<p class="card-date">'.date("d.m.Y", strtotime($objava->vremeKreiranja)).'</p>';
+       
+            
+        $slikaRegex = "/(\[img\])(.+)(\[\/img\])/";
+        if (preg_match($slikaRegex, $objava->tekst, $matches)) {
+            $objava->tekst =  preg_replace($slikaRegex, "" , $objava->tekst);
+         }
         echo '<p class="card-text">'.substr($objava->tekst, 0, 300).'...</p>';
         if ($autori[$i]->slikaURL??null != null){
             echo '<img src="'.$autori[$i]->slikaURL.'" alt="Profile picture" class="imgclass">';

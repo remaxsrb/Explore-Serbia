@@ -323,4 +323,25 @@ class Gost extends BaseController
         $this->prikaz("headerGostBezPretrage", "profilZanatlije", ["kontroler"=>"Gost", "reklame" => $reklame,"autor"=>$autor]);
        
     }
+    
+    /**
+     * Ova funkcija prikazuje stranu pisca cije je korisnicko ime dato
+     * 
+     * @param string $korIme
+     */
+    public function profilPisac($korIme) {
+        $lokacijaModel = new LokacijaModel();
+        $objavaModel = new ObjavaModel();
+        $korisnikModel = new KorisnikModel();
+        
+        $autor = $korisnikModel->where("tip", 2)->find($korIme);
+        
+        if ($autor == null) {
+            return;
+        }
+        $lokacija = $lokacijaModel->find($autor->lokacija);
+        $objave = $objavaModel->where("autor", $autor->korisnickoIme)->findAll();
+        
+        $this->prikaz("headerGostBezPretrage", "profilPisac", ["kontroler" => "Gost", "korisnik" => [], "lokacija" => $lokacija, "objave" => $objave, "autor" => $autor]);
+    }
 }

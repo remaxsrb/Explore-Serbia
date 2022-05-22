@@ -117,6 +117,9 @@ class Admin extends BaseController
         $objavaModel = new ObjavaModel();
         $korisnikModel = new KorisnikModel();
         $reklamaModel = new ReklamaModel();
+        $ocenaKorisniObjavaModel = new OcenaKorisnikObjavaModel();
+        
+        $korisnikOcene = $ocenaKorisniObjavaModel->where("korisnickoIme", $this->session->get("korisnik")->korisnickoIme)->findAll();
 
         $objava = $objavaModel->find($idObjave);
         $autor = $korisnikModel->find($objava->autor);
@@ -133,7 +136,7 @@ class Admin extends BaseController
             array_push($autoriReklama, $autorReklame);
         }
 
-        $this->prikazi("objava", "headerAdmin", ["objava" => $objava, "autor" => $autor, "reklame" => $reklame, "autoriReklama" => $autoriReklama,"kontroler"=>"Admin"]);
+        $this->prikazi("objava", "headerAdmin", ["objava" => $objava, "autor" => $autor, "reklame" => $reklame, "autoriReklama" => $autoriReklama, "korisnikOcene" => $korisnikOcene, "kontroler"=>"Admin"]);
     }
 
     public function reklama($idReklame){
@@ -439,6 +442,27 @@ class Admin extends BaseController
         
         
         echo $avgOcena;
+    }
+    
+    /**
+     * Ova funkcija prikazuje stranu pisca cije je korisnicko ime dato
+     * 
+     * @param string $korIme
+     */
+    public function profilPisac($korIme) {
+        $lokacijaModel = new LokacijaModel();
+        $objavaModel = new ObjavaModel();
+        $korisnikModel = new KorisnikModel();
+        
+        $autor = $korisnikModel->where("tip", 2)->find($korIme);
+        
+        if ($autor == null) {
+            return;
+        }
+        $lokacija = $lokacijaModel->find($autor->lokacija);
+        $objave = $objavaModel->where("autor", $autor->korisnickoIme)->findAll();
+        
+        $this->prikazi("profilPisac", "headerAdmin", ["kontroler" => "Admin", "korisnik" => $this->session->get("korisnik"), "lokacija" => $lokacija, "objave" => $objave, "autor" => $autor]);
     }
 
 }

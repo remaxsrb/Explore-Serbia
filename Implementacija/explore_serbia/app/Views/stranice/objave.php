@@ -23,7 +23,7 @@
         }
         
         if ($objava->autor != null){
-            echo '<a href="#" class="card-link author-link">'.$objava->autor.'</a>';
+            echo '<a href="/'.$kontroler.'/profilPisac/'.$objava->autor.'" class="card-link author-link">'.$objava->autor.'</a>';
         } else {
             echo '<p class="card-link author-link">[deleted]</p>';
         }

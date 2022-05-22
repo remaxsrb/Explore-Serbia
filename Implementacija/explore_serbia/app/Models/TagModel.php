@@ -46,8 +46,10 @@ class TagModel extends Model
         $id=null;
         foreach ($tagovi as $tag)
         {
-            if($tag->nazivRadnje==$naziv)
+            if($tag->naziv==$naziv){
                 $id=$tag->id;
+                break;
+            }
         }
 
         $this->delete($id);

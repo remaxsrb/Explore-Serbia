@@ -9,9 +9,24 @@ use App\Models\ReklamaModel;
 use App\Models\LokacijaModel;
 use App\Models\ObjavaTagModel;
 use App\Models\TagModel;
+use App\Models\OcenaKorisnikObjavaModel;
+
+/**
+ * Zanatlija – klasa kontroler koja je odgovorna za funkcionalnosti zanatlije
+ *
+ * @version 1.0
+ */
 
 class Zanatlija extends BaseController
 {
+       /**
+     * Prikazuje zadati header i stranicu
+     * @param string $header Header 
+     * @param string $stranica Stranica
+     * @param array $podaci Podaci
+     *
+     * @return void
+     */
      protected function prikaz($header, $stranica, $podaci){
          if ($this->session->get('korisnik')!=null){
          $podaci['kontroler']='Zanatlija';
@@ -23,12 +38,21 @@ class Zanatlija extends BaseController
          }
     }
     
+     /**
+     * Prikazuje pocetnu stranicu sa svim objavama
+     *
+     * @return void
+     */
     public function index()
     {
         $objavaModel = new ObjavaModel();
         $korisnikModel = new KorisnikModel();
         $objavaTagModel = new ObjavaTagModel();
         $tagModel = new TagModel();
+        $ocenaKorisniObjavaModel = new OcenaKorisnikObjavaModel();
+        
+        $korisnikOcene = $ocenaKorisniObjavaModel->where("korisnickoIme", $this->session->get("korisnik")->korisnickoIme)->findAll();
+        
         $objave = $objavaModel->orderBy('vremeKreiranja', 'desc')->where('odobrena', 1)->findAll();
         
         $autori = [];
@@ -66,13 +90,22 @@ class Zanatlija extends BaseController
             array_push($tagoviCssKlase, $tagCssKlasa);
         }
         
-        $this->prikaz("headerZanatlija", "objave", ["kontroler" => "Zanatlija", "objave" => $objave, "autori" => $autori, "tagoviCssKlase" => $tagoviCssKlase]);
+        $this->prikaz("headerZanatlija", "objave", ["kontroler" => "Zanatlija", "objave" => $objave, "autori" => $autori, "tagoviCssKlase" => $tagoviCssKlase, "korisnikOcene" => $korisnikOcene]);
     }
-    
+        /**
+     * Prikazuje objavu ciji je id zadat kao @param $idObjave
+     *
+     * @param int $idObjave IdObjave
+     *  
+     * @return void
+     */
     public function objava($idObjave){
         $objavaModel = new ObjavaModel();
         $korisnikModel = new KorisnikModel();
         $reklamaModel = new ReklamaModel();
+        $ocenaKorisniObjavaModel = new OcenaKorisnikObjavaModel();
+        
+        $korisnikOcene = $ocenaKorisniObjavaModel->where("korisnickoIme", $this->session->get("korisnik")->korisnickoIme)->findAll();
         
         $objava = $objavaModel->find($idObjave);
         $autor = $korisnikModel->find($objava->autor);
@@ -90,9 +123,13 @@ class Zanatlija extends BaseController
             array_push($autoriReklama, $autorReklame);
         }
         
-        $this->prikaz("headerZanatlijaBezPretrage", "objava", ["objava" => $objava, "autor" => $autor, "reklame" => $reklame, "autoriReklama" => $autoriReklama]);
+        $this->prikaz("headerZanatlijaBezPretrage", "objava", ["objava" => $objava, "autor" => $autor, "reklame" => $reklame, "autoriReklama" => $autoriReklama, "korisnikOcene" => $korisnikOcene]);
     }
-    
+       /**
+     * Prikazuje sve objave koje odgovaraju trazenom pojmu
+     *
+     * @return void
+     */
     public function pretraga(){
         $pretraga = $this->request->getVar("pretraga");
         if ($pretraga == "") return redirect()->to("Zanatlija/");
@@ -101,6 +138,10 @@ class Zanatlija extends BaseController
         $korisnikModel = new KorisnikModel();
         $objavaTagModel = new ObjavaTagModel();
         $tagModel = new TagModel();
+        $ocenaKorisniObjavaModel = new OcenaKorisnikObjavaModel();
+        
+        $korisnikOcene = $ocenaKorisniObjavaModel->where("korisnickoIme", $this->session->get("korisnik")->korisnickoIme)->findAll();
+        
         $objave = $objavaModel->orderBy('vremeKreiranja', 'desc')->where('odobrena', 1)->like('naslov', $pretraga)->orLike('tekst', $pretraga)->findAll();
         
         $autori = [];
@@ -138,11 +179,16 @@ class Zanatlija extends BaseController
             array_push($tagoviCssKlase, $tagCssKlasa);
         }
         
-        $this->prikaz("headerZanatlija", "objave", ["kontroler" => "Zanatlija", "objave" => $objave, "autori" => $autori, "tagoviCssKlase" => $tagoviCssKlase]);
+        $this->prikaz("headerZanatlija", "objave", ["kontroler" => "Zanatlija", "objave" => $objave, "autori" => $autori, "tagoviCssKlase" => $tagoviCssKlase, "korisnikOcene" => $korisnikOcene]);
     }
     
- 
-    
+   /**
+     * Prikazuje reklamu ciji je id zadat kao @param $idReklame
+     *
+     * @param int $idReklame IdReklame
+     *  
+     * @return void
+     */
     public function reklama($idReklame){
      
         $reklamaModel = new ReklamaModel();
@@ -161,6 +207,11 @@ class Zanatlija extends BaseController
       
     }
 
+        /**
+     * Funkcija koja vodi korisnika do strane za kreiranje reklame
+     *
+     * @return void
+     */
     
     public function kreiranjeReklame($poruka=null) {
         $lokacijaModel = new LokacijaModel();
@@ -168,7 +219,13 @@ class Zanatlija extends BaseController
         
         $this->prikaz("headerZanatlijaBezPretrage", "kreiranjeReklame",  ["lokacije" => $lokacije, "poruka" => $poruka]);
     }
-   
+       /**
+     *  Ova funkcija vadilira se poslate podatke kod kreiranja reklame i,
+     * ako su svi podaci validni, salje i kreira ih u bazi
+     *
+     * @return void
+     */
+    
     public function kreirajReklamu() {
 
         
@@ -184,7 +241,7 @@ class Zanatlija extends BaseController
          $datumKreiranja=date('Y-m-d');
          $autor=$this->session->get('korisnik');
 
-         
+     
          $reklamaModel->save([
             "nazivRadnje" => $naziv,
             "opis" => $opis,
@@ -205,7 +262,11 @@ class Zanatlija extends BaseController
      
     }
     
-    
+        /**
+     * Ova funkcija prikazuje stranu zanatlije cije je korisnicko ime dato
+     * 
+     * @param string $korIme
+     */
     public function profilZanatlije($korIme){
    
    $reklamaModel = new ReklamaModel();
@@ -217,6 +278,12 @@ class Zanatlija extends BaseController
         $this->prikaz("headerZanatlijaBezPretrage", "profilZanatlije", ["kontroler"=>"Zanatlija","korisnik" => $this->session->get('korisnik'), "reklame" => $reklame,"autor"=>$autor]);
        
     }
+    
+     /**
+     * Ova funkcija brise reklamu sa zadatim id iz baze i azurira stranicu korisnickog profila
+     * 
+     * @param string $id
+     */
     public function brisiReklamu($id) {
         $reklamaModel=new ReklamaModel();
     $reklamaModel->delete($id);
@@ -227,6 +294,11 @@ class Zanatlija extends BaseController
         $this->session->destroy();
          return redirect()->to(site_url("/Gost"));
     }
+      /**
+     * Ova funkcija prikazuje meni za podesavanje profila zanatliji
+     * 
+     * @param type $poruka
+     */
     public function podesavanjeProfila($poruka=null){
         $lokacijaModel = new LokacijaModel();
         $lokacije = $lokacijaModel->findAll();
@@ -234,6 +306,11 @@ class Zanatlija extends BaseController
         $this->prikaz("headerZanatlijaBezPretrage", "podesavanjeProfila", ["korisnik"=>$this->session->get('korisnik'),"lokacije"=>$lokacije,"poruka"=>$poruka,"kontroler"=>"Zanatlija"]);
         
     }
+      /**
+     * Ova funkcija, nakon provere lozinke, azurira sve zeljene podatke ili brise nalog korisnika
+     * 
+     * @return void
+     */
     public function podesiProfil(){
         if (isset($_POST['podesi'])){
             $korisnikModel=new KorisnikModel();
@@ -292,6 +369,65 @@ class Zanatlija extends BaseController
                 return redirect()->to(site_url('/Zanatlija'));
             }
         }
+    }
+     /**
+     * Ova funkcija sluzi za ocenjivanje objave sa datim id od strane korisnika sa datim id 
+     * 
+     * @param string $idObjave, string $imeKorisnika, string $ocena
+     */
+    
+    public function ocenjivanje($idObjave, $imeKorisnika, $ocena) {
+        
+        $objavaModel = new ObjavaModel();
+        $korisnikModel = new KorisnikModel();
+        $ocenaKorisnikObjavaModel = new OcenaKorisnikObjavaModel();
+        
+        $lastOcena = $ocenaKorisnikObjavaModel->orderBy("id", "desc")->findAll(1);
+        if ($lastOcena == null) {
+            $ocenaId = 1;
+        } else {
+            $ocenaId = $lastOcena[0]->id + 1;
+        }
+        
+        $ocenaKorisnikObjavaModel->insert([
+            "id" => $ocenaId,
+            "korisnickoIme" => $imeKorisnika,
+            "objava" => $idObjave,
+            "ocena" => $ocena
+        ]);
+        
+        $objava = $objavaModel->find($idObjave);
+        $objava->brojOcena++;
+        $objava->sumaOcena += $ocena;
+        
+        $avgOcena = $objava->sumaOcena / $objava->brojOcena;
+        
+        $objavaModel->update($idObjave, $objava);
+        
+        
+        
+        echo $avgOcena;
+    }
+    
+    /**
+     * Ova funkcija prikazuje stranu pisca cije je korisnicko ime dato
+     * 
+     * @param string $korIme
+     */
+    public function profilPisac($korIme) {
+        $lokacijaModel = new LokacijaModel();
+        $objavaModel = new ObjavaModel();
+        $korisnikModel = new KorisnikModel();
+        
+        $autor = $korisnikModel->where("tip", 2)->find($korIme);
+        
+        if ($autor == null) {
+            return;
+        }
+        $lokacija = $lokacijaModel->find($autor->lokacija);
+        $objave = $objavaModel->where("autor", $autor->korisnickoIme)->findAll();
+        
+        $this->prikaz("headerZanatlija", "profilPisac", ["kontroler" => "Zanatlija", "korisnik" => $this->session->get("korisnik"), "lokacija" => $lokacija, "objave" => $objave, "autor" => $autor]);
     }
     
 }

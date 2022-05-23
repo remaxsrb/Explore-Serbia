@@ -1,5 +1,6 @@
 <!--by Miloš Brković 0599/2019-->
 <!--by Antonija Vasiljević 0501/2019-->
+<?php $session = session(); ?>
 <div class="container">
 <style>
     body {
@@ -18,7 +19,7 @@
                 }
             
                 if ($objava->autor??null != null){
-                    echo '<a href="#" class="card-link author-link">'.$autor->korisnickoIme.'</a>';
+                    echo '<a href="/'.$kontroler.'/profilPisac/'.$autor->korisnickoIme.'" class="card-link author-link">'.$autor->korisnickoIme.'</a>';
                 } else {
                     echo '<p>[deleted]</p>';
                 }
@@ -33,7 +34,7 @@
             
             $slikaRegex = "/(\[img\])(.+)(\[\/img\])/";
           if (preg_match($slikaRegex, $objava->tekst, $matches)) {
-            echo preg_replace($slikaRegex, "<img src='".$matches[2]."'></img>" , $objava->tekst);
+            echo preg_replace($slikaRegex, "<br/><img src='".$matches[2]."'></img><br/>" , $objava->tekst);
          } else {
              echo $objava->tekst;
          }
@@ -43,11 +44,15 @@
          
 
         <?php
+        if ($objava->brojOcena != 0) {
         $ocena = $objava->sumaOcena / $objava->brojOcena;
+        } else {
+            $ocena = 0;
+        }
         $ocenaCeoDeo = floor($ocena);
         $ocenaDecimalniDeo = round($ocena - $ocenaCeoDeo, 2);
        
-        echo '<div class="rating">';
+        echo '<div id="ratingObjava'.$objava->id.'" class="rating">';
         $polaZvezdePrikazano = false;
         for ($k = 1; $k <= 5; $k++){
             if ($ocenaCeoDeo >= $k){
@@ -65,6 +70,45 @@
             }
         }
         echo '</div>';
+        
+        if ($kontroler != "Gost") {
+            
+            $ocenaObjave = -1;
+            foreach($korisnikOcene as $korOcena) {
+                if ($korOcena->objava == $objava->id) {
+                    $ocenaObjave = $korOcena->ocena;
+                    break;
+                }
+            }
+            
+            $hidden1 = "";
+            $hidden2 = "";
+            if ($ocenaObjave == -1) {
+                $hidden2 = 'hidden="true"';
+            } else {
+                $hidden1 = 'hidden="true"';
+            }
+            
+            
+        echo '<div id="oceniDiv'.$objava->id.'" '.$hidden1.'>';
+                echo '<select id="selOcena'.$objava->id.'" style="float:left">';
+                    echo '<option value=0>0</option>';
+                    echo '<option value=1>1</option>';
+                    echo '<option value=2>2</option>';
+                    echo '<option value=3>3</option>';
+                    echo '<option value=4>4</option>';
+                    echo '<option value=5>5</option>';
+                echo '</select>';
+                
+                $siteUrl = site_url("$kontroler/ocenjivanje");
+                echo '<button class="btn  button-add-tag" style="float:left" onclick="oceni('; echo $objava->id.", '".$session->get("korisnik")->korisnickoIme."', '".$siteUrl."')"; echo '">Oceni</button>';
+        echo '</div>';
+            
+        echo '<div id="prikazOcene'.$objava->id.'" '.$hidden2.'>';
+            echo '<span style="float:left">Vasa ocena: '.$ocenaObjave.'</span>';
+        echo '</div>';
+            
+        }
             
         ?>
         </div>
@@ -107,3 +151,4 @@
         </div>
     </div>
 </div>
+<script type="text/javascript" src="/js/ocenaObjave.js"></script> 

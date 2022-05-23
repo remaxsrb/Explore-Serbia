@@ -246,7 +246,7 @@ class Pisac extends BaseController
     
     /**
      * Ova funkcija vadilira se poslate podatke kod kreiranja objave i,
-     * ako su svi podaci validni, salje kreira ih u bazi
+     * ako su svi podaci validni, salje i kreira ih u bazi
      * 
      * @return void
      */
@@ -558,6 +558,7 @@ class Pisac extends BaseController
             }
         }
     }
+
       /**
      * Ova funkcija sluzi za ocenjivanje objave sa datim id od strane korisnika sa datim id 
      * 

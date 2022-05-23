@@ -137,6 +137,7 @@ class Admin extends BaseController
         }
 
         $this->prikazi("objava", "headerAdmin", ["objava" => $objava, "autor" => $autor, "reklame" => $reklame, "autoriReklama" => $autoriReklama, "korisnikOcene" => $korisnikOcene, "kontroler"=>"Admin"]);
+
     } 
     /**
      * Prikazuje reklamu ciji je id zadat kao @param $idReklame
@@ -145,6 +146,7 @@ class Admin extends BaseController
      *  
      * @return void
      */
+
     public function reklama($idReklame){
          $reklamaModel = new ReklamaModel();
         $korisnikModel = new KorisnikModel();
@@ -438,11 +440,13 @@ class Admin extends BaseController
         
     }
     
+
       /**
      * Ova funkcija sluzi za ocenjivanje objave sa datim id od strane korisnika sa datim id 
      * 
      * @param string $idObjave, string $imeKorisnika, string $ocena
      */
+
     public function ocenjivanje($idObjave, $imeKorisnika, $ocena) {
         
         $objavaModel = new ObjavaModel();

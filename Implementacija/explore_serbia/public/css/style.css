@@ -280,7 +280,7 @@ form {
 span.dropdown-item:hover{
     background-color: blue;
     color: white;
-    cursor: hand;
+    cursor: pointer;
 }
 
 .filterSelected {

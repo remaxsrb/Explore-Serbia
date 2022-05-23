@@ -246,7 +246,7 @@ class Pisac extends BaseController
     
     /**
      * Ova funkcija vadilira se poslate podatke kod kreiranja objave i,
-     * ako su svi podatci validni, salje kreira ih u bazi
+     * ako su svi podaci validni, salje i kreira ih u bazi
      * 
      * @return void
      */
@@ -494,7 +494,7 @@ class Pisac extends BaseController
     }
     
     /**
-     * Ova funkcija, nakon provere lozinke, azurira sve zeljene podatke ili birse nalog korisnika
+     * Ova funkcija, nakon provere lozinke, azurira sve zeljene podatke ili brise nalog korisnika
      * 
      * @return void
      */
@@ -558,7 +558,12 @@ class Pisac extends BaseController
             }
         }
     }
-    
+
+      /**
+     * Ova funkcija sluzi za ocenjivanje objave sa datim id od strane korisnika sa datim id 
+     * 
+     * @param string $idObjave, string $imeKorisnika, string $ocena
+     */ 
     public function ocenjivanje($idObjave, $imeKorisnika, $ocena) {
         
         $objavaModel = new ObjavaModel();

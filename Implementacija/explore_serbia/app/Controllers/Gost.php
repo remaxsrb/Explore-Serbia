@@ -312,6 +312,11 @@ class Gost extends BaseController
             return redirect()->to(site_url('Zanatlija'));
         }
     }
+       /**
+     * Ova funkcija prikazuje stranu zanatlije cije je korisnicko ime dato
+     * 
+     * @param string $korIme
+     */
     public function profilZanatlije($korIme){
    
    $reklamaModel = new ReklamaModel();

@@ -34,12 +34,18 @@
             <li>
                 <form method="GET" action="<?php echo site_url("Gost/pretraga"); ?>" class="form-inline my-2 my-lg-0">
                     <input class="form-control mr-sm-2" type="search" name="pretraga" placeholder="Pretraži" aria-label="Search">
-                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Pretraži</button>
+                    <button class="btn btn-outline-success my-2 my-sm-0 form-control mr-sm-2" type="submit">Pretraži</button>
                 </form>
             </li>
         </ul>
 
-        <form method="get" action="<?php echo site_url("/Gost/registracija"); ?>"><button class="btn  btn-info my-2 my-sm-0" type="submit">Registruj se</button></form>
-        <form method="get" action="<?php echo site_url("/Gost/login"); ?>"><button class="btn  btn-info my-2 my-sm-0" type="submit">Uloguj se</button></form>
+        <ul class="nav flex-column flex-md-row justify-content-end">
+            <li>
+                <form method="get" action="<?php echo site_url("/Gost/registracija"); ?>"><button class="btn btn-info my-2" type="submit">Registruj se</button></form>
+            </li>
+            <li>
+                <form method="get" action="<?php echo site_url("/Gost/login"); ?>"><button class="btn btn-info my-2" type="submit">Uloguj se</button></form>
+            </li>
+        </ul>
     </div>
 </nav>

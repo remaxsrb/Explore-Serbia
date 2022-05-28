@@ -372,65 +372,66 @@ class Zanatlija extends BaseController
             }
         }
     }
-     /**
-     * Ova funkcija sluzi za ocenjivanje objave sa datim id od strane korisnika sa datim id 
-     * 
-     * @param string $idObjave, string $imeKorisnika, string $ocena
-     */
+
+//     /**
+//     * Ova funkcija sluzi za ocenjivanje objave sa datim id od strane korisnika sa datim id 
+//     * 
+//     * @param string $idObjave, string $imeKorisnika, string $ocena
+//     */
     
-    public function ocenjivanje($idObjave, $imeKorisnika, $ocena) {
-        
-        $objavaModel = new ObjavaModel();
-        $korisnikModel = new KorisnikModel();
-        $ocenaKorisnikObjavaModel = new OcenaKorisnikObjavaModel();
-        
-        $lastOcena = $ocenaKorisnikObjavaModel->orderBy("id", "desc")->findAll(1);
-        if ($lastOcena == null) {
-            $ocenaId = 1;
-        } else {
-            $ocenaId = $lastOcena[0]->id + 1;
-        }
-        
-        $ocenaKorisnikObjavaModel->insert([
-            "id" => $ocenaId,
-            "korisnickoIme" => $imeKorisnika,
-            "objava" => $idObjave,
-            "ocena" => $ocena
-        ]);
-        
-        $objava = $objavaModel->find($idObjave);
-        $objava->brojOcena++;
-        $objava->sumaOcena += $ocena;
-        
-        $avgOcena = $objava->sumaOcena / $objava->brojOcena;
-        
-        $objavaModel->update($idObjave, $objava);
-        
-        
-        
-        echo $avgOcena;
-    }
+//    public function ocenjivanje($idObjave, $imeKorisnika, $ocena) {
+//        
+//        $objavaModel = new ObjavaModel();
+//        $korisnikModel = new KorisnikModel();
+//        $ocenaKorisnikObjavaModel = new OcenaKorisnikObjavaModel();
+//        
+//        $lastOcena = $ocenaKorisnikObjavaModel->orderBy("id", "desc")->findAll(1);
+//        if ($lastOcena == null) {
+//            $ocenaId = 1;
+//        } else {
+//            $ocenaId = $lastOcena[0]->id + 1;
+//        }
+//        
+//        $ocenaKorisnikObjavaModel->insert([
+//            "id" => $ocenaId,
+//            "korisnickoIme" => $imeKorisnika,
+//            "objava" => $idObjave,
+//            "ocena" => $ocena
+//        ]);
+//        
+//        $objava = $objavaModel->find($idObjave);
+//        $objava->brojOcena++;
+//        $objava->sumaOcena += $ocena;
+//        
+//        $avgOcena = $objava->sumaOcena / $objava->brojOcena;
+//        
+//        $objavaModel->update($idObjave, $objava);
+//        
+//        
+//        
+//        echo $avgOcena;
+//    }
     
-    /**
-     * Ova funkcija prikazuje stranu pisca cije je korisnicko ime dato
-     * 
-     * @param string $korIme
-     */
-    public function profilPisac($korIme) {
-        $lokacijaModel = new LokacijaModel();
-        $objavaModel = new ObjavaModel();
-        $korisnikModel = new KorisnikModel();
-        
-        $autor = $korisnikModel->where("tip", 2)->find($korIme);
-        
-        if ($autor == null) {
-            return;
-        }
-        $lokacija = $lokacijaModel->find($autor->lokacija);
-        $objave = $objavaModel->where("autor", $autor->korisnickoIme)->findAll();
-        
-        $this->prikaz("headerZanatlija", "profilPisac", ["kontroler" => "Zanatlija", "korisnik" => $this->session->get("korisnik"), "lokacija" => $lokacija, "objave" => $objave, "autor" => $autor]);
-    }
+//    /**
+//     * Ova funkcija prikazuje stranu pisca cije je korisnicko ime dato
+//     * 
+//     * @param string $korIme
+//     */
+//    public function profilPisac($korIme) {
+//        $lokacijaModel = new LokacijaModel();
+//        $objavaModel = new ObjavaModel();
+//        $korisnikModel = new KorisnikModel();
+//        
+//        $autor = $korisnikModel->where("tip", 2)->find($korIme);
+//        
+//        if ($autor == null) {
+//            return;
+//        }
+//        $lokacija = $lokacijaModel->find($autor->lokacija);
+//        $objave = $objavaModel->where("autor", $autor->korisnickoIme)->findAll();
+//        
+//        $this->prikaz("headerZanatlija", "profilPisac", ["kontroler" => "Zanatlija", "korisnik" => $this->session->get("korisnik"), "lokacija" => $lokacija, "objave" => $objave, "autor" => $autor]);
+//    }
     
     public function ocenjivanje($idObjave, $imeKorisnika, $ocena) {
         

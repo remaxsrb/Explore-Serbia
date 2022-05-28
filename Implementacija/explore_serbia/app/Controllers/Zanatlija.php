@@ -372,6 +372,7 @@ class Zanatlija extends BaseController
             }
         }
     }
+
 //     /**
 //     * Ova funkcija sluzi za ocenjivanje objave sa datim id od strane korisnika sa datim id 
 //     * 

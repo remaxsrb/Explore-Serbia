@@ -38,9 +38,16 @@
                         } else {
                             foreach ($objave as $objava) {
                                 
-                                if (!$objava->odobrena && $korisnik->korisnickoIme!=$autor->korisnickoIme) {
-                                    continue;
+                                if ($kontroler == "Gost"){
+                                    if (!$objava->odobrena) {
+                                        continue;
+                                    }
+                                } else {
+                                    if (!$objava->odobrena && $korisnik->korisnickoIme!=$autor->korisnickoIme ) {
+                                        continue;
+                                    }
                                 }
+                                
                                 
                                 echo '<a href="'. site_url("/$kontroler/objava/$objava->id").'" class="list-group-item list-group-item-action flex-column align-items">'
                                         . '';

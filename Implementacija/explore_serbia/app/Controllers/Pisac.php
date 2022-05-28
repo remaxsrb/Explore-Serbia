@@ -240,7 +240,7 @@ class Pisac extends BaseController
         
         $this->session->set("allTags", $allTags);
         $this->session->set("allLoks", $allLoks);
-        $this->prikaz("headerPisac", "kreiranjeObjave", ["greske" => []]);
+        $this->prikaz("headerPisacBezPretrage", "kreiranjeObjave", ["greske" => []]);
         //"allTags" => $allTags]
     }
     
@@ -268,7 +268,7 @@ class Pisac extends BaseController
         
         if ($this->request->getVar("mainTag") == "Novi tag") {
             if (!$this->validate(["noviMainTag" => "required|max_length[120]"])) {
-                return $this->prikaz("headerPisac", "kreiranjeObjave", ["greske" => $this->validator->getErrors()]);
+                return $this->prikaz("headerPisacBezPretrage", "kreiranjeObjave", ["greske" => $this->validator->getErrors()]);
             }
         }
         
@@ -430,7 +430,7 @@ class Pisac extends BaseController
         $lokacija = $lokacijaModel->find($korisnik->lokacija);
         $objave = $objavaModel->where("autor", $korisnik->korisnickoIme)->findAll();
         
-        $this->prikaz("headerPisac", "profilPisac", ["kontroler" => "Pisac", "korisnik" => $korisnik, "lokacija" => $lokacija, "objave" => $objave, "autor" => $korisnik]);
+        $this->prikaz("headerPisacBezPretrage", "profilPisac", ["kontroler" => "Pisac", "korisnik" => $korisnik, "lokacija" => $lokacija, "objave" => $objave, "autor" => $korisnik]);
     }
     
     /**
@@ -451,7 +451,7 @@ class Pisac extends BaseController
         $lokacija = $lokacijaModel->find($autor->lokacija);
         $objave = $objavaModel->where("autor", $autor->korisnickoIme)->findAll();
         
-        $this->prikaz("headerPisac", "profilPisac", ["kontroler" => "Pisac", "korisnik" => $this->session->get("korisnik"), "lokacija" => $lokacija, "objave" => $objave, "autor" => $autor]);
+        $this->prikaz("headerPisacBezPretrage", "profilPisac", ["kontroler" => "Pisac", "korisnik" => $this->session->get("korisnik"), "lokacija" => $lokacija, "objave" => $objave, "autor" => $autor]);
     }
     
     /**
@@ -489,7 +489,7 @@ class Pisac extends BaseController
         $lokacijaModel = new LokacijaModel();
         $lokacije = $lokacijaModel->findAll();
         
-        $this->prikaz("headerPisac", "podesavanjeProfila", ["korisnik"=>$this->session->get('korisnik'),"lokacije"=>$lokacije,"poruka"=>$poruka,"kontroler"=>"Pisac"]);
+        $this->prikaz("headerPisacBezPretrage", "podesavanjeProfila", ["korisnik"=>$this->session->get('korisnik'),"lokacije"=>$lokacije,"poruka"=>$poruka,"kontroler"=>"Pisac"]);
         
     }
     
@@ -544,7 +544,7 @@ class Pisac extends BaseController
 
             $korisnikModel->save($data);
             $this->session->set('korisnik',$korisnikModel->find($id));
-           return redirect()->to(site_url("/Zanatlija/profilZanatlije/$id"));
+           return redirect()->to(site_url("/Pisac/profilPisac/$id"));
         } else if (isset($_POST['brisi'])){
             $trenutnaLozinka = $this->request->getVar("trenutnaLozinka");
         
@@ -554,7 +554,7 @@ class Pisac extends BaseController
                 $korisnikModel=new KorisnikModel();
                 $korisnikModel->izbrisiKorisnika($this->session->get('korisnik')->korisnickoIme);
                 $this->session->destroy();
-                return redirect()->to(site_url('/Zanatlija'));
+                return redirect()->to(site_url('/Pisac'));
             }
         }
     }
@@ -611,7 +611,7 @@ class Pisac extends BaseController
        $reklame= $reklamaModel->orderBy('vremeKreiranja', 'desc')->where('autor', $korIme)->findAll();
 
         
-        $this->prikaz("headerPisac", "profilZanatlije", ["kontroler"=>"Gost", "reklame" => $reklame,"autor"=>$autor]);
+        $this->prikaz("headerPisacBezPretrage", "profilZanatlije", ["kontroler"=>"Gost", "reklame" => $reklame,"autor"=>$autor]);
        
     }
     

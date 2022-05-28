@@ -287,6 +287,16 @@ span.dropdown-item:hover{
     background-color: blue;
     color: white;
 }
-
-
-
+/*
+@media (min-width: 992px) { 
+    .form-control {
+        margin-left: 10px;
+    }
+}
+*/
+@media only screen and (max-width: 576px) {
+  .btn {
+        margin-left: 0px;
+        width: 100%;
+    }
+}

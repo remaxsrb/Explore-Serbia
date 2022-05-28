@@ -117,6 +117,9 @@ class Admin extends BaseController
         $objavaModel = new ObjavaModel();
         $korisnikModel = new KorisnikModel();
         $reklamaModel = new ReklamaModel();
+        $ocenaKorisniObjavaModel = new OcenaKorisnikObjavaModel();
+        
+        $korisnikOcene = $ocenaKorisniObjavaModel->where("korisnickoIme", $this->session->get("korisnik")->korisnickoIme)->findAll();
 
         $objava = $objavaModel->find($idObjave);
         $autor = $korisnikModel->find($objava->autor);
@@ -133,8 +136,16 @@ class Admin extends BaseController
             array_push($autoriReklama, $autorReklame);
         }
 
-        $this->prikazi("objava", "headerAdmin", ["objava" => $objava, "autor" => $autor, "reklame" => $reklame, "autoriReklama" => $autoriReklama,"kontroler"=>"Admin"]);
-    }
+        $this->prikazi("objava", "headerAdmin", ["objava" => $objava, "autor" => $autor, "reklame" => $reklame, "autoriReklama" => $autoriReklama, "korisnikOcene" => $korisnikOcene, "kontroler"=>"Admin"]);
+
+    } 
+    /**
+     * Prikazuje reklamu ciji je id zadat kao @param $idReklame
+     *
+     * @param int $idReklame IdReklame
+     *  
+     * @return void
+     */
 
     public function reklama($idReklame){
          $reklamaModel = new ReklamaModel();
@@ -289,7 +300,13 @@ class Admin extends BaseController
         $reklamaModel=new ReklamaModel();
     $reklamaModel->delete($id);
        return redirect()->to(site_url("/Admin/listaReklama"));
-  }      
+  }
+  
+    /**
+     * Ova funkcija prikazuje meni za podesavanje profila adminu
+     * 
+     * @param type $poruka
+     */
     public function podesavanjeProfila($poruka=null){
         $lokacijaModel = new LokacijaModel();
         $lokacije = $lokacijaModel->findAll();
@@ -304,12 +321,22 @@ class Admin extends BaseController
     
     }
     
+    /**
+     * Ova funkcija brise reklamu sa zadatim id iz baze i azurira stranicu sa izlistanim reklamama
+     * 
+     * @param string $id
+     */
       public function brisiReklamu($id) {
         $reklamaModel=new ReklamaModel();
     $reklamaModel->delete($id);
        return redirect()->to(site_url("/Admin"));
         
     }
+     /**
+     * Ova funkcija, nakon provere lozinke, azurira sve zeljene podatke ili brise nalog korisnika
+     * 
+     * @return void
+     */
   public function podesiProfil(){
         if (isset($_POST['podesi'])){
             $korisnikModel=new KorisnikModel();
@@ -369,6 +396,11 @@ class Admin extends BaseController
             }
         }
     }
+       /**
+     * Ova funkcija prikazuje stranu zanatlije cije je korisnicko ime dato
+     * 
+     * @param string $korIme
+     */
  public function profilZanatlije($korIme){
    
    $reklamaModel = new ReklamaModel();
@@ -408,6 +440,13 @@ class Admin extends BaseController
         
     }
     
+
+      /**
+     * Ova funkcija sluzi za ocenjivanje objave sa datim id od strane korisnika sa datim id 
+     * 
+     * @param string $idObjave, string $imeKorisnika, string $ocena
+     */
+
     public function ocenjivanje($idObjave, $imeKorisnika, $ocena) {
         
         $objavaModel = new ObjavaModel();
@@ -439,6 +478,27 @@ class Admin extends BaseController
         
         
         echo $avgOcena;
+    }
+    
+    /**
+     * Ova funkcija prikazuje stranu pisca cije je korisnicko ime dato
+     * 
+     * @param string $korIme
+     */
+    public function profilPisac($korIme) {
+        $lokacijaModel = new LokacijaModel();
+        $objavaModel = new ObjavaModel();
+        $korisnikModel = new KorisnikModel();
+        
+        $autor = $korisnikModel->where("tip", 2)->find($korIme);
+        
+        if ($autor == null) {
+            return;
+        }
+        $lokacija = $lokacijaModel->find($autor->lokacija);
+        $objave = $objavaModel->where("autor", $autor->korisnickoIme)->findAll();
+        
+        $this->prikazi("profilPisac", "headerAdmin", ["kontroler" => "Admin", "korisnik" => $this->session->get("korisnik"), "lokacija" => $lokacija, "objave" => $objave, "autor" => $autor]);
     }
 
 }

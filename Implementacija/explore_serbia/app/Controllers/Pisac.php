@@ -156,6 +156,9 @@ class Pisac extends BaseController
         $objavaModel = new ObjavaModel();
         $korisnikModel = new KorisnikModel();
         $reklamaModel = new ReklamaModel();
+        $ocenaKorisniObjavaModel = new OcenaKorisnikObjavaModel();
+        
+        $korisnikOcene = $ocenaKorisniObjavaModel->where("korisnickoIme", $this->session->get("korisnik")->korisnickoIme)->findAll();
         
         $objava = $objavaModel->find($idObjave);
         $autor = $korisnikModel->find($objava->autor);
@@ -173,7 +176,7 @@ class Pisac extends BaseController
             array_push($autoriReklama, $autorReklame);
         }
         
-        $this->prikaz("headerPisac", "objava", ["objava" => $objava, "autor" => $autor, "reklame" => $reklame, "autoriReklama" => $autoriReklama, "kontroler" => "Pisac"]);
+        $this->prikaz("headerPisac", "objava", ["objava" => $objava, "autor" => $autor, "reklame" => $reklame, "autoriReklama" => $autoriReklama, "korisnikOcene" => $korisnikOcene, "kontroler" => "Pisac"]);
     }
     
     /**
@@ -243,7 +246,7 @@ class Pisac extends BaseController
     
     /**
      * Ova funkcija vadilira se poslate podatke kod kreiranja objave i,
-     * ako su svi podatci validni, salje kreira ih u bazi
+     * ako su svi podaci validni, salje i kreira ih u bazi
      * 
      * @return void
      */
@@ -427,7 +430,28 @@ class Pisac extends BaseController
         $lokacija = $lokacijaModel->find($korisnik->lokacija);
         $objave = $objavaModel->where("autor", $korisnik->korisnickoIme)->findAll();
         
-        $this->prikaz("headerPisac", "profilPisac", ["kontroler" => "Pisac", "korisnik" => $korisnik, "lokacija" => $lokacija, "objave" => $objave]);
+        $this->prikaz("headerPisac", "profilPisac", ["kontroler" => "Pisac", "korisnik" => $korisnik, "lokacija" => $lokacija, "objave" => $objave, "autor" => $korisnik]);
+    }
+    
+    /**
+     * Ova funkcija prikazuje stranu pisca cije je korisnicko ime dato
+     * 
+     * @param string $korIme
+     */
+    public function profilPisac($korIme) {
+        $lokacijaModel = new LokacijaModel();
+        $objavaModel = new ObjavaModel();
+        $korisnikModel = new KorisnikModel();
+        
+        $autor = $korisnikModel->where("tip", 2)->find($korIme);
+        
+        if ($autor == null) {
+            return;
+        }
+        $lokacija = $lokacijaModel->find($autor->lokacija);
+        $objave = $objavaModel->where("autor", $autor->korisnickoIme)->findAll();
+        
+        $this->prikaz("headerPisac", "profilPisac", ["kontroler" => "Pisac", "korisnik" => $this->session->get("korisnik"), "lokacija" => $lokacija, "objave" => $objave, "autor" => $autor]);
     }
     
     /**
@@ -470,7 +494,7 @@ class Pisac extends BaseController
     }
     
     /**
-     * Ova funkcija, nakon provere lozinke, azurira sve zeljene podatke ili birse nalog korisnika
+     * Ova funkcija, nakon provere lozinke, azurira sve zeljene podatke ili brise nalog korisnika
      * 
      * @return void
      */
@@ -534,7 +558,12 @@ class Pisac extends BaseController
             }
         }
     }
-    
+
+      /**
+     * Ova funkcija sluzi za ocenjivanje objave sa datim id od strane korisnika sa datim id 
+     * 
+     * @param string $idObjave, string $imeKorisnika, string $ocena
+     */ 
     public function ocenjivanje($idObjave, $imeKorisnika, $ocena) {
         
         $objavaModel = new ObjavaModel();
@@ -566,6 +595,24 @@ class Pisac extends BaseController
         
         
         echo $avgOcena;
+    }
+    
+    /**
+     * Ova funkcija prikazuje profil zanatlije cije je korisnicko ime prosledjeno
+     * 
+     * @param string $korIme
+     */
+    
+    public function profilZanatlije($korIme){
+   
+   $reklamaModel = new ReklamaModel();
+                    $korisnikModel=new KorisnikModel();
+                    $autor=$korisnikModel->find($korIme);
+       $reklame= $reklamaModel->orderBy('vremeKreiranja', 'desc')->where('autor', $korIme)->findAll();
+
+        
+        $this->prikaz("headerPisac", "profilZanatlije", ["kontroler"=>"Gost", "reklame" => $reklame,"autor"=>$autor]);
+       
     }
     
 }

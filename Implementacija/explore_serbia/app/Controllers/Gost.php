@@ -166,10 +166,12 @@ class Gost extends BaseController
         $objava = $objavaModel->find($idObjave);
         $autor = $korisnikModel->find($objava->autor);
         $reklame = $reklamaModel->where('odobrena', 1)->where('lokacija', $objava->lokacija)->findAll();
+        
         if (!empty($reklame)){
             shuffle($reklame);
             $reklame = array_chunk($reklame, 3)[0];
         }
+        
         
         
         $autoriReklama = [];

@@ -370,6 +370,13 @@ class Admin extends BaseController
     public function odbijTekst()
     {
         $objavaModel = new ObjavaModel();
+        $objavaTagModel = new ObjavaTagModel();
+
+        $tagoviObjave = $objavaTagModel->where("objavaID", $this->request->getVar("id"))->findAll();
+
+        foreach($tagoviObjave as $tagObjave) {
+            $objavaTagModel->delete($this->request->getVar("id"));
+        }
         $objavaModel->izbrisi($this->request->getVar("id"));
         return redirect()->to(site_url("Admin/tekstoviZaOdobravanje"));
     }

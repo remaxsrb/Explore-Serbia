@@ -105,6 +105,11 @@ class Admin extends BaseController
 
     }
 
+    /**
+    Prikazuje sve korisnike koje postoje u bazi. Ako korisnik nije admin, pojavice se i dugme ukloni korisnika.
+     * Ako je korisnik pisac, pojavice se dugme Dodaj Admina. Ako je korisnik admin nece biti dodatnih opcija.
+     */
+
     public function listaKorisnika()
     {
         $korisnikModel = new KorisnikModel();
@@ -162,61 +167,90 @@ class Admin extends BaseController
         $this->prikazi("reklama","headerAdmin" , ["reklama" => $reklama, "autor" => $autor,"kontroler"=>"Admin"]);
         }
     }
-
+    /**
+     * Prikazuje sve reklame koje se nalaze u sistemu
+    */
     public function listaReklama()
     {
         $reklamaModel = new ReklamaModel();
         $reklame= $reklamaModel->findAll();
         $this->prikazi("listaReklamaUSistemu", "headerAdmin",['reklame'=>$reklame]);
     }
+    /**
+     * Prikazuje autorske tekstove koje u zavisnosti od relevantnosti admin moze da odobri da se prikazu na sajtu ili da ih ukloni iz baze.
+    */
     public function tekstoviZaOdobravanje()
     {
         $objavaModel = new ObjavaModel();
         $objave= $objavaModel->findAll();
         $this->prikazi("listaObjavaZaOdobravanje", "headerAdmin",['objave'=>$objave]);
     }
+    /**
+     * Funkcija vrsi postavljanje flega da je tekst odobren
+    */
     public function odobriTekst()
     {
         $objavaModel = new ObjavaModel();
         $objavaModel->ubaci($this->request->getVar("id"));
         return redirect()->to(site_url("Admin/tekstoviZaOdobravanje"));
     }
+    /**
+     * Funkcija vrsi postavljanje flega da tekst nije odobren
+     */
     public function odbijTekst()
     {
         $objavaModel = new ObjavaModel();
         $objavaModel->izbrisi($this->request->getVar("id"));
         return redirect()->to(site_url("Admin/tekstoviZaOdobravanje"));
     }
+    /**
+     * Prikazuje tagove koje u zavisnosti od relevantnosti admin moze da odobri da se prikazu na sajtu ili da ih ukloni iz baze.
+     */
     public function tagoviZaOdobravanje()
     {
         $tagModel = new TagModel();
         $tagovi = $tagModel->findAll();
         $this->prikazi("listaTagovaZaOdobravanje", "headerAdmin",['tagovi'=>$tagovi]);
     }
+    /**
+     * Funkcija vrsi postavljanje flega da je tag odobren
+     */
     public function odobriTag()
     {
         $tagModel = new TagModel();
         $tagModel->ubaciTag($this->request->getVar("tag"));
         return redirect()->to(site_url("Admin/tagoviZaOdobravanje"));
     }
+    /**
+     * Funkcija vrsi postavljanje flega da tag nije odobren
+     */
     public function odbijTag()
     {
         $tagModel = new TagModel();
         $tagModel->izbrisiTag($this->request->getVar("tag"));
         return redirect()->to(site_url("Admin/tagoviZaOdobravanje"));
     }
+    /**
+     * Prikazuje zanatlijske oglase koje u zavisnosti od relevantnosti admin moze da odobri da se prikazu na sajtu ili da ih ukloni iz baze.
+     */
     public function reklameZaOdobravanje()
     {
         $reklamaModel = new ReklamaModel();
         $reklame= $reklamaModel->findAll();
         $this->prikazi("listaReklamaZaOdobravanje", "headerAdmin",['reklame'=>$reklame]);
     }
+    /**
+     * Funkcija vrsi postavljanje flega da je oglas odobren
+     */
     public function odobriReklamu()
     {
         $reklamaModel = new ReklamaModel();
         $reklamaModel->dodajReklamu($this->request->getVar("reklama"));
         return redirect()->to(site_url("Admin/reklameZaOdobravanje"));
     }
+    /**
+     * Funkcija vrsi postavljanje flega da oglas nije odobren
+     */
     public function odbijReklamu()
     {
         $reklamaModel = new ReklamaModel();
@@ -224,14 +258,18 @@ class Admin extends BaseController
         return redirect()->to(site_url("Admin/reklameZaOdobravanje"));
     }
 
-
+    /**
+     * Funkcija vrsi brisanje korisnika iz baze
+     */
     public function izbrisiKorisnika()
     {
         $korisnikModel = new KorisnikModel();
         $korisnikModel->izbrisiKorinsika($this->request->getVar('korisnik'));
         return redirect()->to(site_url("Admin/listaKorisnika"));
     }
-
+    /**
+     * Funkcija izvrsava dodavanje novog admina tako sto mu u bazi promeni tip korinsika
+     */
     public function dodajAdmina()
     {
         $korisnikModel = new KorisnikModel();

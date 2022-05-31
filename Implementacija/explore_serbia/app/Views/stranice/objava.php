@@ -33,12 +33,13 @@
             <?php 
             
             $slikaRegex = "/(\[img\])(.+)(\[\/img\])/";
-          if (preg_match($slikaRegex, $objava->tekst, $matches)) {
-            echo preg_replace($slikaRegex, "<br/><img src='".$matches[2]."'></img><br/>" , $objava->tekst);
-         } else {
-             echo $objava->tekst;
-         }
-                    
+            $parsedText = $objava->tekst;
+            
+            while (preg_match($slikaRegex, $parsedText, $matches)) {
+                $parsedText = preg_replace($slikaRegex, "<br/><img src='".$matches[2]."'></img><br/>" , $parsedText, 1); 
+            }
+         
+            echo $parsedText;
             ?>
             </p>
          

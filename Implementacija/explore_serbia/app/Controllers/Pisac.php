@@ -270,7 +270,6 @@ class Pisac extends BaseController
             if (!$this->validate(["noviMainTag" => "required|max_length[120]"])) {
 
 
-
                 return $this->prikaz("headerPisacBezPretrage", "kreiranjeObjave", ["greske" => $this->validator->getErrors(), "kontroler"=>$kontroler]);
                 
             }

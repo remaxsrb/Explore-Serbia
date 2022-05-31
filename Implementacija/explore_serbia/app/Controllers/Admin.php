@@ -101,14 +101,184 @@ class Admin extends BaseController
         $this->session->set("allTags", $allTags);
         $this->session->set("allLoks", $allLoks);
 
-        $this->prikazi("kreiranjeObjave", "headerAdmin", ["greske" => []]);
+        $kontroler = 'Admin';
+
+        $this->prikazi("kreiranjeObjave", "headerAdmin", ["greske" => [], "kontroler"=>$kontroler]);
 
     }
+
 
     /**
     Prikazuje sve korisnike koje postoje u bazi. Ako korisnik nije admin, pojavice se i dugme ukloni korisnika.
      * Ako je korisnik pisac, pojavice se dugme Dodaj Admina. Ako je korisnik admin nece biti dodatnih opcija.
      */
+
+    public function slanjeObjave() {
+
+
+    $objavaModel = new ObjavaModel();
+    $tagModel = new TagModel();
+    $objavaTagModel = new ObjavaTagModel();
+    $kontroler='Admin';
+    if (!$this->validate([ "naslovObjave" => "required|max_length[120]", "regionObjave" => "required",
+        "objavaTextArea" => "required", "mainTagTip" => "required", "mainTag" => "required"
+    ])) {
+        if ($this->request->getVar("mainTag") == "Novi tag"){
+            $this->validate (["noviMainTag" => "required|max_lenght[120]"]);
+        }
+        return $this->prikazi("kreiranjeObjave", "headerAdmin", ["greske" => $this->validator->getErrors(),"kontroler"=>$kontroler]);
+    }
+
+    if ($this->request->getVar("mainTag") == "Novi tag") {
+        if (!$this->validate(["noviMainTag" => "required|max_length[120]"])) {
+            return $this->prikazi("kreiranjeObjave", "headerAdmin", ["greske" => $this->validator->getErrors(), "kontroler"=>$kontroler]);
+        }
+    }
+
+
+
+    $korisnik = $this->session->get("korisnik");
+
+    $naslov = $this->request->getVar("naslovObjave");
+    $region = $this->request->getVar("regionObjave");
+    $sadrzaj = $this->request->getVar("objavaTextArea");
+    $glavniTagTip = $this->request->getVar("mainTagTip");
+    $glavniTag = $this->request->getVar("mainTag");
+    $glavniTagSpace = $this->request->getVar("noviMainTag");
+
+    $secTagNum = $this->request->getVar("numOftags");
+
+    $secTagTip = [];
+    $secTag = [];
+    $secTagSpace = [];
+
+    for ($i = 0; $i < $secTagNum; $i++) {
+        $secTagTip[$i] = $this->request->getVar("secTagType".$i);
+        $secTag[$i] = $this->request->getVar("secTag".$i);
+        $secTagSpace[$i] = $this->request->getVar("secNovTag".$i);
+    }
+
+
+    $lastObjava = $objavaModel->orderBy("id", "desc")->findAll(1);
+    $id = $lastObjava[0]->id + 1;
+    $lokacijaModel = new LokacijaModel();
+    $lokacija = $lokacijaModel->where("naziv", $region)->findAll();
+
+    $objavaModel->insert([
+        "naslov" => $naslov,
+        "tekst" => $sadrzaj,
+        "brojOcena" => 0,
+        "sumaOcena" => 0,
+        "odobrena" => 0,
+        "vremeKreiranja" => date("Y-m-d"),
+        "autor" => $korisnik->korisnickoIme,
+        "lokacija" => $lokacija[0]->id
+    ]);
+
+    //Ubacivanje relacije glavnog taga i objave
+    if ($glavniTag != "Novi tag") {
+        $tag = $tagModel->where("naziv", $glavniTag)->findAll(1);
+        $tagId = $tag[0]->id;
+
+        $objavaTagModel->insert([
+            "objavaID" => $id,
+            "tagID" => $tagId
+
+
+        ]);
+    } else {
+        //pravljenje novog taga
+        $oldTag = $tagModel->orderBy("id", "desc")->findAll(1);
+        $tagId = $oldTag[0]->id + 1;
+
+        $tagTipId;
+
+        switch ($glavniTagTip) {
+            case "Istorijska ličnost": $tagTipId = 1;
+                break;
+            case "Spomenik": $tagTipId = 2;
+                break;
+            case "Crkva/manastir": $tagTipId = 3;
+                break;
+            case "Tvrdjava": $tagTipId = 4;
+                break;
+            case "Arheološko nalazište": $tagTipId = 5;
+                break;
+            case "Park prirode": $tagTipId = 6;
+                break;
+        }
+
+        $tagModel->insert([
+            "id" => $tagId,
+            "naziv" => $glavniTagSpace,
+            "odobren" => 0,
+            "kategorija" => $tagTipId
+        ]);
+
+        $objavaTagModel->insert([
+            "objavaID" => $id,
+            "tagID" => $tagId
+        ]);
+
+    }
+
+    //ubacivanje sekundarnih tagova
+    for ($i = 0; $i < $secTagNum; $i++) {
+        $secTagTip = $this->request->getVar("secTagType".$i);
+        $secTag = $this->request->getVar("secTag".$i);
+        $secTagSpace = $this->request->getVar("secNovTag".$i);
+
+        if ($secTag != "Novi tag") {
+            $tag = $tagModel->where("naziv", $secTag)->findAll(1);
+            $tagId = $tag[0]->id;
+
+            $objavaTagModel->insert([
+                "objavaID" => $id,
+                "tagID" => $tagId
+            ]);
+        } else {
+            //pravljenje novog taga
+            $oldTag = $tagModel->orderBy("id", "desc")->findAll(1);
+            $tagId = $oldTag[0]->id + 1;
+
+            $tagTipId;
+
+            switch ($secTagTip) {
+                case "Istorijska ličnost": $tagTipId = 1;
+                    break;
+                case "Spomenik": $tagTipId = 2;
+                    break;
+                case "Crkva/manastir": $tagTipId = 3;
+                    break;
+                case "Tvrdjava": $tagTipId = 4;
+                    break;
+                case "Arheološko nalazište": $tagTipId = 5;
+                    break;
+                case "Park prirode": $tagTipId = 6;
+                    break;
+            }
+
+            $tagModel->insert([
+                "id" => $tagId,
+                "naziv" => $secTagSpace,
+                "odobren" => 0,
+                "kategorija" => $tagTipId
+            ]);
+
+            $objavaTagModel->insert([
+                "objavaID" => $id,
+                "tagID" => $tagId
+            ]);
+
+        }
+
+    }
+
+    return $this->index();
+
+
+}
+
 
     public function listaKorisnika()
     {

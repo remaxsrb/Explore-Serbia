@@ -256,19 +256,22 @@ class Pisac extends BaseController
         $objavaModel = new ObjavaModel();
         $tagModel = new TagModel();
         $objavaTagModel = new ObjavaTagModel();
-        
+        $kontroler='Pisac';
         if (!$this->validate([ "naslovObjave" => "required|max_length[120]", "regionObjave" => "required",
             "objavaTextArea" => "required", "mainTagTip" => "required", "mainTag" => "required"
         ])) {
              if ($this->request->getVar("mainTag") == "Novi tag"){
                  $this->validate (["noviMainTag" => "required|max_lenght[120]"]);
              }
-            return $this->prikaz("headerPisac", "kreiranjeObjave", ["greske" => $this->validator->getErrors()]);
+            return $this->prikaz("headerPisac", "kreiranjeObjave", ["greske" => $this->validator->getErrors(),"kontroler"=>$kontroler]);
         }
         
         if ($this->request->getVar("mainTag") == "Novi tag") {
             if (!$this->validate(["noviMainTag" => "required|max_length[120]"])) {
-                return $this->prikaz("headerPisacBezPretrage", "kreiranjeObjave", ["greske" => $this->validator->getErrors()]);
+
+
+                return $this->prikaz("headerPisacBezPretrage", "kreiranjeObjave", ["greske" => $this->validator->getErrors(), "kontroler"=>$kontroler]);
+                
             }
         }
         

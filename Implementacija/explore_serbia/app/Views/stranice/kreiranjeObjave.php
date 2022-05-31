@@ -1,5 +1,5 @@
 <!-- by Nikola Bjelobaba 2019/0442 -->
-
+<script type="text/javascript" src="/js/kreiranjeObjave.js"></script>
 <?php $session = session(); ?>
 
 
@@ -26,14 +26,14 @@
                 }?>
             </select>
         </div>
-        <form id="mainForm" name="mainForm" style="text-align: left" method="post" action="<?php echo site_url("/Pisac/slanjeObjave"); ?>">
+        <form id="mainForm" name="mainForm" style="text-align: left" method="post" action="<?php echo site_url("/$kontroler/slanjeObjave"); ?>">
             <div class="content-space">
                 <div class="content-space-text">
                     <h4>Sadržaj<span style="color: red;">*</span></h4>
                 </div>
                 <textarea name="objavaTextArea" id="objavaTextArea" rows="10" cols="150" id="objavaTextArea"></textarea>
             </div>
-        </form>>
+        </form>
         <div class="main-tag-space">
             <div class="main-tag-space-text">
                 <h4>Glavni tag<span style="color: red;">*</span></h4>
@@ -83,19 +83,31 @@
         </div>
 
         <div class="submit-button-space">
-            <button class="btn btn-primary btn-lg button-submit-objava" type="submit" form="mainForm">Okači objavu</button>
+            <?php
+            echo form_open(site_url("$kontroler/slanjeObjave"), "method=post");
+            $btnData=
+                [
+                    'class'=> "btn btn-primary btn-lg button-submit-objava",
+                    'type'=> "submit",
+                    'form'=>"mainForm"
+                ];
+            echo form_submit($btnData, "Okači objavu");
+            echo form_close();
+            ?>
         </div>
+
+
        
         <div class="cancel-button-space">
-            <form method="post" action="<?php echo site_url("/Pisac"); ?>"> 
-                <button class="btn btn-secondary btn-lg button-cancel-objava" action="<?php echo site_url("/Pisac"); ?>">Odustani</button>
+            <form method="post" action="<?php echo site_url("/$kontroler"); ?>">
+                <button class="btn btn-secondary btn-lg button-cancel-objava" action="<?php echo site_url("/$kontroler"); ?>">Odustani</button>
             </form>
         </div>
         
     </div>
     </body>
     
-    <script type="text/javascript" src="/js/kreiranjeObjave.js"></script>
+
     
     
 </html>

@@ -106,10 +106,8 @@
 <div class="submit-button-space">
     <button class="btn btn-primary btn-lg button-submit-objava" type="submit" id="okaci">Okači reklamu</button>
 </div>
-    
 
-<div class="cancel-button-space">
-    <button class="btn btn-secondary btn-lg button-cancel-objava" type="button">Odustani</button>
-</div>
+
+        <button class="btn btn-secondary btn-lg button-cancel-objava" onclick='window.location="/Zanatlija"' type="button">Odustani</button>
 </form>
 </div>

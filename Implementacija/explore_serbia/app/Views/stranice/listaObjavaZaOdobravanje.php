@@ -37,7 +37,7 @@
             echo '</div>';
             echo '<div class="col-sm-4">';
             echo form_open(site_url("Admin/odbijTekst"), "method=post");
-            echo form_hidden('id', $objava->naslov);
+            echo form_hidden('id', $objava->id);
             $btnData=
                 [
                     'class'=> "btn btn-danger",

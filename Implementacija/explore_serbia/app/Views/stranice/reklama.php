@@ -80,7 +80,7 @@
                             <i class="fa fa-envelope" aria-hidden="true"></i>
                             <?php if($reklama->email != null) echo '<p>'.$reklama->email.'</p>'; ?>
                             <i class="fa fa-link" aria-hidden="true"></i>
-                            <?php if($reklama->email != null) echo '<a href="'.$reklama->email.'" target="_blank" style="display: block;">'.$reklama->email.'</a>'; ?>
+                            <?php if($reklama->sajtURL != null) echo '<a href="http://'.$reklama->sajtURL.'" target="_blank" style="display: block;">'.$reklama->sajtURL.'</a>'; ?>
                             
                         </div>
                     </div>

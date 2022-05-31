@@ -33,8 +33,8 @@ class Database extends Config
     public $default = [
         'DSN'      => '',
         'hostname' => 'localhost',
-        'username' => 'remax',
-        'password' => 'Partizan1!',
+        'username' => 'root',
+        'password' => '!',
         'database' => 'exploreserbia',
         'DBDriver' => 'MySQLi',
         'DBPrefix' => '',

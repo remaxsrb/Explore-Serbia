@@ -1,5 +1,5 @@
 <!-- by Nikola Bjelobaba 2019/0442 -->
-<script type="text/javascript" src="/js/kreiranjeObjave.js"></script>
+
 <?php $session = session(); ?>
 
 
@@ -107,7 +107,7 @@
     </div>
     </body>
     
-
-    
+<!-- Skripta mora da ide na kraj fajla da bi se pravilno ucitala stranica -->
+    <script type="text/javascript" src="/js/kreiranjeObjave.js"></script>
     
 </html>

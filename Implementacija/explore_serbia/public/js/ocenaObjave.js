@@ -33,7 +33,7 @@ function oceni(objavaId, korisnikIme, siteUrl) {
             
             
             let noviAvgCeoDeo = Math.floor(noviAvg);
-            let noviAvgDecDeo = Math.round(noviAvg * 100) /100;
+            let noviAvgDecDeo = Math.round(noviAvg * 100) /100 - noviAvgCeoDeo;
             let polaZvezdePrikazano = false;
             let novNode;
             
@@ -43,15 +43,16 @@ function oceni(objavaId, korisnikIme, siteUrl) {
                 } else if (!polaZvezdePrikazano) {
                     if (noviAvgDecDeo >= 0.5) {
                         poljeZvezdice.innerHTML += '<span class="fa fa-star checked"></span>';
-                    } else {
+                    } else if (noviAvgDecDeo != 0){
                         poljeZvezdice.innerHTML += '<span class="fa fa-star-half-alt checked"></span>';
+                    } else {
+                        poljeZvezdice.innerHTML += '<span class="fas fa-star"></span>';
                     }
                     polaZvezdePrikazano = true;
                 } else {
                        poljeZvezdice.innerHTML += '<span class="fas fa-star"></span>';
                 }
             }
-            
         }
     }
     

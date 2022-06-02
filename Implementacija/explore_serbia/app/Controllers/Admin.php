@@ -229,14 +229,20 @@ class Admin extends BaseController
         $secTagSpace = $this->request->getVar("secNovTag".$i);
 
         if ($secTag != "Novi tag") {
-            $tag = $tagModel->where("naziv", $secTag)->findAll(1);
-            $tagId = $tag[0]->id;
-
-            $objavaTagModel->insert([
-                "objavaID" => $id,
-                "tagID" => $tagId
-            ]);
-        } else {
+                $tag = $tagModel->where("naziv", $secTag)->findAll(1);
+                
+                if ($tag != null) {
+                    $tagId = $tag[0]->id;
+            
+                    if ($objavaTagModel->where("objavaID", $id)->where("tagID", $tagId)->findAll(1) == null) {
+                        $objavaTagModel->insert([
+                            "objavaID" => $id,
+                            "tagID" => $tagId
+                        ]);
+                    }
+                }
+                
+            } else {
             //pravljenje novog taga
             $oldTag = $tagModel->orderBy("id", "desc")->findAll(1);
             $tagId = $oldTag[0]->id + 1;
@@ -258,17 +264,19 @@ class Admin extends BaseController
                     break;
             }
 
-            $tagModel->insert([
-                "id" => $tagId,
-                "naziv" => $secTagSpace,
-                "odobren" => 0,
-                "kategorija" => $tagTipId
-            ]);
-
-            $objavaTagModel->insert([
-                "objavaID" => $id,
-                "tagID" => $tagId
-            ]);
+            if ($secTagSpace != "") {
+                    $tagModel->insert([
+                        "id" => $tagId,
+                        "naziv" => $secTagSpace,
+                        "odobren" => 0,
+                        "kategorija" => $tagTipId
+                    ]);
+            
+                    $objavaTagModel->insert([
+                        "objavaID" => $id,
+                        "tagID" => $tagId
+                    ]);
+                }
 
         }
 

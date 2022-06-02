@@ -240,7 +240,7 @@ class Pisac extends BaseController
         
         $this->session->set("allTags", $allTags);
         $this->session->set("allLoks", $allLoks);
-        $this->prikaz("headerPisacBezPretrage", "kreiranjeObjave", ["greske" => []]);
+        $this->prikaz("headerPisacBezPretrage", "kreiranjeObjave", ["greske" => [], "kontroler" => "Pisac"]);
         //"allTags" => $allTags]
     }
     
@@ -369,12 +369,18 @@ class Pisac extends BaseController
             
             if ($secTag != "Novi tag") {
                 $tag = $tagModel->where("naziv", $secTag)->findAll(1);
-                $tagId = $tag[0]->id;
+                
+                if ($tag != null) {
+                    $tagId = $tag[0]->id;
             
-                $objavaTagModel->insert([
-                    "objavaID" => $id,
-                    "tagID" => $tagId
-                ]);
+                    if ($objavaTagModel->where("objavaID", $id)->where("tagID", $tagId)->findAll(1) == null) {
+                        $objavaTagModel->insert([
+                            "objavaID" => $id,
+                            "tagID" => $tagId
+                        ]);
+                    }
+                }
+                
             } else {
                 //pravljenje novog taga
                 $oldTag = $tagModel->orderBy("id", "desc")->findAll(1);
@@ -397,17 +403,19 @@ class Pisac extends BaseController
                         break;
                 }
             
-                $tagModel->insert([
-                    "id" => $tagId,
-                    "naziv" => $secTagSpace,
-                    "odobren" => 0,
-                    "kategorija" => $tagTipId
-                ]);
+                if ($secTagSpace != "") {
+                    $tagModel->insert([
+                        "id" => $tagId,
+                        "naziv" => $secTagSpace,
+                        "odobren" => 0,
+                        "kategorija" => $tagTipId
+                    ]);
             
-                $objavaTagModel->insert([
-                    "objavaID" => $id,
-                    "tagID" => $tagId
-                ]);
+                    $objavaTagModel->insert([
+                        "objavaID" => $id,
+                        "tagID" => $tagId
+                    ]);
+                }
             
             }
             

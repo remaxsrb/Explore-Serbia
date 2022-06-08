@@ -1,0 +1,63 @@
+*** Testovi koji ne sadrže napomenu automatski obezbeđuju preduslove i rade svo potrebno čišćenje kako bi baza podataka ostala u konzistentnom stanju i mogu se izvršavati proizvoljnim redosledom jedan za drugim ***
+*** Preduslov za sve testove je korišćenje baze podataka "exploreserbia_baza_popunjena_podacima.sql" ***
+
+TP1: Odobravanje nove objave
+Preduslov: Postoji objava koja čeka odobravanje u bazi podataka
+
+	1. Admin bira opciju Odobri objave.
+	2. Admin klikće na dugme Odobri objavu.
+VT: 3. Objava se prikazuje na početnoj strani.
+
+TP2: Odbijanje nove objave
+Preduslov: Postoji objava koja čeka odobravanje u bazi podataka
+
+	1. Admin bira opciju Odobri objave.
+	2. Admin klikće na dugme Odbij objavu.
+VT: 3. Objava se ne prikazuje na početnoj strani.
+
+TP3: Odobravanje nove reklame
+Preduslov: Postoji reklama koja čeka odobravanje u bazi podataka
+
+	1. Admin bira opciju Odobri reklame.
+	2. Admin klikće na dugme Odobri reklamu.
+VT: 3. Reklama se prikazuje u okviru neke objave
+
+TP4: Odbijanje nove reklame
+Preduslov: Postoji objava koja čeka odobravanje u bazi podataka
+
+	1. Admin bira opciju Odobri reklame.
+	2. Admin klikće na dugme Odbij reklamu.
+VT: 3. Reklama se ne prikazuje u okviru objave
+
+TP5: Odobravanje novog taga
+Napomena: Manuelno je potrebno izbrisati tag kako bi baza podataka 
+ostala u konzistentnom stanju
+Preduslov: Postoji tag koje čeka odobravanje u bazi podataka
+
+	1. Admin bira opciju Odobri tagove.
+	2. Admin klikće na dugme Odobri tag.
+VT: 3. Tag se nudi kao opcija prilikom kreiranje sledeće objave
+
+TP6: Odbijanje novog taga
+
+Preduslov: Postoji tag koje čeka odobravanje u bazi podataka
+
+	1. Admin bira opciju Odobri objave.
+	2. Admin odbija objavu za koju je tag koji treba da se odbije vezan (neophodno je ovo uraditi, inače tag ne može biti obrisan)
+	3. Admin bira opciju Odobri tagove.
+	4. Admin klikće na dugme Odbij tag.
+VT: 5. Tag se ne prikazuje u listi tagova za odobravanje
+
+TP7: Brisanje bilo kog korisnika
+Preduslov: Postoji korisnik u bazi podataka
+
+	1. Admin bira opciju Korisnici.
+	2. Admin klikće na dugme Izbriši korisnika.
+VT: 3. Sistem javlja "Korisnik ne postoji" prilikom pokušaja logovanja kao prethodno obrisani korisnik
+
+TP8: Dodavanje novog administratora
+Preduslov: Postoji korisnik u bazi podataka čiji je tip korisnika pisac
+
+	1. Admin bira opciju Korisnici.
+	2. Admin klikće na dugme Dodaj admina.
+VT: 3. Korisnik se loguje i prikazuju mu se sve opcjie admina.

@@ -33,6 +33,7 @@ class TestAdminController extends CIUnitTestCase
         ];
         $this->hasInDatabase('objava', $objava);
         
+        $_REQUEST['id']='13';
         $result = $this->withURI('http://localhost:8080/Admin/odobriTekst/')
             ->controller(\App\Controllers\Admin::class)
             ->execute('odobriTekst');
@@ -403,7 +404,7 @@ class TestAdminController extends CIUnitTestCase
         $this->assertTrue($result->see("Reklame u sistemu", "h2"));
     }
     
-    public function testTekstoviZaOdobravanje(){
+    public function testTekstoviZaOdobravanjePrikaz(){
         $result = $this->withURI('http://localhost:8080/Admin/tekstoviZaOdobravanje/')
             ->controller(\App\Controllers\Admin::class)
             ->execute('tekstoviZaOdobravanje');
@@ -411,7 +412,7 @@ class TestAdminController extends CIUnitTestCase
         $this->assertTrue($result->see("Objave koje čekaju odobrenje", "h2"));
     }
     
-    public function testTagoviZaOdobravanje(){
+    public function testTagoviZaOdobravanjePrikaz(){
         $result = $this->withURI('http://localhost:8080/Admin/tagoviZaOdobravanje/')
             ->controller(\App\Controllers\Admin::class)
             ->execute('tagoviZaOdobravanje');
@@ -419,7 +420,7 @@ class TestAdminController extends CIUnitTestCase
         $this->assertTrue($result->see("Tagovi Koji čekaju odobrenje", "h2"));
     }
     
-    public function testReklameZaOdobravanje(){
+    public function testReklameZaOdobravanjePrikaz(){
         $result = $this->withURI('http://localhost:8080/Admin/reklameZaOdobravanje/')
             ->controller(\App\Controllers\Admin::class)
             ->execute('reklameZaOdobravanje');
@@ -427,5 +428,97 @@ class TestAdminController extends CIUnitTestCase
         $this->assertTrue($result->see("Reklame u sistemu koje čekaju odobrenje", "h2"));
     }
     
+    public function testPretraga(){
+        $_REQUEST['pretraga'] = 'Kalemegdan';
+        
+        $korisnikModel = new \App\Models\KorisnikModel();
+        $_SESSION['korisnik'] = $korisnikModel->find('oliverM');
+        
+        $result = $this->withURI('http://localhost:8080/Admin/pretraga/')
+            ->controller(\App\Controllers\Admin::class)
+            ->execute('pretraga');
+        
+        $this->assertTrue($result->see("Kalemegdan", "h3"));
+        $this->assertFalse($result->see("Pećina Risovača", "h3"));
+        $this->assertFalse($result->see("Hram Svetog Save", "h3"));
+        $this->assertFalse($result->see("Smederevska tvrdjava", "h3"));
+        $this->assertFalse($result->see("Soko Banja", "h3"));
+        $this->assertFalse($result->see("Tara", "h3"));
+        $this->assertFalse($result->see("Soko Grad", "h3"));
+        $this->assertFalse($result->see("Car Dusan Silni", "h3"));
+    }
     
+    public function testPretragaPrazanUnos(){
+        $_REQUEST['pretraga'] = '';
+        
+        $korisnikModel = new \App\Models\KorisnikModel();
+        $_SESSION['korisnik'] = $korisnikModel->find('oliverM');
+        
+        $result = $this->withURI('http://localhost:8080/Admin/pretraga/')
+            ->controller(\App\Controllers\Admin::class)
+            ->execute('pretraga');
+        
+       $result->assertRedirectTo('Admin/');
+    }
+    
+    public function testOdbijanjeNoveObjave(){
+        $objava = [
+            'id' => 13,
+            'naslov'  => 'Naslov',
+            'tekst'  => 'Tekst',
+            'brojOcena'  => 0,
+            'sumaOcena'  => 0,
+            'odobrena'  => 0,
+            'vremeKreiranja'  => '2022-06-07',
+            'autor' => 'milos',
+            'lokacija'  => 144,
+        ];
+        $this->hasInDatabase('objava', $objava);
+        
+        $_REQUEST['id'] = $objava['id'];
+        $result = $this->withURI('http://localhost:8080/Admin/odbijTekst/')
+            ->controller(\App\Controllers\Admin::class)
+            ->execute('odbijTekst');
+        
+        $this->dontSeeInDatabase('objava', $objava);
+        
+        $objavaModel = new \App\Models\ObjavaModel();
+        $objavaModel->izbrisi($objava['id']);
+    }
+    
+    public function testIzlogujSe(){
+        $korisnikModel = new \App\Models\KorisnikModel();
+        $_SESSION['korisnik'] = $korisnikModel->find('oliverM');
+        
+        $result = $this->withURI('http://localhost:8080/Admin/izlogujSe/')
+            ->controller(\App\Controllers\Admin::class)
+            ->execute('izlogujSe');
+        
+        $result->assertRedirectTo('/');
+    }
+    
+    public function testBrisiBiloKojuReklamu(){
+        
+        $reklama = [
+            'id' => 16,
+            'nazivRadnje'  => 'Reklama za brisanje',
+            'opis'  => 'Opis',
+            'slikaURL'  => null,
+            'adresa'  => 'Adresa 123',
+            'telefon'  => null,
+            'email'  => null,
+            'sajtURL' => null,
+            'vremeKreiranja'  => '2022-06-07',
+            'odobrena'  => 0,
+            'autor' => 'angie',
+            'lokacija'  => 144,
+        ];
+        $this->hasInDatabase('reklama', $reklama);
+        
+        $result = $this->withURI('http://localhost:8080/Admin/brisiBiloKojuReklamu/')
+            ->controller(\App\Controllers\Admin::class)
+            ->execute('brisiBiloKojuReklamu', $reklama['id']);
+        
+        $this->dontSeeInDatabase('reklama', $reklama);
+    }
 }

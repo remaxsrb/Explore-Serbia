@@ -1,0 +1,113 @@
+***Test plan važi za testove rađene u Selenium IDE i nisu osmišljeni tako da bazu vrate u prethodno stanje te se preporučuje da se izvršavaju jedan po jedan uz ručno vraćanje baze na početno stanje***
+
+***Preduslov za sve testove je korišćenje baze podataka "exploreserbia_baza_popunjena_podacima.sql" ***
+
+***Preduslov za sve testove je da Zanatlija bude ulogovan na svoj nalog ***
+
+TP1: Uspešno brisanje reklame
+	1. Korisnik pritiska dugme koje ga vodi na njegov profil
+	2. Korisnik pritiska dugme koje briše jednu od njegovih reklama sa profila a ujedno i iz baze
+VT:	3. Verifikuje se da li još uvek postoji tekst sa naslovom te reklame na profilu
+
+*** Pošto se menjanje lozinke drugačije verifikuje u odnosu na ostatak menjanja profila, te dve stavke su razdvojene na dva testa ***
+
+TP2: Uspešno menjanje korisničkih podataka
+	1. Korisnik pritiska dugme koje ga vodi na njegov profil
+	2. Korisnii pritiska dugme koje ga vodi na formu za izmenu podataka
+	3. Korisnik stavlja sliku sa linka https://i0.wp.com/nacionalist.rs/wp-content/uploads/2020/10/344232332.jpg?fit=680%2C489&ssl=1 umesto https://storage.needpix.com/rsynced_images/cartoon-1890438_1280.jpg
+	4. Korisnik unosi ime Stefan umesto postojećeg Bogdan
+	5. Korisnik unosi prezime Lazarević umesto postojećeg Đorđević
+	6. Korisnik menja opštinu sa Aleksinac na Beograd
+	7. Korisnik unosi novu e-mail adresu stefandespot@protonmail.com umesto djordjevicb68@gmail.com
+	8. Korisnik potrvđuje izmene tako što unosi svoju šifru i to ga vraća na njegov profil
+	9. Korisnik ponovo pritiska dugme koje ga vodi na formu za izmenu podataka
+VT:	10. Verifikuje se da li još uvek postoji tekst u polju slika sa sadržajem https://storage.needpix.com/rsynced_images/cartoon-1890438_1280.jpg
+VT:	12. Verifikuje se da li još uvek postoji tekst u polju ime sa sadržajem Bogdan
+VT:	12. Verifikuje se da li još uvek postoji tekst u polju prezime sa sadržajem Đorđević
+VT:	13. Verifikuje se da li još uvek postoji tekst u polju opština sa sadržajem Beograd
+VT:	14. Verifikuje se da li još uvek postoji tekst u polju e-mail sa sadržajem djordjevicb68@gmail.com
+
+TP3: Uspešno menjanje korisničke lozinke
+	1. Korisnik pritiska dugme koje ga vodi na njegov profil
+	2. Korisnii pritiska dugme koje ga vodi na formu za izmenu podataka
+	3. Korisnik u polje Nova lozinka unosi novu lozinku
+	4. Korinsik u polje potvrda nove lozinke unosi istu tu lozinku
+	5. Da bi potvrdio izmene korisnik unosi još uvek važeću lozinku i pritiska dugme za potvrdu
+	6. Korinsik će se pritiskom na dugme za početnu stranu izlogovati
+VT:	7. Menjanje lozinke se verifikuje tako što se korisnik pokuša ulogovati sa starom lozinkom i traži se tekst "Pogrešna lozinka"
+
+TP4: Pogrešno uneta lozinka pri potvrdi izmene profila
+	1. Korisnik pritiska dugme koje ga vodi na njegov profil
+	2. Korisnii pritiska dugme koje ga vodi na formu za izmenu podataka
+	3. Korisnik stavlja sliku sa linka https://i0.wp.com/nacionalist.rs/wp-content/uploads/2020/10/344232332.jpg?fit=680%2C489&ssl=1 umesto https://storage.needpix.com/rsynced_images/cartoon-1890438_1280.jpg
+	4. Korisnik potrvđuje izmene tako što unosi svoju šifru	ali je pogrešio u unosu
+VT:	5. Traži se tekst "Pogrešna lozinka"
+
+TP5: Nova lozinka i potvrda nove lozinke se ne poklapaju
+	1. Korisnik pritiska dugme koje ga vodi na njegov profil
+	2. Korisnii pritiska dugme koje ga vodi na formu za izmenu podataka
+	3. Korisnik u polje Nova lozinka unosi novu lozinku
+	4. Korinsik u polje potvrda nove lozinke unosi drugačiju lozinku od nove
+	5. Da bi potvrdio izmene korisnik unosi još uvek važeću lozinku i pritiska dugme za potvrdu
+VT:	6. Traži se tekst "Lozinke se ne poklapaju"
+
+TP6: U e-mail adresi je izostavljen karakter @
+	1. Korisnik pritiska dugme koje ga vodi na njegov profil
+	2. Korisnii pritiska dugme koje ga vodi na formu za izmenu podataka
+	3. Korisnik unosi novu e-mail adresu stefandespotprotonmail.com umesto djordjevicb68@gmail.com
+	4. Da bi potvrdio izmene korisnik unosi još lozinku i pritiska dugme za potvrdu
+VT:	6. Traži se da se ne pronađe dugme sa sadržajem "Izmeni profil"
+
+TP7: U e-mail adresi je izostavljen karakter .
+	1. Korisnik pritiska dugme koje ga vodi na njegov profil
+	2. Korisnii pritiska dugme koje ga vodi na formu za izmenu podataka
+	3. Korisnik unosi novu e-mail adresu stefandespot@protonmailcom umesto djordjevicb68@gmail.com
+	4. Da bi potvrdio izmene korisnik unosi još lozinku i pritiska dugme za potvrdu
+VT:	6. Traži se da se ne pronađe dugme sa sadržajem "Izmeni profil"
+
+TP8: Testiranje glavnog toka kreiranja reklame
+	1. Korisnik pritiska dugme sa znakom + koje ga vodi na formu za kreiranje reklame
+	2. Korisnik unosi naslov reklame Срби за Србе
+	3. Korisnik bira opštinu  Beograd
+	4. Korisnik unosi sliku sa linka https://www.srbizasrbe.org/wp-content/themes/szs-theme/images/szs-logo.png
+	5. Korisnik kao opis radnje unosi Бутик хуманитарне организације Срби за Србе
+	6. Korisnik unosi adresu Др Милутина Ивковића 2а, Београд
+	7. Korisnik unosi broj telefona u formatu +061 2646548
+	8. Korisnik unosi mejl organizacija@srbizasrbe.org
+	9. Korisnik unosi sajt https://www.srbizasrbe.org/
+	10. Korisnik pritiska dugme okači koje ga preusmerava na stranicu novokreiranje reklame
+VT:	11. Verifikuje se odsustvo dugmeta sa tekstom "Odustani"
+
+TP9: Prvi alternativni tok kreiranja reklame - Testiranje dugmeta odustani
+	1. Korisnik pritiska dugme sa znakom + koje ga vodi na formu za kreiranje reklame
+	2. Korisnik pritiska dugme odustani koje ga vraća na početnu stranu
+VT:	3. Verifikuje se odsustvo dugmeta sa tekstom "Odustani"
+
+TP10: Drugi alternativni tok kreiranja reklame - Izostavljeno polje regiona
+
+
+TP11: Treći alternativni tok kreiranja reklame - Izostavljeno polje naziv
+	1. Korisnik pritiska dugme sa znakom + koje ga vodi na formu za kreiranje reklame
+	2. Korisnik bira opštinu  Beograd
+	3. Korisnik unosi sliku sa linka https://www.srbizasrbe.org/wp-content/themes/szs-theme/images/szs-logo.png
+	4. Korisnik kao opis radnje unosi Бутик хуманитарне организације Срби за Србе
+	5. Korisnik unosi adresu Др Милутина Ивковића 2а, Београд
+	6. Korisnik unosi broj telefona u formatu +061 2646548
+	7. Korisnik unosi mejl organizacija@srbizasrbe.org
+	8. Korisnik unosi sajt https://www.srbizasrbe.org/
+	9. Korisnik pritiska dugme okači koje ga preusmerava na stranicu novokreiranje reklame
+VT:	10. Verifikuje se prisustvo dugmeta sa tekstom "Odustani"
+
+TP12: Četvrti alternativni tok kreiranja reklame - Izostavljeno polje adresa
+	1. Korisnik pritiska dugme sa znakom + koje ga vodi na formu za kreiranje reklame
+	2. Korisnik unosi naslov reklame Срби за Србе
+	3. Korisnik bira opštinu  Beograd
+	4. Korisnik unosi sliku sa linka https://www.srbizasrbe.org/wp-content/themes/szs-theme/images/szs-logo.png
+	5. Korisnik kao opis radnje unosi Бутик хуманитарне организације Срби за Србе
+	6. Korisnik unosi broj telefona u formatu +061 2646548
+	7. Korisnik unosi mejl organizacija@srbizasrbe.org
+	8. Korisnik unosi sajt https://www.srbizasrbe.org/
+	9. Korisnik pritiska dugme okači koje ga preusmerava na stranicu novokreiranje reklame
+VT:	10. Verifikuje se prisustvo dugmeta sa tekstom "Odustani"
+
+

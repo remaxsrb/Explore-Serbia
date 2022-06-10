@@ -1,0 +1,38 @@
+TP1: Uspesno kreiranje objave
+Preduslov: Da bi se izvršila ova radnja potrebno je da je pisac ulogovan
+1. Pisac bira opciju za pisanje objave
+2. Pisac unosi naslov objave a zatim i region/opštinu za koju je objava vezana
+3. Pisac u polje za tekst unosi sadržaj koji želi da objavi uz
+mogućnost dodavanja slika
+4. Pisac bira glavni tag
+5. Pisac bira sekundarni tag
+VT: 6.Pisac završava radnju pritiskom na dugme i sistem prikazuje dodatu objavu
+
+TP2: Neuspesno kreiranje objave
+Preduslov: Da bi se izvršila ova radnja potrebno je da je pisac ulogovan
+1. Pisac bira opciju za pisanje objave
+2. Pisac unosi region/opštinu za koju je objava vezana
+3. Pisac u polje za tekst unosi sadržaj koji želi da objavi uz
+mogućnost dodavanja slika
+VT: 4. Sistem javlja da nije unet naslov objave i opet prikazuje formu za popunjavanje
+5. Pisac unosi naslov objave i klikne na dugme za potvrdu
+VT: 6. Sistem javlja da nije unet sadrzaj objave i opet prikazuje formu za popunjavanje
+
+TP3: Brisanje svoje objave
+
+1. Pisac udje na svoj profil
+2. Pisac sa svog profila može da vidi sve objave koje je do sada objavio
+3. Pritiskom na dugme pisac izbriše objavu 
+VT: 4. Objava se vise ne nalazi na sajtu
+
+TP4: Brisanje bilo koje objave (Admin)
+Preduslov: Korisnik mora biti ulogovan kao admin
+1. Administrator bira dugme za brisanje objave. 
+VT: 2. Objava je uspešno obrisana i ne pojavljuje se među sadržajem pri pretrazi objave	
+
+
+TP5: Ocenjivanje objave 
+Preduslov: Korisnik mora biti ulogovan
+1. Korisnik posećuje objavu
+2. Korisnik daje ocenu od 0 do 5
+VT: 3. Ocena je evidentirana i korisniku se prikazuje koju je ocenu dao

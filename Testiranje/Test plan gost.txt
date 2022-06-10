@@ -1,0 +1,172 @@
+TP1: Uspesno logovanje Pisca
+Preduslov: Postoji pisac u bazi
+
+	1. Gost unosi svoje kredencijale (korisnicko ime i sifru) i klikce na dugme 'uloguj se'.
+	2. Pisac je sad ulogovan i prikazuje mu se pocetna stranica.
+
+TP2: Uspesno logovanje Zanatlije
+Preduslov: Postoji zanatlija u bazi
+
+	1. Gost unosi svoje kredencijale (korisnicko ime i sifru) i klikce na dugme 'uloguj se'.
+	2. Zanatlija je sad ulogovan i prikazuje mu se pocetna stranica.
+
+TP3: Uspesno logovanje Admina
+Preduslov: Postoji admin u bazi
+
+	1. Gost unosi svoje kredencijale (korisnicko ime i sifru) i klikce na dugme 'uloguj se'.
+	2. Admin je sad ulogovan i prikazuje mu se pocetna stranica.
+
+TP4: Logovanje bez korisnickog imena
+Preduslov: Postoji korisnik u bazi
+
+	1. Gost unosi samo sifru i klikce na dugme 'uloguj se'.
+	2. Stranica javlja da je polje korisnickog imena nepopunjeno.
+
+TP5: Logovanje bez sifre
+Preduslov: Postoji korisnik u bazi
+
+	1. Gost unosi samo korisnicko ime i klikce na dugme 'uloguj se'.
+	2. Stranica javlja da je polje sifre nepopunjeno.
+
+TP6: Logovanje pogresno kor. ime
+Preduslov: Postoji korisnik u bazi
+
+	1. Gost unosi pogresno kor. ime i tacnu lozinku i klikce na dugme 'uloguj se'.
+	2. Stranica javlja da korisnik ne postoji.
+
+TP7: Logovanje pogresna sifra
+Preduslov: Postoji korisnik u bazi
+
+	1. Gost unosi tacno kor. ime i pogresnu lozinku i klikce na dugme 'uloguj se'.
+	2. Stranica javlja da sifra nije tacna.
+
+TP8: Uspesno registrovanje pisca
+Preduslov: Nema
+
+	1. Gost unosi sve potrebne podatke, sa jedinstvenim kor. imenom i poklapajucom proverom lozinke.
+	Zatim bira da se registruje kao pisac i klikce na dugme 'registruj se'.
+	2. Gost se vraca na pocetnu stranicu, a nalog pisca je napravljen u bazi.
+
+TP9: Uspesno registrovanje zanatlije
+Preduslov: Nema
+
+	1. Gost unosi sve potrebne podatke, sa jedinstvenim kor. imenom i poklapajucom proverom lozinke.
+	Zatim bira da se registruje kao zanatlija i klikce na dugme 'registruj se'.
+	2. Gost se vraca na pocetnu stranicu, a nalog zanatlije je napravljen u bazi.
+
+TP10: Registrovanje bez imena
+Preduslov: Nema
+
+	1. Gost pokusava registraciju bez unetog imena.
+	2. Stranica mu javlja da polje imena nije popunjeno.
+
+TP11: Registrovanje bez prezimena
+Preduslov: Nema
+
+	1. Gost pokusava registraciju bez unetog prezimena.
+	2. Stranica mu javlja da polje prezimena nije popunjeno.
+
+TP12: Registrovanje bez korisnickog imena
+Preduslov: Nema
+
+	1. Gost pokusava registraciju bez unetog korisnickog imena.
+	2. Stranica mu javlja da polje korisnickog imena nije popunjeno.
+
+TP13: Registrovanje bez Eposte
+Preduslov: Nema
+
+	1. Gost pokusava registraciju bez unete Eposte.
+	2. Stranica mu javlja da polje Eposte nije popunjeno.
+
+TP14: Registrovanje bez lozinke
+Preduslov: Nema
+
+	1. Gost pokusava registraciju bez unete lozinke.
+	2. Stranica mu javlja da polje lozinke nije popunjeno.
+
+TP15: Registrovanje bez potvrde lozinke
+Preduslov: Nema
+
+	1. Gost pokusava registraciju bez unete potvrde lozinke.
+	2. Stranica mu javlja da polje potvrde lozinke nije popunjeno.
+
+TP16: Registrovanje korisnicko ime postoji u bazi
+Preduslov: postoji korisnik sa unetim korisnickim imenom u bazi
+
+	1. Gost pokusava registraciju sa vec zauzetim korisnickim imenom.
+	2. Stranica mu javlja da to korisnicko ime vec postoji.
+
+TP17: Registrovanje sa nepoklapanjem provere lozinke
+Preduslov: Nema
+
+	1. Gost pokusava registraciju dok se pojla lozinke i provere lozinke ne poklapaju.
+	2. Stranica mu javlja da se pojla lozinke i provere lozinke ne poklapaju.
+
+TP18: Posecivanje Objave
+Preduslov: Postoji odobrena objava u bazi
+
+	1. Gost klikce na objavu.
+	2. Gostu se prikazuje stranica kliknute objave.
+
+TP19: Posecivanje Reklame
+Preduslov: Postoji odobrena reklama u bazi, i postoji odobrena objava na kojoj bi se ta krelama mogla prikazati
+
+	1. Gost klikce na objavu.
+	2. Gostu se prikazuje stranica kliknute objave.
+	3. Gost klikce na reklamu.
+	4. Gosu se prikazuje stranica kliknute reklame.
+
+TP20: Posecivanje profila pisca
+Preduslov: Postoji odobrena objava u bazi, takodje postoji njen pisac (nije obrisan)
+
+	1. Gost klikce na objavu.
+	2. Gostu se prikazuje stranica kliknute objave.
+	3. Gost klikce na ime pisca.
+	4. Gostu se prikazuje profil pisca.
+
+TP21: Posecivanje profila zanatlije
+Preduslov: Postoji odobrena reklama u bazi, i postoji odobrena objava na kojoj bi se ta krelama mogla prikazati
+	   Takodje postoji zanatlija koji je napravio tu reklamu (nije obrisan)
+
+	1. Gost klikce na objavu.
+	2. Gostu se prikazuje stranica kliknute objave.
+	3. Gost klikce na reklamu.
+	4. Gosu se prikazuje stranica kliknute reklame.
+	5. Gost klikce na ime zanatlije.
+	6. Gostu se prikazuje profil zanatlije.
+
+TP22: Filtriranje bez uneto pojma i tag kategorije
+Preduslov: Postoji jedna ili vise objava u bazi
+
+	1. Gost klikce na dugme 'Pretrazi'.
+	2. Gostu se prikazuju sve odobrene objave.
+
+TP23: Filtriranje sa unetim pojmom a bez tag kategorije
+Preduslov: Postoji jedna ili vise objava u bazi koje odgovaraju uslovima pretrage
+
+	1. Gost unosi pojam u dato polje i klikce na dugme 'Pretrazi'.
+	2. Gostu se prikazuju sve odobrene objave koje sadrze taj pojam u sebi (ili u naslovu ili u tekstu).
+
+TP24: Filtriranje sa unetim pojmom i jednom tag kategorijom
+Preduslov: Postoji jedna ili vise objava u bazi koje odgovaraju uslovima pretrage
+
+	1. Gost unosi pojam u dato polje, bira jednu tag kategoriju i klikce na dugme 'Pretrazi'.
+	2. Gostu se prikazuju sve odobrene objave koje sadrze tag te kategorije i sadrze unet pojam u sebi.
+
+TP25: Filtriranje sa unetim pojmom i vise tag kategorija
+Preduslov: Postoji jedna ili vise objava u bazi koje odgovaraju uslovima pretrage
+
+	1. Gost unosi pojam u dato polje, bira vise tag kategorija i klikce na dugme 'Pretrazi'.
+	2. Gostu se prikazuju sve odobrene objave koje sadrze tag bilo koje od izabranih kategorija i sadrze uent pojam u sebi.
+
+TP26: Filtriranje bez unetog pojma, a sa jednnom tag kategorijom
+Preduslov: Postoji jedna ili vise objava u bazi koje odgovaraju uslovima pretrage
+
+	1. Gost bira jednu tag kategoriju i klikce na dugme 'Pretrazi'.
+	2. Gostu se prikazuju sve odobrene objave koje sadrze tag te kategorije.
+
+TP27: Filtriranje bez unetog pojma, a sa vise tag kategorija
+Preduslov: Postoji jedna ili vise objava u bazi koje odgovaraju uslovima pretrage
+
+	1. Gost bira vise tag kategorija i klikce na dugme 'Pretrazi'.
+	2. Gostu se prikazuju sve odobrene objave koje sadrze tag bilo koje od izabranih kategorija.

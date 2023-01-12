@@ -5,7 +5,7 @@ way to find information about Serbia. Our support warried from archaeological si
 local handmade shops, historical sites, churces and monasteries etc.
 
 ## Technologies and frameworks used:
-  -CodeIgniter 4
-  -Bootstrap 5
-  -HTML 5 
-  -CSS 3
+  - CodeIgniter 4
+  - Bootstrap 5
+  - HTML 5 
+  - CSS 3
